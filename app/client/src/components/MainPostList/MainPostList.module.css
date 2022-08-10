@@ -1,0 +1,10 @@
+.ul {
+  width: 100%;
+  padding: 2vh 5vw;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 2.5vh;
+}

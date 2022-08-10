@@ -1,14 +1,43 @@
-# voyage-tasks
+# requiments
+node 18.2.0
+postgresql >= 12
 
-Your project's `readme` is as important to success as your code. For 
-this reason you should put as much care into its creation and maintenance
-as you would any other component of the application.
+# setup database
+```
+npx sequelize-cli db:create
+npx sequelize-cli db:migrate
+npx sequelize-cli db:seed:all
+```
 
-If you are unsure of what should go into the `readme` let this article,
-written by an experienced Chingu, be your starting point - 
-[Keys to a well written README](https://tinyurl.com/yk3wubft).
+# development
+if you have a local postgres with different credentials from the default you can edit them using this .env file
+```
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432"
+SECRET_KEY="pls_set_a_real_value_here_in_production"
+```
+the format is postgresql://USER:PASSWORD@HOST:PORT
+is recommended you use an admin user in development as sequelize need the permission to create new databases
+but if that is not possible you can pass a database name using this format postgresql://USER:PASSWORD@HOST:PORT/DATABASE
 
-And before we go there's "one more thing"! Once you decide what to include
-in your `readme` feel free to replace the text we've provided here.
+```
+npm install -g foreman
+npx foreman start -f Procfile.dev
+```
 
-> Own it & Make it your Own!
+also look into setting up standard js linters https://standardjs.com/#visual-studio-code
+
+# deploy
+
+make sure to set the env var REACT_APP_API_ENDPOINT to the appropriate value in production
+```
+git push heroku master
+```
+
+# test
+```
+NODE_ENV="test" npx sequelize-cli db:create
+NODE_ENV="test" npx sequelize-cli db:migrate
+
+jest ./test
+```
+
