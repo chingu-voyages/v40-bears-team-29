@@ -1,12 +1,12 @@
-import { useParams, useNavigate } from "react-router-dom";
-import Header from "../components/Header/Header";
+import { useParams, useNavigate } from 'react-router-dom'
+import Header from '../components/Header/Header'
 const User = () => {
-  const nav = useNavigate();
-  let urlId = useParams().id;
+  const nav = useNavigate()
+  const urlId = useParams().id
 
   const navToEditHandler = () => {
-    nav(`/users/${urlId}/edit`);
-  };
+    nav(`/users/${urlId}/edit`)
+  }
 
   return (
     <>
@@ -14,7 +14,7 @@ const User = () => {
       <Header />
       <button onClick={navToEditHandler}>Edit profile</button>
     </>
-  );
-};
+  )
+}
 
-export default User;
+export default User

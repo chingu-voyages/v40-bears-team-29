@@ -1,7 +1,7 @@
-import { useParams } from "react-router-dom";
-import Header from "../components/Header/Header";
+import { useParams } from 'react-router-dom'
+import Header from '../components/Header/Header'
 const PostSpec = () => {
-  const urlId = useParams().id;
+  const urlId = useParams().id
 
   return (
     <>
@@ -9,7 +9,7 @@ const PostSpec = () => {
       <h1>This is Spec Post</h1>
       <p>{urlId}</p>
     </>
-  );
-};
+  )
+}
 
-export default PostSpec;
+export default PostSpec

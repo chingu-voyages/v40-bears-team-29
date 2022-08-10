@@ -1,16 +1,16 @@
-import classes from "./Login.module.css";
-import { useContext } from "react";
-import { AuthCtx } from "../../features/auth-ctx";
+import classes from './Login.module.css'
+import { useContext } from 'react'
+import { AuthCtx } from '../../features/auth-ctx'
 
 const Login = () => {
-  const authMgr = useContext(AuthCtx);
+  const authMgr = useContext(AuthCtx)
 
   const loginHandler = (e) => {
-    e.preventDefault();
-    authMgr.onLogIn();
-    console.log(authMgr.loginInputInfo);
-    authMgr.resetLogin();
-  };
+    e.preventDefault()
+    authMgr.onLogIn()
+    console.log(authMgr.loginInputInfo)
+    authMgr.resetLogin()
+  }
 
   return (
     <article className={classes.article}>
@@ -20,31 +20,31 @@ const Login = () => {
             <h1 className={classes.form_heading}>Log in</h1>
           </div>
           <div className={classes.field}>
-            <label className={classes.label} htmlFor="username">
+            <label className={classes.label} htmlFor='username'>
               Username
             </label>
             <input
               value={authMgr.loginInputInfo.username}
               onChange={(e) => authMgr.onLoginInputChange(e)}
               className={classes.input}
-              name="username"
-              type="text"
-              placeholder="Username"
-              id="username"
+              name='username'
+              type='text'
+              placeholder='Username'
+              id='username'
             />
           </div>
           <div className={classes.field}>
-            <label className={classes.label} htmlFor="password">
+            <label className={classes.label} htmlFor='password'>
               Password
             </label>
             <input
               onChange={(e) => authMgr.onLoginInputChange(e)}
               value={authMgr.loginInputInfo.password}
               className={classes.input}
-              name="password"
-              type="password"
-              placeholder="Password"
-              id="password"
+              name='password'
+              type='password'
+              placeholder='Password'
+              id='password'
             />
           </div>
           <div className={classes.field}>
@@ -55,7 +55,7 @@ const Login = () => {
         </form>
       </div>
     </article>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

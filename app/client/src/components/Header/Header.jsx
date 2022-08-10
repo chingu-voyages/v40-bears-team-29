@@ -1,5 +1,5 @@
-import Nav from "../Nav/Nav";
-import classes from "./Header.module.css";
+import Nav from '../Nav/Nav'
+import classes from './Header.module.css'
 
 const Header = () => {
   return (
@@ -7,7 +7,7 @@ const Header = () => {
       <h1 className={classes.logo}>Dumpster</h1>
       <Nav />
     </header>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header
