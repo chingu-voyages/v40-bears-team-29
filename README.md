@@ -24,6 +24,8 @@ npm install -g foreman
 npx foreman start -f Procfile.dev
 ```
 
+also look into setting up standard js linters https://standardjs.com/#visual-studio-code
+
 # deploy
 
 make sure to set the env var REACT_APP_API_ENDPOINT to the appropriate value in production

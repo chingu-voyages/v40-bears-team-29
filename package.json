@@ -31,6 +31,17 @@
     "newman": "^5.3.2",
     "nodemon": "^2.0.19",
     "sequelize-cli": "^6.4.1",
+    "standard": "*",
     "supertest": "^6.2.4"
+  },
+  "eslintConfig": {
+    "parserOptions": {
+      "ecmaVersion": "latest"
+    },
+    "env": {
+      "es6": true,
+      "node": true,
+      "jest": true
+    }
   }
 }
