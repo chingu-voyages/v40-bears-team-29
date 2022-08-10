@@ -1,0 +1,112 @@
+.article {
+  height: 90vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  width: 35%;
+  height: 60%;
+  background: #f4f6fb;
+  border: 1px solid white;
+  box-shadow: 10px 10px 40px 0px rgba(180, 180, 207, 0.75);
+  -webkit-box-shadow: 10px 10px 30px 0px rgba(186, 186, 202, 0.75);
+  -moz-box-shadow: 10px 10px 34px 0px rgba(208, 208, 231, 0.75);
+}
+
+.form {
+  padding: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  width: 100%;
+}
+
+.card_header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card {
+  color: rgb(0, 157, 255);
+
+  margin-bottom: 3.5em;
+  margin-right: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.form_heading {
+  padding-bottom: 5vh;
+  font-size: 2.5em;
+
+  color: rgb(0, 157, 255);
+}
+
+.field {
+  padding-bottom: 1.5vh;
+}
+
+.input {
+  font-size: 1.7em;
+  border-radius: 5px;
+
+  background-color: rgba(0, 157, 255, 0.085);
+
+  padding: 5px;
+  width: 100%;
+
+  color: rgb(8, 34, 49);
+
+  border: 1px solid #dadaf7;
+  width: 26.5em;
+}
+
+.input:focus-visible {
+  outline: 1px solid rgb(0, 157, 255);
+}
+
+.input::placeholder {
+  color: #bcbcdf;
+}
+
+.label {
+  color: #b2bac8;
+  font-size: 1.7em;
+  display: block;
+  padding-bottom: 4px;
+}
+
+.button {
+  background-color: rgb(0, 157, 255);
+  margin-top: 2.5vh;
+  font-size: 1.6em;
+  padding: 7px 12px;
+  font-weight: 500;
+  color: white;
+  border: transparent;
+
+  width: 28em;
+}
+
+.button:hover {
+  background-color: #5f5f9c;
+}
+
+@media (max-width: 798px) {
+  .card {
+    width: 50%;
+  }
+  .input {
+    width: 16.5em;
+  }
+  .button {
+    width: 17.5em;
+  }
+}
