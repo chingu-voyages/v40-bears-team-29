@@ -1,6 +1,7 @@
-import React, { createContext, useState } from 'react'
-import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import React, { createContext, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { urlTo } from "../helpers/application_helper";
 
 export const AuthCtx = createContext({
   isLoggedIn: false,
@@ -23,82 +24,89 @@ export const AuthCtx = createContext({
   onChangeRegisterInputInfo: (e) => {},
   resetRegister: () => {},
   showModal: false,
-  setShowModal: () => {}
-})
+  setShowModal: () => {},
+});
 
 const AuthProvider = (props) => {
-  const nav = useNavigate()
+  const nav = useNavigate();
   // TEST
-  const [showModal, setShowModal] = useState(false)
+  const [showModal, setShowModal] = useState(false);
   // TEST END
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [currentUser, setCurrentUser] = useState({})
-  const [showLogin, setShowLogin] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState({});
+  const [showLogin, setShowLogin] = useState(false);
   const [loginInputInfo, setLoginInputInfo] = useState({
-    username: '',
-    password: ''
-  })
+    username: "",
+    password: "",
+  });
   const [registerInputInfo, setRegisterInputInfo] = useState({
-    username: '',
-    email: '',
-    password: ''
-  })
+    username: "",
+    password: "",
+  });
 
   const onLogIn = async () => {
     await axios
-      .get('https://jsonplaceholder.typicode.com/users/1')
+      .post(urlTo("/api/login"), loginInputInfo)
       .then((serverRes) => {
-        console.log(serverRes.data)
-        setCurrentUser(serverRes.data)
-        setIsLoggedIn(true)
-        nav('/')
+        console.log(serverRes.data);
+        setCurrentUser(serverRes.data);
+        setIsLoggedIn(true);
+        nav("/");
       })
-  }
+      .catch((err) => {
+        console.log(err.response.data);
+        // SET FEEDBACK HERE
+      });
+  };
 
   const onLogOut = () => {
-    setCurrentUser({})
-    setIsLoggedIn(false)
-    nav('/')
-  }
+    setCurrentUser({});
+    setIsLoggedIn(false);
+    nav("/");
+  };
 
   const onShowLogin = () => {
-    setShowLogin(true)
-  }
+    setShowLogin(true);
+  };
 
   const onRegister = async () => {
     await axios
-      .get('https://jsonplaceholder.typicode.com/users/1')
+      .post(urlTo("/api/sign_up"), registerInputInfo)
       .then((serverRes) => {
-        console.log(serverRes.data)
-        setCurrentUser(serverRes.data)
-        setIsLoggedIn(true)
-        nav('/')
+        console.log(serverRes.data);
+        setCurrentUser(serverRes.data);
+        setIsLoggedIn(true);
+        nav("/");
       })
-  }
+      .catch((err) => {
+        console.log(err.response.data);
+        // SET FEEDBACK HERE
+      });
+  };
 
   const onLoginInputChange = (e) => {
-    const { name, value } = e.target
-    setLoginInputInfo((prev) => {
-      return { ...prev, [name]: value }
-    })
-  }
+    const { name, value } = e.target;
+    return setLoginInputInfo((prev) => {
+      return { ...prev, [name]: value };
+    });
+  };
 
   const resetLogin = () => {
-    setLoginInputInfo({ username: '', password: '' })
-  }
+    setLoginInputInfo({ username: "", password: "" });
+  };
 
   const onChangeRegisterInputInfo = (e) => {
-    const { name, value } = e.target
-    setRegisterInputInfo((prev) => {
-      return { ...prev, [name]: value }
-    })
-  }
+    const { name, value } = e.target;
+    return setRegisterInputInfo((prev) => {
+      return { ...prev, [name]: value };
+    });
+  };
 
   const resetRegister = () => {
-    setRegisterInputInfo({ username: '', email: '', password: '' })
-  }
+    setRegisterInputInfo({ username: "", email: "", password: "" });
+  };
 
-  console.log(isLoggedIn)
+  console.log(registerInputInfo);
 
   return (
     <AuthCtx.Provider
@@ -123,14 +131,14 @@ const AuthProvider = (props) => {
         onChangeRegisterInputInfo,
         // TEST
         showModal,
-        setShowModal
+        setShowModal,
 
         // TEST END
       }}
     >
       {props.children}
     </AuthCtx.Provider>
-  )
-}
+  );
+};
 
-export default AuthProvider
+export default AuthProvider;
