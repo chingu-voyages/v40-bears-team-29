@@ -2,9 +2,9 @@ const { User } = require('../models/index')
 
 const signUp = async (req, res) => {
   const passwordHash = await User.hash_password(req.body.password)
-  User.create({ name: req.body.name, password: passwordHash })
-    .then(() => {
-      res.status(200).send({ message: 'user created' })
+  User.create({ username: req.body.username, password: passwordHash })
+    .then((data) => {
+      res.status(200).send(data.get_data())
     })
     .catch((error) => {
       res.status(422).send({ error })
@@ -12,12 +12,13 @@ const signUp = async (req, res) => {
 }
 
 const login = async (req, res) => {
-  User.findOne({ where: { name: req.body.name } })
+  User.findOne({ where: { username: req.body.username } })
     .then(async (data) => {
       if (await data.check_password(req.body.password) === false) { return res.status(401).send({ error: 'invalid password' }) }
       // TODO move setting current_user to its own controller helper
       req.session.user_id = data.id
-      res.status(200).send({ message: `logged in as user ${data.name}` })
+
+      res.status(200).send(data.get_data())
     })
     .catch(() => {
       res.status(404).send({ error: 'user not found' })
@@ -29,12 +30,8 @@ const loggedUser = async (req, res) => {
 
   if (!userId) { return res.status(401).send({ error: 'you are not logged' }) }
 
-  // TODO move this check to a controller helper like current_user()
-  User.findByPk(userId)
-    .then((data) => {
-      // TODO move this filter to its own model helper
-      res.status(200).send({ user: { ...data.toJSON(), password: '[FILTERED]' } })
-    })
+  const user = await User.get_data_from_id(userId)
+  res.status(200).send(user)
 }
 
 module.exports = { login, loggedUser, signUp }
