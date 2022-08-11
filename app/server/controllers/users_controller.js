@@ -20,6 +20,8 @@ const login = async (req, res) => {
 
   User.findOne({ where: { name: username } })
     .then(async (data) => {
+      console.log(data.name);
+
       if ((await data.check_password(password)) === false) {
         return res.status(401).send({ error: "invalid password" });
       }

@@ -1,2 +1,0 @@
-server-web: npx nodemon npm start
-client-web: npm run client-dev
