@@ -1,6 +1,7 @@
 import classes from "./Signup.module.css";
 import { useContext } from "react";
 import { AuthCtx } from "../../features/auth-ctx";
+import Feedback from "../Feedback/Feedback";
 
 const Signup = () => {
   const authMgr = useContext(AuthCtx);
@@ -67,6 +68,7 @@ const Signup = () => {
               Sign Up
             </button>
           </div>
+          <Feedback bool={authMgr.showFeedback} message={authMgr.errorMsg} />
         </form>
       </div>
     </article>

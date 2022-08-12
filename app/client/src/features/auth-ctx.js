@@ -20,18 +20,23 @@ export const AuthCtx = createContext({
   resetLogin: () => {},
   registerInputInfo: {},
   setRegisterInputInfo: () => {},
-  // FROM HERE
   onChangeRegisterInputInfo: (e) => {},
   resetRegister: () => {},
   showModal: false,
   setShowModal: () => {},
+  // FROM HERE
+  showFeedback: false,
+  setShowFeedback: () => {},
+  errorMsg: "",
+  setErrorMsg: () => {},
+  onShowFeedback: (bool, message) => {},
 });
 
 const AuthProvider = (props) => {
   const nav = useNavigate();
-  // TEST
+  const [errorMsg, setErrorMsg] = useState("");
+  const [showFeedback, setShowFeedback] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  // TEST END
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const [showLogin, setShowLogin] = useState(false);
@@ -44,6 +49,11 @@ const AuthProvider = (props) => {
     password: "",
   });
 
+  const onShowFeedback = (bool, message) => {
+    setShowFeedback(bool);
+    setErrorMsg(message);
+  };
+
   const onLogIn = async () => {
     await axios
       .post(urlTo("/api/login"), loginInputInfo)
@@ -54,8 +64,14 @@ const AuthProvider = (props) => {
         nav("/");
       })
       .catch((err) => {
-        console.log(err.response.data);
-        // SET FEEDBACK HERE
+        err.response.status === 401 &&
+          onShowFeedback(true, "Invalid credentials");
+        err.response.status === 500 &&
+          onShowFeedback(true, "Oops, something when wrong");
+        err.response.status === 400 &&
+          onShowFeedback(true, "All fields are required");
+        err.response.status === 404 &&
+          onShowFeedback(true, "User not registered");
       });
   };
 
@@ -79,13 +95,18 @@ const AuthProvider = (props) => {
         nav("/");
       })
       .catch((err) => {
-        console.log(err.response.data);
-        // SET FEEDBACK HERE
+        err.response.status === 500 &&
+          onShowFeedback(true, "Oops, something when wrong");
+        err.response.status === 400 &&
+          onShowFeedback(true, "All fields are required");
+        err.response.status === 409 &&
+          onShowFeedback(true, "User already registered");
       });
   };
 
   const onLoginInputChange = (e) => {
     const { name, value } = e.target;
+    setShowFeedback(false);
     return setLoginInputInfo((prev) => {
       return { ...prev, [name]: value };
     });
@@ -96,6 +117,8 @@ const AuthProvider = (props) => {
   };
 
   const onChangeRegisterInputInfo = (e) => {
+    setShowFeedback(false);
+
     const { name, value } = e.target;
     return setRegisterInputInfo((prev) => {
       return { ...prev, [name]: value };
@@ -129,11 +152,14 @@ const AuthProvider = (props) => {
         setRegisterInputInfo,
         resetRegister,
         onChangeRegisterInputInfo,
-        // TEST
         showModal,
         setShowModal,
-
-        // TEST END
+        showFeedback,
+        setShowFeedback,
+        onShowFeedback,
+        errorMsg,
+        setErrorMsg,
+        onShowFeedback,
       }}
     >
       {props.children}

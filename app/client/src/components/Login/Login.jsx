@@ -1,6 +1,7 @@
 import classes from "./Login.module.css";
 import { useContext } from "react";
 import { AuthCtx } from "../../features/auth-ctx";
+import Feedback from "../Feedback/Feedback";
 
 const Login = () => {
   const authMgr = useContext(AuthCtx);
@@ -19,6 +20,7 @@ const Login = () => {
           <div className={classes.card_header}>
             <h1 className={classes.form_heading}>Log in</h1>
           </div>
+
           <div className={classes.field}>
             <label className={classes.label} htmlFor="username">
               Username
@@ -52,6 +54,7 @@ const Login = () => {
               Login
             </button>
           </div>
+          <Feedback bool={authMgr.showFeedback} message={authMgr.errorMsg} />
         </form>
       </div>
     </article>
