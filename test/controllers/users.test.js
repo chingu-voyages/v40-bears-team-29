@@ -142,7 +142,7 @@ describe('users controller', () => {
         const userAfter = await User.findByPk(this.user.id)
 
         expect(userBefore.password).not.toEqual(userAfter.password)
-        expect(userBefore.username).not.toEqual(userAfter.username)
+        expect(userBefore.username).toEqual(userAfter.username)
       })
   })
 

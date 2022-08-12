@@ -47,6 +47,7 @@ const updateUser = async (req, res) => {
   }
 
   const newValues = userParams(req)
+  delete newValues.username
   user.set({ ...newValues, password: await User.hashPassword(newValues.password) })
 
   user.save()
