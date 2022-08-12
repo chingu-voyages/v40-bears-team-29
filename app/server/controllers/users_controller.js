@@ -1,7 +1,7 @@
 const { User } = require("../models/index");
 
 const signUp = async (req, res) => {
-  const passwordHash = await User.hash_password(password);
+  const passwordHash = await User.hash_password(req.body.password);
   User.create({ name: req.body.name, password: passwordHash })
     .then(() => {
       res.status(200).send({ message: "user created" });
