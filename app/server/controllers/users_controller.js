@@ -9,9 +9,9 @@ const signUp = async (req, res) => {
       res.status(200).send(data.getData())
     })
     .catch((error) => {
-      res.status(422).send({ error })
-    })
-}
+      res.status(422).send({ error });
+    });
+};
 
 const login = async (req, res) => {
   User.findOne({ where: { username: req.body.username } })
@@ -24,9 +24,9 @@ const login = async (req, res) => {
       }
     })
     .catch(() => {
-      res.status(404).send({ error: 'user not found' })
-    })
-}
+      res.status(404).send({ error: "user not found" });
+    });
+};
 
 const loggedUser = async (req, res) => {
   const user = await currentUser(req)
