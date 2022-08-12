@@ -1,11 +1,8 @@
 const { User } = require("../models/index");
 
 const signUp = async (req, res) => {
-  console.log(req.body);
-  const { username, password } = req.body;
-
   const passwordHash = await User.hash_password(password);
-  User.create({ name: username, password: passwordHash })
+  User.create({ name: req.body.name, password: passwordHash })
     .then(() => {
       res.status(200).send({ message: "user created" });
       // Please send the user with its complete info
@@ -16,13 +13,11 @@ const signUp = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  const { username, password } = req.body;
-
-  User.findOne({ where: { name: username } })
+  User.findOne({ where: { name: req.body.name } })
     .then(async (data) => {
       console.log(data.name);
 
-      if ((await data.check_password(password)) === false) {
+      if ((await data.check_password(req.body.password)) === false) {
         return res.status(401).send({ error: "invalid password" });
       }
       // TODO move setting current_user to its own controller helper
