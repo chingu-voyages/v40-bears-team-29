@@ -41,6 +41,11 @@ const loggedUser = async (req, res) => {
 const updateUser = async (req, res) => {
   const user = await currentUser(req)
 
+  if (user == null) {
+    res.status(401).send({ error: 'you are not logged' })
+    return
+  }
+
   const newValues = userParams(req)
   user.set({ ...newValues, password: await User.hashPassword(newValues.password) })
 

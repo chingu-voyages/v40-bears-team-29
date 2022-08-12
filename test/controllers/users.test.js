@@ -1,12 +1,13 @@
 /* eslint-env jest */
 
-const session = require('supertest-session')
 const app = require('../../app/server/app')
 const request = require('supertest')
 jest.setTimeout(20000)
 
 const { User } = require('../../app/server/models/index')
 const userMock = require('../mocks/user')
+
+const { logUser } = require('./controllers_test_helpers')
 
 describe('users controller', () => {
   beforeEach(async () => {
@@ -98,14 +99,7 @@ describe('users controller', () => {
   })
 
   test('get /api/logged_user should return the logged user if logged', async () => {
-    const plainPassword = this.user.password
-    this.user.password = await User.hashPassword(this.user.password)
-    await this.user.save()
-
-    // TODO move this to its own test helper
-    const authenticatedSession = session(app)
-    await authenticatedSession.post('/api/login')
-      .send({ username: this.user.username, password: plainPassword })
+    const authenticatedSession = await logUser(this.user, app)
 
     await authenticatedSession
       .get('/api/logged_user')
@@ -122,6 +116,40 @@ describe('users controller', () => {
 
     await request(app)
       .get('/api/logged_user')
+      .expect(401)
+      .expect('Content-type', /json/)
+      .then(async (serverRes) => {
+        expect(serverRes.body).toEqual(expect.any(Object))
+        expect(serverRes.body).toEqual(
+          expect.objectContaining({ error: expect.any(String) })
+        )
+      })
+  })
+
+  test('patch /api/logged_user should update the logged user if logged', async () => {
+    const authenticatedSession = await logUser(this.user, app)
+
+    const userBefore = await User.findByPk(this.user.id)
+
+    await authenticatedSession
+      .patch('/api/logged_user')
+      .send({ username: 'new_name', password: 'new_password' })
+      .expect(200)
+      .expect('Content-type', /json/)
+      .then(async (serverRes) => {
+        expect(serverRes.body).toEqual(expect.any(Object))
+
+        const userAfter = await User.findByPk(this.user.id)
+
+        expect(userBefore.password).not.toEqual(userAfter.password)
+        expect(userBefore.username).not.toEqual(userAfter.username)
+      })
+  })
+
+  test('patch /api/logged_user should not update the logged user if not logged', async () => {
+    await request(app)
+      .patch('/api/logged_user')
+      .send({ username: 'new_name', password: 'new_password' })
       .expect(401)
       .expect('Content-type', /json/)
       .then(async (serverRes) => {
