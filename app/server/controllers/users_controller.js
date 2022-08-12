@@ -1,4 +1,4 @@
-const { User } = require('../models/index')
+const { User } = require("../models/index");
 
 const signUp = async (req, res) => {
   const passwordHash = await User.hash_password(req.body.password)
@@ -7,31 +7,37 @@ const signUp = async (req, res) => {
       res.status(200).send(data.get_data())
     })
     .catch((error) => {
-      res.status(422).send({ error })
-    })
-}
+      res.status(422).send({ error });
+    });
+};
 
 const login = async (req, res) => {
   User.findOne({ where: { username: req.body.username } })
     .then(async (data) => {
-      if (await data.check_password(req.body.password) === false) { return res.status(401).send({ error: 'invalid password' }) }
+      console.log(data.name);
+
+      if ((await data.check_password(req.body.password)) === false) {
+        return res.status(401).send({ error: "invalid password" });
+      }
       // TODO move setting current_user to its own controller helper
       req.session.user_id = data.id
 
       res.status(200).send(data.get_data())
     })
     .catch(() => {
-      res.status(404).send({ error: 'user not found' })
-    })
-}
+      res.status(404).send({ error: "user not found" });
+    });
+};
 
 const loggedUser = async (req, res) => {
-  const userId = req.session.user_id
+  const userId = req.session.user_id;
 
-  if (!userId) { return res.status(401).send({ error: 'you are not logged' }) }
+  if (!userId) {
+    return res.status(401).send({ error: "you are not logged" });
+  }
 
   const user = await User.get_data_from_id(userId)
   res.status(200).send(user)
 }
 
-module.exports = { login, loggedUser, signUp }
+module.exports = { login, loggedUser, signUp };
