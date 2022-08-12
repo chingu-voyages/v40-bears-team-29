@@ -16,24 +16,24 @@ describe('users controller', () => {
   test('post /api/sign_up should create a new user', async () => {
     await request(app)
       .post('/api/sign_up')
-      .send({ name: this.user.name, password: this.user.password })
+      .send({ username: this.user.username, password: this.user.password })
       .expect(200)
       .expect('Content-type', /json/)
       .then(async (serverRes) => {
         expect(serverRes.body).toEqual(expect.any(Object))
 
-        const usersCount = await User.count({ where: { name: this.user.name } })
+        const usersCount = await User.count({ where: { username: this.user.username } })
         expect(usersCount).toEqual(1)
       })
   })
 
   test('post /api/sign_up should not create a new user if name is already taken', async () => {
-    await User.create({ ...userMock, name: 'user' })
-    this.user.name = 'user'
+    await User.create({ ...userMock, username: 'user' })
+    this.user.username = 'user'
 
     await request(app)
       .post('/api/sign_up')
-      .send({ name: this.user.name, password: this.user.password })
+      .send({ username: this.user.username, password: this.user.password })
       .expect(422)
       .expect('Content-type', /json/)
       .then(async (serverRes) => {
@@ -42,7 +42,7 @@ describe('users controller', () => {
           expect.objectContaining({ error: expect.any(Object) })
         )
 
-        const usersCount = await User.count({ where: { name: this.user.name } })
+        const usersCount = await User.count({ where: { username: this.user.username } })
         expect(usersCount).toEqual(1)
       })
   })
@@ -54,14 +54,11 @@ describe('users controller', () => {
 
     await request(app)
       .post('/api/login')
-      .send({ name: this.user.name, password: plainPassword })
+      .send({ username: this.user.username, password: plainPassword })
       .expect(200)
       .expect('Content-type', /json/)
       .then(async (serverRes) => {
         expect(serverRes.body).toEqual(expect.any(Object))
-        expect(serverRes.body).toEqual(
-          expect.objectContaining({ message: expect.any(String) })
-        )
         expect(serverRes.headers).toEqual(expect.objectContaining({ 'set-cookie': expect.any(Object) }))
       })
   })
@@ -72,7 +69,7 @@ describe('users controller', () => {
 
     await request(app)
       .post('/api/login')
-      .send({ name: this.user.name, password: 'wrong_password' })
+      .send({ username: this.user.username, password: 'wrong_password' })
       .expect(401)
       .expect('Content-type', /json/)
       .then(async (serverRes) => {
@@ -86,7 +83,7 @@ describe('users controller', () => {
   test('post /api/login should return an error if not user is found', async () => {
     await request(app)
       .post('/api/login')
-      .send({ name: this.user.name, password: this.user.password })
+      .send({ username: this.user.username, password: this.user.password })
       .expect(404)
       .expect('Content-type', /json/)
       .then(async (serverRes) => {
@@ -105,7 +102,7 @@ describe('users controller', () => {
     // TODO move this to its own test helper
     const authenticatedSession = session(app)
     await authenticatedSession.post('/api/login')
-      .send({ name: this.user.name, password: plainPassword })
+      .send({ username: this.user.username, password: plainPassword })
 
     await authenticatedSession
       .get('/api/logged_user')
@@ -113,9 +110,6 @@ describe('users controller', () => {
       .expect('Content-type', /json/)
       .then(async (serverRes) => {
         expect(serverRes.body).toEqual(expect.any(Object))
-        expect(serverRes.body).toEqual(
-          expect.objectContaining({ user: expect.any(Object) })
-        )
       })
   })
 
