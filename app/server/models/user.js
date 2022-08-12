@@ -7,17 +7,27 @@ const {
 } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
-    static async hash_password (password) {
+    static async hashPassword (password) {
       const hash = await bcrypt.hash(password, saltRounds)
       return hash
     }
 
-    static async get_data_from_id (id) {
+    static async getDataFromId (id) {
       const user = await User.findByPk(id)
       return user.get_data()
     }
 
-    get_data () {
+    async hashPassword () {
+      if (this.hasHashedPassword() === false) {
+        this.password = await User.hashPassword(this.password)
+      }
+    }
+
+    hasHashedPassword () {
+      return this.password.substring(0, 3) === '$2b'
+    }
+
+    getData () {
       const data = {
         ...this.toJSON(),
         password: '[FILTERED]',
@@ -28,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
       return data
     }
 
-    async check_password (password) {
+    async checkPassword (password) {
       const result = await bcrypt.compare(password, this.password)
       return result
     }

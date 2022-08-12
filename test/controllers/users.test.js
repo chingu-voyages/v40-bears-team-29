@@ -24,6 +24,9 @@ describe('users controller', () => {
 
         const usersCount = await User.count({ where: { username: this.user.username } })
         expect(usersCount).toEqual(1)
+
+        const createdUser = await User.findByPk(serverRes.body.id)
+        expect(createdUser.hasHashedPassword()).toEqual(true)
       })
   })
 
@@ -49,7 +52,7 @@ describe('users controller', () => {
 
   test('post /api/login should login if password match', async () => {
     const plainPassword = this.user.password
-    this.user.password = await User.hash_password(this.user.password)
+    this.user.password = await User.hashPassword(this.user.password)
     await this.user.save()
 
     await request(app)
@@ -64,7 +67,7 @@ describe('users controller', () => {
   })
 
   test('post /api/login should not login if password does not match', async () => {
-    this.user.password = await User.hash_password(this.user.password)
+    this.user.password = await User.hashPassword(this.user.password)
     await this.user.save()
 
     await request(app)
@@ -96,7 +99,7 @@ describe('users controller', () => {
 
   test('get /api/logged_user should return the logged user if logged', async () => {
     const plainPassword = this.user.password
-    this.user.password = await User.hash_password(this.user.password)
+    this.user.password = await User.hashPassword(this.user.password)
     await this.user.save()
 
     // TODO move this to its own test helper
@@ -114,7 +117,7 @@ describe('users controller', () => {
   })
 
   test('get /api/logged_user should not return the logged user if not logged', async () => {
-    this.user.password = await User.hash_password(this.user.password)
+    this.user.password = await User.hashPassword(this.user.password)
     await this.user.save()
 
     await request(app)
