@@ -15,12 +15,12 @@ import { AuthCtx } from "./features/auth-ctx";
 import { urlTo } from "./helpers/application_helper";
 
 function App() {
-  // useEffect(() => {
-  //   console.log(urlTo("/api/logged_user"));
-  //   fetch(urlTo("/api/logged_user"))
-  //     .then((response) => response.json())
-  //     .then((json) => console.log(json));
-  // }, []);
+  useEffect(() => {
+    console.log(urlTo("/api/logged_user"));
+    fetch(urlTo("/api/logged_user"))
+      .then((response) => response.json())
+      .then((json) => console.log(json));
+  }, []);
 
   const authMgr = useContext(AuthCtx);
 

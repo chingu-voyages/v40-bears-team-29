@@ -58,7 +58,6 @@ const AuthProvider = (props) => {
     await axios
       .post(urlTo("/api/login"), loginInputInfo)
       .then((serverRes) => {
-        console.log(serverRes.data);
         setCurrentUser(serverRes.data);
         setIsLoggedIn(true);
         nav("/");
@@ -89,7 +88,6 @@ const AuthProvider = (props) => {
     await axios
       .post(urlTo("/api/sign_up"), registerInputInfo)
       .then((serverRes) => {
-        console.log(serverRes.data);
         setCurrentUser(serverRes.data);
         setIsLoggedIn(true);
         nav("/");
@@ -128,8 +126,6 @@ const AuthProvider = (props) => {
   const resetRegister = () => {
     setRegisterInputInfo({ username: "", email: "", password: "" });
   };
-
-  console.log(registerInputInfo);
 
   return (
     <AuthCtx.Provider
