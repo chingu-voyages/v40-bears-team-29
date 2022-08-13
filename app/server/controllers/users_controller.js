@@ -4,14 +4,16 @@ const { filterParams, currentUser, loginUser } = require('./application_controll
 const signUp = async (req, res) => {
   const user = await getUser(userParams(req))
 
+  console.log(user.dataValues)
+
   user.save()
     .then((data) => {
       res.status(200).send(data.getData())
     })
     .catch((error) => {
-      res.status(422).send({ error });
-    });
-};
+      res.status(422).send(User.formatError(error))
+    })
+}
 
 const login = async (req, res) => {
   User.findOne({ where: { username: req.body.username } })
@@ -24,9 +26,9 @@ const login = async (req, res) => {
       }
     })
     .catch(() => {
-      res.status(404).send({ error: "user not found" });
-    });
-};
+      res.status(404).send({ error: 'user not found' })
+    })
+}
 
 const loggedUser = async (req, res) => {
   const user = await currentUser(req)
@@ -55,7 +57,7 @@ const updateUser = async (req, res) => {
       res.status(200).send(data.getData())
     })
     .catch((error) => {
-      res.status(422).send(error)
+      res.status(422).send(User.formatError(error))
     })
 }
 
@@ -63,7 +65,9 @@ const updateUser = async (req, res) => {
 
 const getUser = async (params) => {
   const user = User.build(params)
-  await user.hashPassword()
+  if (user.password) {
+    await user.hashPassword()
+  }
   return user
 }
 
