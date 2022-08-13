@@ -9,7 +9,6 @@ const Login = () => {
   const loginHandler = (e) => {
     e.preventDefault();
     authMgr.onLogIn();
-    console.log(authMgr.loginInputInfo);
     authMgr.resetLogin();
   };
 

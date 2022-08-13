@@ -8,8 +8,6 @@ const Signup = () => {
 
   const signUpHandler = (e) => {
     e.preventDefault();
-    console.log(authMgr.registerInputInfo);
-    // ASSUMING 2xx
     authMgr.onRegister();
     authMgr.resetRegister();
   };
@@ -35,20 +33,6 @@ const Signup = () => {
               id="username"
             />
           </div>
-          {/* <div className={classes.field}>
-            <label className={classes.label} htmlFor='email'>
-              Email
-            </label>
-            <input
-              value={authMgr.registerInputInfo.email}
-              onChange={(e) => authMgr.onChangeRegisterInputInfo(e)}
-              className={classes.input}
-              name='email'
-              type='email'
-              placeholder='Email'
-              id='email'
-            />
-          </div> */}
           <div className={classes.field}>
             <label className={classes.label} htmlFor="password">
               Password
