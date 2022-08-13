@@ -1,14 +1,13 @@
 import classes from "./Signup.module.css";
 import { useContext } from "react";
 import { AuthCtx } from "../../features/auth-ctx";
+import Feedback from "../Feedback/Feedback";
 
 const Signup = () => {
   const authMgr = useContext(AuthCtx);
 
   const signUpHandler = (e) => {
     e.preventDefault();
-    console.log(authMgr.registerInputInfo);
-    // ASSUMING 2xx
     authMgr.onRegister();
     authMgr.resetRegister();
   };
@@ -34,20 +33,6 @@ const Signup = () => {
               id="username"
             />
           </div>
-          {/* <div className={classes.field}>
-            <label className={classes.label} htmlFor='email'>
-              Email
-            </label>
-            <input
-              value={authMgr.registerInputInfo.email}
-              onChange={(e) => authMgr.onChangeRegisterInputInfo(e)}
-              className={classes.input}
-              name='email'
-              type='email'
-              placeholder='Email'
-              id='email'
-            />
-          </div> */}
           <div className={classes.field}>
             <label className={classes.label} htmlFor="password">
               Password
@@ -67,6 +52,7 @@ const Signup = () => {
               Sign Up
             </button>
           </div>
+          <Feedback bool={authMgr.showFeedback} message={authMgr.errorMsg} />
         </form>
       </div>
     </article>
