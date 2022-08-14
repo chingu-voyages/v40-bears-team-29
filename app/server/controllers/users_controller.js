@@ -4,10 +4,9 @@ const { filterParams, currentUser, loginUser } = require('./application_controll
 const signUp = async (req, res) => {
   const user = await getUser(userParams(req))
 
-  console.log(user.dataValues)
-
   user.save()
-    .then((data) => {
+    .then(async (data) => {
+      await data.hashPassword()
       res.status(200).send(data.getData())
     })
     .catch((error) => {
@@ -48,12 +47,24 @@ const updateUser = async (req, res) => {
     return
   }
 
-  const newValues = userParams(req)
+  const newValues = { ...userParams(req), password: null }
   delete newValues.username
-  user.set({ ...newValues, password: await User.hashPassword(newValues.password) })
+
+  if (!req.body.currentPassword) {
+    res.status(422).send({ error: 'you need to send your currentPassword to update your user' })
+    return
+  }
+
+  if (await user.checkPassword(req.body.currentPassword) === false) {
+    res.status(401).send({ error: 'your currentPassword doest match' })
+    return
+  }
+
+  user.set({ ...newValues, password: req.body.newPassword || req.body.currentPassword })
 
   user.save()
-    .then((data) => {
+    .then(async (data) => {
+      await data.hashPassword()
       res.status(200).send(data.getData())
     })
     .catch((error) => {

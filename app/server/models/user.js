@@ -17,13 +17,15 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     async hashPassword () {
-      if (this.hasHashedPassword() === false) {
-        this.password = await User.hashPassword(this.password)
-      }
+      this.passwordHash = await User.hashPassword(this.password)
+      await this.save()
     }
 
     hasHashedPassword () {
-      return this.password.substring(0, 3) === '$2b'
+      if (this.passwordHash) {
+        return true
+      }
+      return false
     }
 
     getData () {
@@ -38,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     async checkPassword (password) {
-      const result = await bcrypt.compare(password, this.password)
+      const result = await bcrypt.compare(password, this.passwordHash)
       return result
     }
 
@@ -66,9 +68,11 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     password: {
-      type: DataTypes.STRING,
+      type: DataTypes.VIRTUAL,
       allowNull: false,
-      unique: true,
+      set (val) {
+        this.setDataValue('password', val)
+      },
       validate: {
         notEmpty: {
           args: true,
@@ -83,6 +87,10 @@ module.exports = (sequelize, DataTypes) => {
           msg: 'password must contain between 6 and 32 characters.'
         }
       }
+    },
+    passwordHash: {
+      type: DataTypes.STRING,
+      allowNull: false
     }
   }, {
     sequelize,
