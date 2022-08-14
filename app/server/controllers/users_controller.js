@@ -1,5 +1,5 @@
 const { User } = require('../models/index')
-const { filterParams, currentUser, loginUser } = require('./application_controller')
+const { filterParams, currentUser, loginUser, handleError } = require('./application_controller')
 
 const signUp = async (req, res) => {
   const user = await getUser(userParams(req))
@@ -9,7 +9,7 @@ const signUp = async (req, res) => {
       res.status(200).send(data.getData())
     })
     .catch((error) => {
-      res.status(422).send(User.formatError(error))
+      handleError(error, res)
     })
 }
 
@@ -67,7 +67,7 @@ const updateUser = async (req, res) => {
       res.status(200).send(data.getData())
     })
     .catch((error) => {
-      res.status(422).send(User.formatError(error))
+      handleError(error, res)
     })
 }
 
