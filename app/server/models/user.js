@@ -18,7 +18,6 @@ module.exports = (sequelize, DataTypes) => {
 
     async hashPassword () {
       this.passwordHash = await User.hashPassword(this.password)
-      await this.save()
     }
 
     hasHashedPassword () {

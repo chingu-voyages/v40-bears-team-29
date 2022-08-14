@@ -6,7 +6,6 @@ const signUp = async (req, res) => {
 
   user.save()
     .then(async (data) => {
-      await data.hashPassword()
       res.status(200).send(data.getData())
     })
     .catch((error) => {
@@ -60,11 +59,11 @@ const updateUser = async (req, res) => {
     return
   }
 
-  user.set({ ...newValues, password: req.body.newPassword || req.body.currentPassword })
+  user.set({ ...newValues, password: req.body.newPassword || req.body.currentPassword, passwordHash: null })
+  await user.hashPassword()
 
   user.save()
     .then(async (data) => {
-      await data.hashPassword()
       res.status(200).send(data.getData())
     })
     .catch((error) => {

@@ -1,5 +1,5 @@
 const user = {
-  username: `user${Math.random()}`,
+  username: 'user',
   password: `password${Math.random()}`
 }
 
