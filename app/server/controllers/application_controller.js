@@ -1,4 +1,3 @@
-const { ApplicationModel } = require('../models/application_model')
 const { User } = require('../models/index')
 
 const filterParams = (permittedParams, req) => {

@@ -7,7 +7,11 @@ const ApplicationModel = require('./application_model')
 module.exports = (sequelize, DataTypes) => {
   class User extends ApplicationModel {
     static async hashPassword (password) {
-      const hash = await bcrypt.hash(password, saltRounds)
+      let hash = null
+      await bcrypt.hash(password, saltRounds)
+        .then((data) => {
+          hash = data
+        })
       return hash
     }
 
