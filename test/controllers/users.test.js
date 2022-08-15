@@ -12,6 +12,8 @@ const { logUser } = require('./controllers_test_helpers')
 describe('users controller', () => {
   beforeEach(async () => {
     this.user = User.build(userMock)
+    this.plainPassword = this.user.password
+    await this.user.hashPassword()
   })
 
   test('post /api/sign_up should create a new user', async () => {
@@ -32,8 +34,7 @@ describe('users controller', () => {
   })
 
   test('post /api/sign_up should not create a new user if name is already taken', async () => {
-    await User.create({ ...userMock, username: 'user' })
-    this.user.username = 'user'
+    await this.user.save()
 
     await request(app)
       .post('/api/sign_up')
@@ -42,9 +43,8 @@ describe('users controller', () => {
       .expect('Content-type', /json/)
       .then(async (serverRes) => {
         expect(serverRes.body).toEqual(expect.any(Object))
-        expect(serverRes.body).toEqual(
-          expect.objectContaining({ error: expect.any(Object) })
-        )
+        expect(Object.keys(serverRes.body)).toContain('errors')
+        expect(serverRes.body.errors.username).toContainEqual(expect.any(Object))
 
         const usersCount = await User.count({ where: { username: this.user.username } })
         expect(usersCount).toEqual(1)
@@ -52,13 +52,11 @@ describe('users controller', () => {
   })
 
   test('post /api/login should login if password match', async () => {
-    const plainPassword = this.user.password
-    this.user.password = await User.hashPassword(this.user.password)
     await this.user.save()
 
     await request(app)
       .post('/api/login')
-      .send({ username: this.user.username, password: plainPassword })
+      .send({ username: this.user.username, password: this.plainPassword })
       .expect(200)
       .expect('Content-type', /json/)
       .then(async (serverRes) => {
@@ -68,7 +66,6 @@ describe('users controller', () => {
   })
 
   test('post /api/login should not login if password does not match', async () => {
-    this.user.password = await User.hashPassword(this.user.password)
     await this.user.save()
 
     await request(app)
@@ -111,7 +108,6 @@ describe('users controller', () => {
   })
 
   test('get /api/logged_user should not return the logged user if not logged', async () => {
-    this.user.password = await User.hashPassword(this.user.password)
     await this.user.save()
 
     await request(app)
@@ -133,7 +129,7 @@ describe('users controller', () => {
 
     await authenticatedSession
       .patch('/api/logged_user')
-      .send({ username: 'new_name', password: 'new_password' })
+      .send({ username: 'new_name', currentPassword: this.plainPassword, newPassword: 'new_password' })
       .expect(200)
       .expect('Content-type', /json/)
       .then(async (serverRes) => {
@@ -141,7 +137,7 @@ describe('users controller', () => {
 
         const userAfter = await User.findByPk(this.user.id)
 
-        expect(userBefore.password).not.toEqual(userAfter.password)
+        expect(userBefore.passwordHash).not.toEqual(userAfter.passwordHash)
         expect(userBefore.username).toEqual(userAfter.username)
       })
   })

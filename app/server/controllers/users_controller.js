@@ -1,22 +1,17 @@
-const { User } = require("../models/index");
-const {
-  filterParams,
-  currentUser,
-  loginUser,
-} = require("./application_controller");
+const { User } = require('../models/index')
+const { filterParams, currentUser, loginUser, handleError } = require('./application_controller')
 
 const signUp = async (req, res) => {
   const user = await getUser(userParams(req));
 
-  user
-    .save()
-    .then((data) => {
-      res.status(200).send(data.getData());
+  user.save()
+    .then(async (data) => {
+      res.status(200).send(data.getData())
     })
     .catch((error) => {
-      res.status(422).send({ error });
-    });
-};
+      handleError(error, res)
+    })
+}
 
 const login = async (req, res) => {
   User.findOne({ where: { username: req.body.username } })
@@ -29,9 +24,9 @@ const login = async (req, res) => {
       }
     })
     .catch(() => {
-      res.status(404).send({ error: "user not found" });
-    });
-};
+      res.status(404).send({ error: 'user not found' })
+    })
+}
 
 const loggedUser = async (req, res) => {
   const user = await currentUser(req);
@@ -51,40 +46,51 @@ const updateUser = async (req, res) => {
     return;
   }
 
-  const newValues = userParams(req);
-  delete newValues.username;
-  user.set({
-    ...newValues,
-    password: await User.hashPassword(newValues.password),
-  });
+  const newValues = { ...userParams(req), password: null }
+  delete newValues.username
 
-  user
-    .save()
-    .then((data) => {
-      res.status(200).send(data.getData());
+  if (!req.body.currentPassword) {
+    res.status(422).send({ error: 'you need to send your currentPassword to update your user' })
+    return
+  }
+
+  if (await user.checkPassword(req.body.currentPassword) === false) {
+    res.status(401).send({ error: 'your currentPassword doest match' })
+    return
+  }
+
+  user.set({ ...newValues, password: req.body.newPassword || req.body.currentPassword, passwordHash: null })
+  await user.hashPassword()
+
+  user.save()
+    .then(async (data) => {
+      res.status(200).send(data.getData())
     })
     .catch((error) => {
-      res.status(422).send(error);
-    });
-};
+      handleError(error, res)
+    })
+}
 
 // helpers ///////////////////////////////////////////
 
 const getUser = async (params) => {
-  const user = User.build(params);
-  await user.hashPassword();
-  return user;
-};
+  const user = User.build(params)
+  if (user.password) {
+    await user.hashPassword()
+  }
+  return user
+}
 
 // strong parameters
 const userParams = (req) => {
   const permittedParams = [
-    "username",
-    "password",
-    // 'biography',
-    // 'displayName'
-  ];
-  return filterParams(permittedParams, req);
-};
+    'username',
+    'password',
+    'biography',
+    'displayName',
+    'avatar'
+  ]
+  return filterParams(permittedParams, req)
+}
 
 module.exports = { login, loggedUser, signUp, updateUser };

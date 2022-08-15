@@ -30,4 +30,14 @@ const loginUser = async (req, user, password) => {
   }
 }
 
-module.exports = { filterParams, currentUser, currentUserId, loginUser }
+const handleError = (err, res) => {
+  const formatError = User.formatError(err)
+  if (formatError == null) {
+    res.status(500).send({ error: 'unexpected error' })
+    console.error(err)
+  } else {
+    res.status(422).send(formatError)
+  }
+}
+
+module.exports = { filterParams, currentUser, currentUserId, loginUser, handleError }
