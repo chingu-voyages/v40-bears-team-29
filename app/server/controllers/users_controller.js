@@ -2,7 +2,7 @@ const { User } = require('../models/index')
 const { filterParams, currentUser, loginUser, handleError } = require('./application_controller')
 
 const signUp = async (req, res) => {
-  const user = await getUser(userParams(req))
+  const user = await getUser(userParams(req));
 
   user.save()
     .then(async (data) => {
@@ -16,11 +16,11 @@ const signUp = async (req, res) => {
 const login = async (req, res) => {
   User.findOne({ where: { username: req.body.username } })
     .then(async (data) => {
-      const user = await loginUser(req, data, req.body.password)
+      const user = await loginUser(req, data, req.body.password);
       if (user === null) {
-        res.status(401).send({ error: 'invalid password' })
+        res.status(401).send({ error: "invalid password" });
       } else {
-        res.status(200).send(user.getData())
+        res.status(200).send(user.getData());
       }
     })
     .catch(() => {
@@ -29,21 +29,21 @@ const login = async (req, res) => {
 }
 
 const loggedUser = async (req, res) => {
-  const user = await currentUser(req)
+  const user = await currentUser(req);
 
   if (user === null) {
-    res.status(401).send({ error: 'you are not logged' })
+    res.status(401).send({ error: "you are not logged" });
   } else {
-    res.status(200).send(user.getData())
+    res.status(200).send(user.getData());
   }
-}
+};
 
 const updateUser = async (req, res) => {
-  const user = await currentUser(req)
+  const user = await currentUser(req);
 
   if (user == null) {
-    res.status(401).send({ error: 'you are not logged' })
-    return
+    res.status(401).send({ error: "you are not logged" });
+    return;
   }
 
   const newValues = { ...userParams(req), password: null }
@@ -93,4 +93,4 @@ const userParams = (req) => {
   return filterParams(permittedParams, req)
 }
 
-module.exports = { login, loggedUser, signUp, updateUser }
+module.exports = { login, loggedUser, signUp, updateUser };
