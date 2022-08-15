@@ -85,9 +85,10 @@ const getUser = async (params) => {
 const userParams = (req) => {
   const permittedParams = [
     'username',
-    'password'
-    // 'biography',
-    // 'displayName'
+    'password',
+    'biography',
+    'displayName',
+    'avatar'
   ]
   return filterParams(permittedParams, req)
 }

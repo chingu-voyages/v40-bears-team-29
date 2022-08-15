@@ -35,9 +35,7 @@ module.exports = (sequelize, DataTypes) => {
       const data = {
         ...this.toJSON(),
         password: '[FILTERED]',
-        avatar: '',
-        biography: '',
-        display_name: ''
+        passwordHash: '[FILTERED]'
       }
       return data
     }
@@ -94,6 +92,36 @@ module.exports = (sequelize, DataTypes) => {
     passwordHash: {
       type: DataTypes.STRING
       // allowNull: false
+    },
+    biography: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      validate: {
+        max: {
+          args: 255,
+          msg: 'biography must contain maximum of 255 characters.'
+        }
+      }
+    },
+    avatar: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      validate: {
+        max: {
+          args: 100,
+          msg: 'biography must contain maximum of 100 characters.'
+        }
+      }
+    },
+    displayName: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      validate: {
+        max: {
+          args: 32,
+          msg: 'biography must contain maximum of 32 characters.'
+        }
+      }
     }
   }, {
     sequelize,
