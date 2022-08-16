@@ -30,6 +30,8 @@ app.use(cookieSession(cookieSessionConfig))
 // API ROUTES:
 const usersRoute = require('./routes/users_route')
 app.use('/', usersRoute)
+const postsRoute = require('./routes/posts_route')
+app.use('/', postsRoute)
 
 // CLIENT ROUTES
 app.get('*', (req, res) => {

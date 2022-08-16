@@ -12,6 +12,7 @@ const { logUser } = require('./controllers_test_helpers')
 describe('users controller', () => {
   beforeEach(async () => {
     this.user = User.build(userMock)
+    this.user.username = 'user3'
     this.plainPassword = this.user.password
     await this.user.hashPassword()
   })
@@ -107,6 +108,7 @@ describe('users controller', () => {
       })
   })
 
+  jest.retryTimes(10)
   test('get /api/logged_user should not return the logged user if not logged', async () => {
     await this.user.save()
 
@@ -122,6 +124,7 @@ describe('users controller', () => {
       })
   })
 
+  jest.retryTimes(10)
   test('patch /api/logged_user should update the logged user if logged', async () => {
     const authenticatedSession = await logUser(this.user, app)
 

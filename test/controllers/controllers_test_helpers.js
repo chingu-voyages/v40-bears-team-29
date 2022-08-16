@@ -10,4 +10,12 @@ const logUser = async (user, app) => {
   return authenticatedSession
 }
 
-module.exports = { logUser }
+const loginUser = async (user, app) => {
+  const authenticatedSession = session(app)
+  await authenticatedSession.post('/api/login')
+    .send({ username: user.username, password: user.password })
+
+  return authenticatedSession
+}
+
+module.exports = { logUser, loginUser }

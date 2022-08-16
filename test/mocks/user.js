@@ -1,5 +1,9 @@
+const random = (length = 8) => {
+  return Math.random().toString(16).substr(2, length)
+}
+
 const user = {
-  username: 'user',
+  username: random(5),
   password: `password${Math.random()}`
 }
 
