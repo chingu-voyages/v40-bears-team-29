@@ -46,7 +46,7 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     static associate (models) {
-      models.User.hasMany(models.Post)
+      models.User.Post = models.User.hasMany(models.Post)
     }
   }
   User.init({
@@ -65,7 +65,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         len: {
           args: [3, 16],
-          msg: 'username must contain between 2 and 100 characters.'
+          msg: 'username must contain between 2 and 16 characters.'
         }
       }
     },

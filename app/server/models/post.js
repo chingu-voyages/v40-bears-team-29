@@ -5,13 +5,43 @@ const ApplicationModel = require('./application_model')
 module.exports = (sequelize, DataTypes) => {
   class Post extends ApplicationModel {
     static associate (models) {
-      models.Post.belongsTo(models.User, { foreignKey: 'UserId' })
+      models.Post.User = models.Post.belongsTo(models.User, { foreignKey: 'UserId' })
     }
   }
   Post.init({
-    title: DataTypes.STRING,
-    upvotesCount: DataTypes.INTEGER,
-    content: DataTypes.TEXT,
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          args: true,
+          msg: 'title cant be null'
+        },
+        len: {
+          args: [3, 128],
+          msg: 'title must contain between 3 and 128 characters.'
+        }
+      }
+    },
+    upvotesCount: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0
+    },
+    content: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      validate: {
+        notNull: {
+          args: true,
+          msg: 'content cant be null'
+        },
+        len: {
+          args: [10, 3000],
+          msg: 'content must contain between 10 and 3000 characters.'
+        }
+      }
+    },
     UserId: {
       type: DataTypes.INTEGER,
       allowNull: false,
