@@ -39,7 +39,7 @@ describe('users controller', () => {
     await request(app)
       .post('/api/sign_up')
       .send({ username: this.user.username, password: this.user.password })
-      .expect(422)
+      .expect(409)
       .expect('Content-type', /json/)
       .then(async (serverRes) => {
         expect(serverRes.body).toEqual(expect.any(Object))
