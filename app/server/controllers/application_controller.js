@@ -40,4 +40,10 @@ const handleError = (err, res) => {
   }
 }
 
-module.exports = { filterParams, currentUser, currentUserId, loginUser, handleError }
+const authenticateUser = (res) => {
+  if (currentUser == null) {
+    res.status(401).send({ error: 'you are not logged.' })
+  }
+}
+
+module.exports = { filterParams, currentUser, currentUserId, loginUser, handleError, authenticateUser }

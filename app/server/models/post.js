@@ -7,6 +7,16 @@ module.exports = (sequelize, DataTypes) => {
     static associate (models) {
       models.Post.User = models.Post.belongsTo(models.User, { foreignKey: 'UserId' })
     }
+
+    getData () {
+      if (this.User?.constructor?.name === 'User') {
+        const data = this.toJSON()
+        data.User = this.User.getData()
+        return data
+      } else {
+        return this.toJSON()
+      }
+    }
   }
   Post.init({
     title: {
