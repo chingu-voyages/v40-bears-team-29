@@ -33,7 +33,6 @@ describe('post model', () => {
     this.post.content = 'a'.repeat(5000)
 
     const hasErrors = await validate(this.post)
-    console.log(hasErrors)
 
     expect(hasErrors.errors.content.length > 0).toEqual(true)
   })

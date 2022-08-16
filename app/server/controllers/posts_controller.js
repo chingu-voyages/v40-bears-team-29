@@ -2,7 +2,9 @@ const { Post } = require('../models/index')
 const { filterParams, currentUserId, handleError, authenticateUser } = require('./application_controller')
 
 const createPost = async (req, res) => {
-  authenticateUser(res)
+  if (!authenticateUser(req, res)) {
+    return
+  }
 
   const post = Post.build({ ...postParams(req), UserId: currentUserId(req) })
   await post.save()
@@ -18,16 +20,20 @@ const getPost = async (req, res) => {
   const post = await setPost(req.params)
   if (post === null) {
     res.status(404).send({ error: 'cant find this post' })
+    return
   }
   res.status(200).send(post.getData())
 }
 
 const updatePost = async (req, res) => {
-  authenticateUser(res)
-
   const post = await setPost(req.params)
   if (post === null) {
     res.status(404).send({ error: 'cant find this post' })
+    return
+  }
+
+  if (!authenticateUser(req, res)) {
+    return
   }
 
   if (post.UserId !== currentUserId(req)) {
@@ -45,11 +51,14 @@ const updatePost = async (req, res) => {
 }
 
 const deletePost = async (req, res) => {
-  authenticateUser(res)
-
   const post = await setPost(req.params)
   if (post === null) {
     res.status(404).send({ error: 'cant find this post' })
+    return
+  }
+
+  if (!authenticateUser(req, res)) {
+    return
   }
 
   if (post.UserId !== currentUserId(req)) {
