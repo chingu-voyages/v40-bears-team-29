@@ -22,7 +22,7 @@ const Login = () => {
             <input
               value={authMgr.loginInputInfo.username}
               onChange={(e) => authMgr.onLoginInputChange(e)}
-              className='rounded border-gray-300 dark:border-none'
+              className='rounded border-gray-300 dark:border-none dark:text-gray-800'
               name="username"
               type="text"
               placeholder="Username"
@@ -36,7 +36,7 @@ const Login = () => {
             <input
               onChange={(e) => authMgr.onLoginInputChange(e)}
               value={authMgr.loginInputInfo.password}
-              className='rounded border-gray-300 dark:border-none'
+              className='rounded border-gray-300 dark:border-none dark:text-gray-800'
               name="password"
               type="password"
               placeholder="Password"

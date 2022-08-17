@@ -69,7 +69,7 @@ const Nav = () => {
   
 
   return (
-    <nav>
+    <nav className="-ml-2 md:ml-0">
       <ul className="flex flex-row items-center font-medium text-sm space-x-1">
         { navItems.map((navItem, index) => <li key={ index } className={ `${navItem.classes} transition-all py-1 px-2 rounded` }>
           <Link to={ navItem.to } onClick={ navItem.onClick }>
