@@ -2,7 +2,7 @@
 
 const app = require('../../app/server/app')
 const request = require('supertest')
-jest.setTimeout(20000)
+jest.setTimeout(1000)
 
 const { User } = require('../../app/server/models/index')
 const userMock = require('../mocks/user')
@@ -156,6 +156,42 @@ describe('users controller', () => {
         expect(serverRes.body).toEqual(
           expect.objectContaining({ error: expect.any(String) })
         )
+      })
+  })
+
+  test('get /api/users/:id should return the specific user', async () => {
+    const authenticatedSession = await logUser(this.user, app)
+
+    await authenticatedSession
+      .get(`/api/users/${this.user.id}`)
+      .expect(200)
+      .expect('Content-type', /json/)
+      .then(async (serverRes) => {
+        expect(serverRes.body).toEqual(expect.any(Object))
+      })
+  })
+
+  test('get /api/users/:id should return 404 the specific user doest exist', async () => {
+    const authenticatedSession = await logUser(this.user, app)
+
+    await authenticatedSession
+      .get('/api/users/999999')
+      .expect(404)
+      .expect('Content-type', /json/)
+      .then(async (serverRes) => {
+        expect(serverRes.body).toEqual(expect.any(Object))
+      })
+  })
+
+  test('get /api/users/:id should return 401 if not logged', async () => {
+    await this.user.save()
+
+    await request(app)
+      .get('/api/users/99999')
+      .expect(401)
+      .expect('Content-type', /json/)
+      .then(async (serverRes) => {
+        expect(serverRes.body).toEqual(expect.any(Object))
       })
   })
 })
