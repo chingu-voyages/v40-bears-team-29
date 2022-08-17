@@ -71,6 +71,7 @@ const AuthProvider = (props) => {
           onShowFeedback(true, "All fields are required");
         err.response.status === 404 &&
           onShowFeedback(true, "User not registered");
+        // NEW ERROR: 422 dynamic
       });
   };
 
@@ -78,6 +79,7 @@ const AuthProvider = (props) => {
     setCurrentUser({});
     setIsLoggedIn(false);
     nav("/");
+    // CLEAR COOKIES
   };
 
   const onShowLogin = () => {

@@ -5,8 +5,8 @@ export const ModalCtx = createContext({
   setShowModal: () => {},
   onSetShowModal: (which) => {},
   onCloseModal: () => {},
-  showPostSpec: false,
-  setShowPostSpec: () => {},
+  showAccount: false,
+  setShowAccount: () => {},
   showNewPost: false,
   setShowNewPost: () => {},
   showEditPost: false,
@@ -15,27 +15,28 @@ export const ModalCtx = createContext({
 
 const ModalProvider = (props) => {
   const [showModal, setShowModal] = useState(false);
-  const [showPostSpec, setShowPostSpec] = useState(false);
+  const [showAccount, setShowAccount] = useState(false);
   const [showNewPost, setShowNewPost] = useState(false);
   const [showEditPost, setShowEditPost] = useState(false);
 
   const onSetShowModal = (which) => {
     setShowModal(true);
-    if (which === "specPost") {
+    if (which === "account") {
       setShowNewPost(false);
       setShowEditPost(false);
-      setShowPostSpec(true);
+      setShowAccount(true);
     }
 
     if (which === "newPost") {
       setShowEditPost(false);
-      setShowPostSpec(false);
+      setShowAccount(false);
       setShowNewPost(true);
     }
 
     if (which === "editPost") {
+      console.log("This is to show edit");
       setShowNewPost(false);
-      setShowPostSpec(false);
+      setShowAccount(false);
       setShowEditPost(true);
     }
   };
@@ -43,7 +44,7 @@ const ModalProvider = (props) => {
   const onCloseModal = () => {
     setShowModal(false);
     setShowNewPost(false);
-    setShowPostSpec(false);
+    setShowAccount(false);
     setShowEditPost(false);
   };
 
@@ -53,8 +54,8 @@ const ModalProvider = (props) => {
         showModal,
         setShowModal,
         onSetShowModal,
-        showPostSpec,
-        setShowPostSpec,
+        showAccount,
+        setShowAccount,
         showNewPost,
         setShowNewPost,
         showEditPost,
