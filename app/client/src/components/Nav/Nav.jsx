@@ -41,7 +41,7 @@ const Nav = () => {
       content: 'New Post',
       to: '/',
       onClick: false,
-      classes: ''
+      classes: 'bg-blue-500 hover:bg-blue-700 text-white'
     },
     {
       content: 'Profile',
