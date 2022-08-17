@@ -1,4 +1,4 @@
-const { User } = require('../models/index')
+const { User, Post, Upvote } = require('../models/index')
 const { filterParams, currentUser, loginUser, handleError, authenticateUser } = require('./application_controller')
 
 const signUp = async (req, res) => {
@@ -84,7 +84,7 @@ const getUser = async (req, res) => {
     return
   }
 
-  const user = await User.findByPk(req.params.id, { include: [User.Post] })
+  const user = await User.findByPk(req.params.id, { include: { model: Post, ...Post.fullScope(User, Upvote) } })
 
   if (user === null) {
     res.status(404).send({ error: 'this user doest exist' })

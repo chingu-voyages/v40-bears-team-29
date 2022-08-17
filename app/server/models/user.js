@@ -37,6 +37,11 @@ module.exports = (sequelize, DataTypes) => {
         password: '[FILTERED]',
         passwordHash: '[FILTERED]'
       }
+
+      if (this.Posts?.length > 0) {
+        data.Posts = this.Posts.map((p) => p.getData())
+      }
+
       return data
     }
 
@@ -47,6 +52,7 @@ module.exports = (sequelize, DataTypes) => {
 
     static associate (models) {
       models.User.Post = models.User.hasMany(models.Post)
+      models.User.Upvote = models.User.hasMany(models.Upvote)
     }
   }
   User.init({
