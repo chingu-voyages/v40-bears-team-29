@@ -46,7 +46,7 @@ const Login = () => {
           <button onClick={loginHandler} className='bg-blue-500 hover:bg-blue-700 text-white transition-all py-1 px-2 rounded'>
             Login
           </button>
-          <Feedback bool={authMgr.showFeedback} message={authMgr.errorMsg} />
+          <Feedback bool={authMgr.showFeedback} message={authMgr.errorMsg} type={authMgr.msgType ?? 'danger'} />
         </form>
       </div>
   );
