@@ -25,6 +25,11 @@ const getPost = async (req, res) => {
   res.status(200).send(post.getData())
 }
 
+const getPosts = async (req, res) => {
+  const posts = await Post.findAll({order: [['createdAt', 'ASC']], include: [Post.User] })
+  res.status(200).send(posts.map((p) => p.getData()))
+}
+
 const updatePost = async (req, res) => {
   const post = await setPost(req.params)
   if (post === null) {
@@ -91,4 +96,4 @@ const postParams = (req) => {
   return filterParams(permittedParams, req)
 }
 
-module.exports = { createPost, getPost, updatePost, deletePost }
+module.exports = { createPost, getPost, updatePost, deletePost, getPosts }
