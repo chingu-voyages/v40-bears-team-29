@@ -9,24 +9,16 @@ import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import Modal from "./components/Modal/Modal";
 import { AuthCtx } from "./features/auth-ctx";
 import { ModalCtx } from "./features/modal-ctx";
-import { urlTo } from "./helpers/application_helper";
-
-// LOGOUT: Clear cookies
-// 422: Extra feedback invalid credentials
+import axios from 'axios';
 
 function App() {
-  // useEffect(() => {
-  //   console.log(urlTo("/api/logged_user"));
-  //   fetch(urlTo("/api/logged_user"))
-  //     .then((response) => response.json())
-  //     .then((json) => console.log(json));
-  // }, []);
-
   useEffect(() => {
-    console.log(urlTo("/api/logged_user"));
-    fetch(urlTo("/api/logged_user"))
-      .then((response) => response.json())
-      .then((json) => console.log(json));
+    const sendCookie = async () => {
+      await axios
+        .get("/api/logged_user", { withCredentials: true })
+        .then((serverRes) => console.log(serverRes.data));
+    };
+    sendCookie();
   }, []);
 
   const authMgr = useContext(AuthCtx);
