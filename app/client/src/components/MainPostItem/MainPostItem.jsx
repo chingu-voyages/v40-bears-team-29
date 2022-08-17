@@ -1,12 +1,13 @@
-import { useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
-import { AuthCtx } from '../../features/auth-ctx';
+import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthCtx } from "../../features/auth-ctx";
+import { ModalCtx } from "../../features/modal-ctx";
 import { ArrowUpIcon, PencilAltIcon, TrashIcon } from '../Icon/Icon';
 
 const MainPostItem = ({ obj, setDummyData, dummyData }) => {
   const navigate = useNavigate();
   const authMgr = useContext(AuthCtx);
-
+  const modalMgr = useContext(ModalCtx);
   const deletePostHandler = () => {
     // SEND API PATCH REQUEST
     // UPON 2xx RUN THIS FILTER
@@ -30,19 +31,15 @@ const MainPostItem = ({ obj, setDummyData, dummyData }) => {
   };
 
   const navigateToSpecHandler = () => {
-    // PARAM WILL BE CURRENT USER
     navigate(`/posts/${obj.username}`);
   };
 
   const navigateToEditHandler = () => {
-    // navigate(`/posts/${authMgr.currentUser.username}/edit`);
-    // OPEN MODAL WITH SPEC PAGE TEST
-    authMgr.setShowModal(true);
-    // TEST END
+    modalMgr.onSetShowModal("editPost");
   };
 
   const takeToUserProfHandler = () => {
-    navigate(`/posts/${obj.username}`);
+    navigate(`/users/${obj.username}`);
   };
 
   return (
@@ -65,12 +62,12 @@ const MainPostItem = ({ obj, setDummyData, dummyData }) => {
           <div className='flex space-x-3'>
             {obj.username === authMgr.currentUser.username && (
               <>
-              <button title='Edit post' onClick={navigateToEditHandler}>
-                <PencilAltIcon className='w-5' />
-              </button>
-              <button title='Delete post' onClick={deletePostHandler}>
-                <TrashIcon className='w-5' />
-              </button>
+                <button title='Edit post' onClick={navigateToEditHandler}>
+                  <PencilAltIcon className='w-5' />
+                </button>
+                <button title='Delete post' onClick={deletePostHandler}>
+                  <TrashIcon className='w-5' />
+                </button>
               </>
             )}
           </div>

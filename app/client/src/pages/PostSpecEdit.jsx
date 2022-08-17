@@ -1,16 +1,14 @@
-import { useParams } from 'react-router-dom'
-import Header from '../components/Header/Header'
+import { useParams } from "react-router-dom";
 
 const PostSpecEdit = () => {
-  const urlId = useParams().id
+  const urlId = useParams().id;
 
   return (
     <>
-      {/* <Header /> */}
-      <h1>THIS IS EDIT A SPEC POST PAGE</h1>
+      <h1>Edit Post Here</h1>
       <p>{urlId}</p>
     </>
-  )
-}
+  );
+};
 
-export default PostSpecEdit
+export default PostSpecEdit;

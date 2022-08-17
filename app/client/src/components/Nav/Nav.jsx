@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { AuthCtx } from "../../features/auth-ctx";
+import { ModalCtx } from "../../features/modal-ctx";
 
 const Nav = () => {
   const authMgr = useContext(AuthCtx);
+  const modalMgr = useContext(ModalCtx);
 
   const logoutHandler = () => {
     // CLEAR ALL CURRENT STATES
@@ -11,14 +13,18 @@ const Nav = () => {
   };
 
   const showLoginHandler = () => {
-    // CHANGE STATE SO AUTH SHOWS LOGIN
-    console.log("Showing login");
     authMgr.onShowLogin();
   };
   const showSignUpHandler = () => {
-    // CHANGE STATE SO AUTH SHOWS SIGNUP
     authMgr.setShowLogin(false);
-    console.log("Showing Sign up");
+  };
+
+  const showNewPostHandler = () => {
+    modalMgr.onSetShowModal("newPost");
+  };
+
+  const showAccountHandler = () => {
+    modalMgr.onSetShowModal("account");
   };
 
   const guestNavItems = [
@@ -39,8 +45,8 @@ const Nav = () => {
   const userNavItems = [
     {
       content: 'New Post',
-      to: '/',
-      onClick: false,
+      to: false,
+      onClick: showNewPostHandler,
       classes: 'bg-blue-500 hover:bg-blue-700 text-white'
     },
     {
@@ -51,6 +57,12 @@ const Nav = () => {
     },
     {
       content: 'Account',
+      to: false,
+      onClick: showAccountHandler,
+      classes: ''
+    },
+    {
+      content: 'Logout',
       to: false,
       onClick: logoutHandler,
       classes: ''

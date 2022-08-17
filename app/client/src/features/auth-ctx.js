@@ -22,9 +22,6 @@ export const AuthCtx = createContext({
   setRegisterInputInfo: () => {},
   onChangeRegisterInputInfo: (e) => {},
   resetRegister: () => {},
-  showModal: false,
-  setShowModal: () => {},
-  // FROM HERE
   showFeedback: false,
   setShowFeedback: () => {},
   errorMsg: "",
@@ -36,7 +33,6 @@ const AuthProvider = (props) => {
   const nav = useNavigate();
   const [errorMsg, setErrorMsg] = useState("");
   const [showFeedback, setShowFeedback] = useState(false);
-  const [showModal, setShowModal] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const [showLogin, setShowLogin] = useState(false);
@@ -64,13 +60,16 @@ const AuthProvider = (props) => {
       })
       .catch((err) => {
         err.response.status === 401 &&
-          onShowFeedback(true, "Invalid credentials");
+          onShowFeedback(true, [{ message: "Invalid credentials" }]);
         err.response.status === 500 &&
-          onShowFeedback(true, "Oops, something when wrong");
-        err.response.status === 400 &&
-          onShowFeedback(true, "All fields are required");
+          onShowFeedback(true, [{ message: "Oops, something when wrong" }]);
         err.response.status === 404 &&
-          onShowFeedback(true, "User not registered");
+          onShowFeedback(true, [{ message: "User not registered" }]);
+        err.response.status === 422 &&
+          onShowFeedback(true, [
+            ...err.response.data.errors.username,
+            ...err.response.data.errors.password,
+          ]);
       });
   };
 
@@ -78,6 +77,7 @@ const AuthProvider = (props) => {
     setCurrentUser({});
     setIsLoggedIn(false);
     nav("/");
+    // CLEAR COOKIES
   };
 
   const onShowLogin = () => {
@@ -94,11 +94,14 @@ const AuthProvider = (props) => {
       })
       .catch((err) => {
         err.response.status === 500 &&
-          onShowFeedback(true, "Oops, something when wrong");
-        err.response.status === 400 &&
-          onShowFeedback(true, "All fields are required");
+          onShowFeedback(true, [{ message: "Oops, something when wrong" }]);
         err.response.status === 409 &&
-          onShowFeedback(true, "User already registered");
+          onShowFeedback(true, [{ message: "User already registered" }]);
+        err.response.status === 422 &&
+          onShowFeedback(true, [
+            ...err.response.data.errors.username,
+            ...err.response.data.errors.password,
+          ]);
       });
   };
 
@@ -148,8 +151,7 @@ const AuthProvider = (props) => {
         setRegisterInputInfo,
         resetRegister,
         onChangeRegisterInputInfo,
-        showModal,
-        setShowModal,
+
         showFeedback,
         setShowFeedback,
         onShowFeedback,
