@@ -1,21 +1,21 @@
-import PostSpecEdit from '../../pages/PostSpecEdit'
-import Header from '../Header/Header'
-import Portal from '../Portal/Portal'
-import { useContext } from 'react'
-import { AuthCtx } from '../../features/auth-ctx'
-
+import PostSpecEdit from "../../pages/PostSpecEdit";
+import Portal from "../Portal/Portal";
+import { useContext } from "react";
+import { ModalCtx } from "../../features/modal-ctx";
+import NewPost from "../../pages/NewPost";
+import Account from "../../pages/Account";
 const Modal = () => {
-  const authMgr = useContext(AuthCtx)
-
-  const closeModalHandler = () => authMgr.setShowModal(false)
+  const modalMgr = useContext(ModalCtx);
 
   return (
     <Portal>
-      <PostSpecEdit />
-      <button onClick={closeModalHandler}>Close</button>
-    </Portal>
-  )
-}
-// voluble-bunny-990d6d
+      {modalMgr.showEditPost && <PostSpecEdit />}
+      {modalMgr.showNewPost && <NewPost />}
+      {modalMgr.showAccount && <Account />}
 
-export default Modal
+      <button onClick={modalMgr.onCloseModal}>Close</button>
+    </Portal>
+  );
+};
+
+export default Modal;

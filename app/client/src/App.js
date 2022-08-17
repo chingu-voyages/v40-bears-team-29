@@ -8,10 +8,20 @@ import User from "./pages/User";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import Modal from "./components/Modal/Modal";
 import { AuthCtx } from "./features/auth-ctx";
-
+import { ModalCtx } from "./features/modal-ctx";
 import { urlTo } from "./helpers/application_helper";
 
+// LOGOUT: Clear cookies
+// 422: Extra feedback invalid credentials
+
 function App() {
+  // useEffect(() => {
+  //   console.log(urlTo("/api/logged_user"));
+  //   fetch(urlTo("/api/logged_user"))
+  //     .then((response) => response.json())
+  //     .then((json) => console.log(json));
+  // }, []);
+
   useEffect(() => {
     console.log(urlTo("/api/logged_user"));
     fetch(urlTo("/api/logged_user"))
@@ -20,10 +30,10 @@ function App() {
   }, []);
 
   const authMgr = useContext(AuthCtx);
-
+  const modalMgr = useContext(ModalCtx);
   return (
     <>
-      {authMgr.showModal && <Modal />}
+      {modalMgr.showModal && <Modal />}
 
       <Routes>
         <Route path="/" element={<Home />} />
@@ -38,6 +48,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>

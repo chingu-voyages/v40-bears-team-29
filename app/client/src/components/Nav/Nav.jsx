@@ -2,9 +2,11 @@ import classes from "./Nav.module.css";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { AuthCtx } from "../../features/auth-ctx";
+import { ModalCtx } from "../../features/modal-ctx";
 
 const Nav = () => {
   const authMgr = useContext(AuthCtx);
+  const modalMgr = useContext(ModalCtx);
 
   const logoutHandler = () => {
     // CLEAR ALL CURRENT STATES
@@ -12,14 +14,18 @@ const Nav = () => {
   };
 
   const showLoginHandler = () => {
-    // CHANGE STATE SO AUTH SHOWS LOGIN
-    console.log("Showing login");
     authMgr.onShowLogin();
   };
   const showSignUpHandler = () => {
-    // CHANGE STATE SO AUTH SHOWS SIGNUP
     authMgr.setShowLogin(false);
-    console.log("Showing Sign up");
+  };
+
+  const showNewPostHandler = () => {
+    modalMgr.onSetShowModal("newPost");
+  };
+
+  const showAccountHandler = () => {
+    modalMgr.onSetShowModal("account");
   };
 
   return (
@@ -30,20 +36,18 @@ const Nav = () => {
       {authMgr.isLoggedIn && (
         <>
           {" "}
-          <p className={classes.li}>New Post</p>
+          <p onClick={showNewPostHandler} className={classes.li}>
+            New Post
+          </p>
           <Link
             className={classes.li}
             to={`/users/${authMgr.currentUser.username}`}
           >
             Profile
           </Link>
-          <Link
-            className={classes.li}
-            to={`/users/${authMgr.currentUser.username}/account`}
-          >
+          <p className={classes.li} onClick={showAccountHandler}>
             Account
-            {/* CREATE ACCOUNT COMPONENT */}
-          </Link>{" "}
+          </p>{" "}
           <Link onClick={logoutHandler} className={classes.li} to="/">
             Logout
           </Link>{" "}
