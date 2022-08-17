@@ -1,4 +1,3 @@
-import classes from './MainPostList.module.css'
 import data from '../../data/data'
 import MainPostItem from '../MainPostItem/MainPostItem'
 import { useState } from 'react'
@@ -11,7 +10,7 @@ const MainPostList = () => {
   const [dummyData, setDummyData] = useState(data)
 
   return (
-    <ul className={classes.ul}>
+    <main className="flex flex-col space-y-4 mx-auto px-2 max-w-screen-lg">
       {dummyData.map((obj, index) => {
         return (
           <MainPostItem
@@ -22,7 +21,7 @@ const MainPostList = () => {
           />
         )
       })}
-    </ul>
+    </main>
   )
 }
 export default MainPostList

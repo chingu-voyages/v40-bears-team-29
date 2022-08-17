@@ -1,4 +1,3 @@
-import classes from "./Nav.module.css";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { AuthCtx } from "../../features/auth-ctx";
@@ -28,50 +27,69 @@ const Nav = () => {
     modalMgr.onSetShowModal("account");
   };
 
+  const guestNavItems = [
+    {
+      content: 'Login',
+      to: '/users/auth',
+      onClick: showLoginHandler,
+      classes: 'hover:bg-blue-700 hover:text-white',
+    },
+    {
+      content: 'Register',
+      to: '/users/auth',
+      onClick: showSignUpHandler,
+      classes: 'bg-blue-500 hover:bg-blue-700 text-white'
+    }
+  ];
+
+  const userNavItems = [
+    {
+      content: 'New Post',
+      to: false,
+      onClick: showNewPostHandler,
+      classes: 'bg-blue-500 hover:bg-blue-700 text-white'
+    },
+    {
+      content: 'Profile',
+      to: `/users/${authMgr.currentUser.username}`,
+      onClick: false,
+      classes: ''
+    },
+    {
+      content: 'Account',
+      to: false,
+      onClick: showAccountHandler,
+      classes: ''
+    },
+    {
+      content: 'Logout',
+      to: false,
+      onClick: logoutHandler,
+      classes: ''
+    }
+  ];
+
+  const navItems = [
+    {
+      content: 'Posts',
+      to: '/',
+      onClick: false,
+      classes: ''
+    },
+    ...(authMgr.isLoggedIn ? userNavItems : guestNavItems)
+  ];
+  
   return (
-    <nav className={classes.nav}>
-      <Link className={classes.li} to="/">
-        Posts
-      </Link>
-      {authMgr.isLoggedIn && (
-        <>
-          {" "}
-          <p onClick={showNewPostHandler} className={classes.li}>
-            New Post
-          </p>
-          <Link
-            className={classes.li}
-            to={`/users/${authMgr.currentUser.username}`}
-          >
-            Profile
+    <nav className="-ml-2 md:ml-0">
+      <ul className="flex flex-row items-center font-medium text-sm space-x-1">
+        { navItems.map((navItem, index) => <li key={ index } className={ `${navItem.classes} transition-all py-1 px-2 rounded` }>
+          <Link to={ navItem.to } onClick={ navItem.onClick }>
+            { navItem.content }
           </Link>
-          <p className={classes.li} onClick={showAccountHandler}>
-            Account
-          </p>{" "}
-          <Link onClick={logoutHandler} className={classes.li} to="/">
-            Logout
-          </Link>{" "}
-        </>
-      )}
-      {!authMgr.isLoggedIn && (
-        <>
-          <Link
-            onClick={showLoginHandler}
-            className={classes.li}
-            to="/users/auth"
-          >
-            Login
-          </Link>
-          <Link
-            onClick={showSignUpHandler}
-            className={classes.li}
-            to="/users/auth"
-          >
-            SignUp
-          </Link>
-        </>
-      )}
+        </li>) }
+      </ul>
     </nav>
   );
 };
+
 export default Nav;
