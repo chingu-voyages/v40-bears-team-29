@@ -1,14 +1,15 @@
 import Nav from '../Nav/Nav'
 import { Link } from "react-router-dom";
-import classes from './Header.module.css'
 
 const Header = () => {
   return (
-    <header className={classes.header}>
-      <Link to="/">
-        <h1 className={classes.logo}>Dumpster</h1>
-      </Link>
-      <Nav />
+    <header className="bg-white border-gray-200 shadow px-4 lg:px-6 py-2.5">
+      <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
+        <Link to="/">
+          <h1>Dumpster</h1>
+        </Link>
+        <Nav />
+      </div>
     </header>
   )
 }
