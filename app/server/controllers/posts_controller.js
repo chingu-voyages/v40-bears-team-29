@@ -93,13 +93,13 @@ const deletePost = async (req, res) => {
 }
 
 const upvotePost = async (req, res) => {
-  const post = await setPost(req.params)
-  if (post === null) {
-    res.status(404).send({ error: 'cant find this post' })
+  if (!authenticateUser(req, res)) {
     return
   }
 
-  if (!authenticateUser(req, res)) {
+  const post = await setPost(req.params)
+  if (post === null) {
+    res.status(404).send({ error: 'cant find this post' })
     return
   }
 
