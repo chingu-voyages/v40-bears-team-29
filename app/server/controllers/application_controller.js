@@ -30,7 +30,7 @@ const loginUser = async (req, user, password) => {
   }
 }
 
-const handleError = (err, res, { responseStatus = 422 }) => {
+const handleError = (err, res, responseStatus = 422) => {
   const formatError = User.formatError(err)
   if (formatError == null) {
     res.status(500).send({ error: 'unexpected error' })

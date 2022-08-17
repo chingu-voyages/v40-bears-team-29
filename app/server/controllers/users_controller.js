@@ -17,7 +17,7 @@ const signUp = async (req, res) => {
           }
         })
       }
-      handleError(error, res, { responseStatus })
+      handleError(error, res, responseStatus)
     })
 }
 

@@ -2,7 +2,7 @@
 
 const app = require('../../app/server/app')
 const request = require('supertest')
-jest.setTimeout(20000)
+jest.setTimeout(1000)
 
 const { User, Post } = require('../../app/server/models/index')
 const postMock = require('../mocks/post')
@@ -248,6 +248,22 @@ describe('posts controller', () => {
       .expect('Content-type', /json/)
       .then(async (serverRes) => {
         expect(serverRes.body).toEqual(expect.any(Object))
+      })
+  })
+
+  jest.retryTimes(10)
+  test('get /api/posts should list posts ordered by creation date', async () => {
+    const post1 = await Post.create({ ...postMock, UserId: this.postUser.id })
+    const post2 = await Post.create({ ...postMock, UserId: this.postUser.id })
+
+    await request(app)
+      .get('/api/posts')
+      .expect(200)
+      .expect('Content-type', /json/)
+      .then(async (serverRes) => {
+        expect(serverRes.body).toEqual(expect.any(Array))
+        expect(serverRes.body[0].id === post1.id).toEqual(true)
+        expect(serverRes.body[1].id === post2.id).toEqual(true)
       })
   })
 })
