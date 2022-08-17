@@ -67,7 +67,6 @@ const Nav = () => {
     ...(authMgr.isLoggedIn ? userNavItems : guestNavItems)
   ];
   
-
   return (
     <nav className="-ml-2 md:ml-0">
       <ul className="flex flex-row items-center font-medium text-sm space-x-1">
@@ -80,4 +79,5 @@ const Nav = () => {
     </nav>
   );
 };
+
 export default Nav;
