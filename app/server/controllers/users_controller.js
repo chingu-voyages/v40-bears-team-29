@@ -1,8 +1,8 @@
 const { User } = require('../models/index')
-const { filterParams, currentUser, loginUser, handleError } = require('./application_controller')
+const { filterParams, currentUser, loginUser, handleError, authenticateUser } = require('./application_controller')
 
 const signUp = async (req, res) => {
-  const user = await getUser(userParams(req))
+  const user = await setUser(userParams(req))
 
   user.save()
     .then(async (data) => {
@@ -79,9 +79,23 @@ const updateUser = async (req, res) => {
     })
 }
 
+const getUser = async (req, res) => {
+  if (!authenticateUser(req, res)) {
+    return
+  }
+
+  const user = await User.findByPk(req.params.id, { include: [User.Post] })
+
+  if (user === null) {
+    res.status(404).send({ error: 'this user doest exist' })
+  } else {
+    res.status(200).send(user.getData())
+  }
+}
+
 // helpers ///////////////////////////////////////////
 
-const getUser = async (params) => {
+const setUser = async (params) => {
   const user = User.build(params)
   if (user.password) {
     await user.hashPassword()
@@ -101,4 +115,4 @@ const userParams = (req) => {
   return filterParams(permittedParams, req)
 }
 
-module.exports = { login, loggedUser, signUp, updateUser }
+module.exports = { login, loggedUser, signUp, updateUser, getUser }
