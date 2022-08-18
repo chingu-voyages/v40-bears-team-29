@@ -26,7 +26,7 @@ const getPost = async (req, res) => {
 }
 
 const getPosts = async (req, res) => {
-  const posts = await Post.findAll({order: [['createdAt', 'ASC']], include: [Post.User] })
+  const posts = await Post.findAll({ order: [['createdAt', 'ASC']], include: [Post.User] })
   res.status(200).send(posts.map((p) => p.getData()))
 }
 
