@@ -3,7 +3,7 @@ import React, { createContext, useState } from "react";
 export const ModalCtx = createContext({
   showModal: false,
   setShowModal: () => {},
-  onSetShowModal: (which) => {},
+  onSetShowModal: () => {},
   onCloseModal: () => {},
   showAccount: false,
   setShowAccount: () => {},
