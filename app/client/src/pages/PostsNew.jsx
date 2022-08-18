@@ -1,5 +1,7 @@
-const PostsNew = () => {
-  return <h1>NEW POST HERE</h1>
-}
+import React from "react";
 
-export default PostsNew
+const PostsNew = () => {
+  return <h1>NEW POST HERE</h1>;
+};
+
+export default PostsNew;

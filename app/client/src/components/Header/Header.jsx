@@ -1,4 +1,5 @@
-import Nav from '../Nav/Nav'
+import React  from "react";
+import Nav from "../Nav/Nav";
 import { Link } from "react-router-dom";
 
 const Header = () => {
@@ -11,7 +12,7 @@ const Header = () => {
         <Nav />
       </div>
     </header>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

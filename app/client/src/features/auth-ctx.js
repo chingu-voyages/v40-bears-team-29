@@ -15,17 +15,17 @@ export const AuthCtx = createContext({
   onRegister: () => {},
   loginInputInfo: {},
   setLoginInputInfo: {},
-  onLoginInputChange: (e) => {},
+  onLoginInputChange: () => {},
   resetLogin: () => {},
   registerInputInfo: {},
   setRegisterInputInfo: () => {},
-  onChangeRegisterInputInfo: (e) => {},
+  onChangeRegisterInputInfo: () => {},
   resetRegister: () => {},
   showFeedback: false,
   setShowFeedback: () => {},
   errorMsg: "",
   setErrorMsg: () => {},
-  onShowFeedback: (bool, message) => {},
+  onShowFeedback: () => {},
 });
 
 const AuthProvider = (props) => {
@@ -156,7 +156,6 @@ const AuthProvider = (props) => {
         onShowFeedback,
         errorMsg,
         setErrorMsg,
-        onShowFeedback,
       }}
     >
       {props.children}
