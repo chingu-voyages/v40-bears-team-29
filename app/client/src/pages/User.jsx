@@ -1,21 +1,50 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Header from "../components/Header/Header";
-import { AuthCtx } from "../features/auth-ctx";
-import { useContext, useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
+
 const User = () => {
-  const authMgr = useContext(AuthCtx);
-  const nav = useNavigate();
   const urlId = useParams().id;
-  const [canEdit, setCanEdit] = useState(false);
-  const navToEditHandler = () => {
-    nav(`/users/${urlId}/edit`);
+  const [userProfile, setUserProfile] = useState({
+    avatar: "",
+    username: "",
+    Posts: [],
+    biography: "",
+  });
+
+  const fetchUser = async () => {
+    await axios
+      .get(`/api/users/${urlId}`, {withCredentials: true})
+      .then((serverRes) => {
+        console.log(serverRes.data);
+        setUserProfile(serverRes.data);
+      })
+      .catch((err) => console.log(err));
+    // send error feedback
   };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
   return (
     <>
-      <h1>PROFILE FOR: {urlId}</h1>
       <Header />
-      {canEdit && <button onClick={navToEditHandler}>Edit profile</button>}
+
+      <img src={userProfile.avatar} />
+      <h1>PROFILE FOR: {userProfile.username}</h1>
+      <p>Total Posts: {userProfile.Posts.length}</p>
+      <p>Bio: {userProfile.biography}</p>
+      <h3>POSTS</h3>
+      <ul>
+        {userProfile.Posts.map((obj, index) => {
+          return (
+            <li>
+              {obj.title}, {obj.content}
+            </li>
+          );
+        })}
+      </ul>
     </>
   );
 };
