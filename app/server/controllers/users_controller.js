@@ -84,12 +84,21 @@ const getUser = async (req, res) => {
     return
   }
 
-  const user = await User.findByPk(req.params.id, { include: { model: Post, ...Post.fullScope(User, Upvote) } })
+  const user = await User.findByPk(req.params.id)
 
   if (user === null) {
     res.status(404).send({ error: 'this user doest exist' })
   } else {
-    res.status(200).send(user.getData())
+    const cursor = req.query.cursor || 0
+    const limit = req.query.limit || 10
+
+    const data = user.getData()
+
+    const posts = await Post.findAll({ offset: cursor, limit, order: [['createdAt', 'ASC']], where: { UserId: user.id }, ...Post.fullScope(User, Upvote) })
+
+    data.Posts = posts.map((p) => p.getData())
+
+    res.status(200).send(data)
   }
 }
 
