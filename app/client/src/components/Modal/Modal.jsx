@@ -1,6 +1,6 @@
 import PostSpecEdit from "../../pages/PostSpecEdit";
 import Portal from "../Portal/Portal";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { ModalCtx } from "../../features/modal-ctx";
 import NewPost from "../../pages/NewPost";
 import Account from "../../pages/Account";

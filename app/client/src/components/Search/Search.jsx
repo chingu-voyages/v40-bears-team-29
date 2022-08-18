@@ -1,18 +1,18 @@
-import { useState } from 'react'
-import { SearchIcon } from '../Icon/Icon'
+import React, { useState } from "react";
+import { SearchIcon } from "../Icon/Icon";
 
 const Search = () => {
-  const [input, setInput] = useState('')
+  const [input, setInput] = useState("");
 
   const searchHandler = (e) => {
-    e.preventDefault()
-    console.log(input)
-  }
+    e.preventDefault();
+    console.log(input);
+  };
 
   return (
     <div className='mx-auto my-4 px-2 max-w-screen-lg'>
       <form onSubmit={searchHandler} className='block text-gray-700'>
-        <div class="relative">
+        <div className="relative">
           <SearchIcon className='w-4 absolute left-2 top-1/2 -translate-y-1/2' />
           <input
             placeholder='Search'
@@ -22,9 +22,9 @@ const Search = () => {
             onChange={(e) => setInput(e.target.value)}
           />
         </div>
-    </form>
+      </form>
     </div>
-  )
-}
+  );
+};
 
-export default Search
+export default Search;

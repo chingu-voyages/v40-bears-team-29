@@ -1,6 +1,7 @@
-import Header from '../components/Header/Header'
-import MainPostList from '../components/MainPostList/MainPostList'
-import Search from '../components/Search/Search'
+import React from "react";
+import Header from "../components/Header/Header";
+import MainPostList from "../components/MainPostList/MainPostList";
+import Search from "../components/Search/Search";
 
 const Home = () => {
   return (
@@ -9,7 +10,7 @@ const Home = () => {
       <Search />
       <MainPostList />
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

@@ -8,6 +8,9 @@ module.exports = {
   },
   "extends": "eslint:recommended",
   "overrides": [
+    {
+      "files": ["*.jsx", "*.js"]
+    }
   ],
   "parserOptions": {
     "ecmaVersion": "latest"
