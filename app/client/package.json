@@ -21,10 +21,20 @@
   },
   "proxy": "http://localhost:3002",
   "eslintConfig": {
+    "settings": {
+      "react": {
+        "version": "detect"
+      }
+    },
+    "parserOptions": {
+      "sourceType": "module"
+    },
     "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+      "plugin:react/recommended"
+    ],
+    "rules": {
+      "react/prop-types": "off"
+    }
   },
   "browserslist": {
     "production": [
@@ -42,6 +52,7 @@
     "@tailwindcss/forms": "^0.5.2",
     "autoprefixer": "^10.4.8",
     "postcss": "^8.4.16",
+    "eslint-plugin-react": "^7.30.1",
     "tailwindcss": "^3.1.8"
   }
 }

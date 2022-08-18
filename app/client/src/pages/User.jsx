@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import Header from "../components/Header/Header";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const User = () => {
@@ -37,9 +37,9 @@ const User = () => {
       <p>Bio: {userProfile.biography}</p>
       <h3>POSTS</h3>
       <ul>
-        {userProfile.Posts.map((obj, index) => {
+        {userProfile.Posts.map((obj) => {
           return (
-            <li>
+            <li key={obj.id}>
               {obj.title}, {obj.content}
             </li>
           );

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { AuthCtx } from "../../features/auth-ctx";
 import { ModalCtx } from "../../features/modal-ctx";
 
@@ -29,52 +29,52 @@ const Nav = () => {
 
   const guestNavItems = [
     {
-      content: 'Login',
-      to: '/users/auth',
+      content: "Login",
+      to: "/users/auth",
       onClick: showLoginHandler,
-      classes: 'hover:bg-blue-700 hover:text-white',
+      classes: "hover:bg-blue-700 hover:text-white",
     },
     {
-      content: 'Register',
-      to: '/users/auth',
+      content: "Register",
+      to: "/users/auth",
       onClick: showSignUpHandler,
-      classes: 'bg-blue-500 hover:bg-blue-700 text-white'
+      classes: "bg-blue-500 hover:bg-blue-700 text-white"
     }
   ];
 
   const userNavItems = [
     {
-      content: 'New Post',
+      content: "New Post",
       to: false,
       onClick: showNewPostHandler,
-      classes: 'bg-blue-500 hover:bg-blue-700 text-white'
+      classes: "bg-blue-500 hover:bg-blue-700 text-white"
     },
     {
-      content: 'Profile',
+      content: "Profile",
       to: `/users/${authMgr.currentUser.username}`,
       onClick: false,
-      classes: ''
+      classes: ""
     },
     {
-      content: 'Account',
+      content: "Account",
       to: false,
       onClick: showAccountHandler,
-      classes: ''
+      classes: ""
     },
     {
-      content: 'Logout',
+      content: "Logout",
       to: false,
       onClick: logoutHandler,
-      classes: ''
+      classes: ""
     }
   ];
 
   const navItems = [
     {
-      content: 'Posts',
-      to: '/',
+      content: "Posts",
+      to: "/",
       onClick: false,
-      classes: ''
+      classes: ""
     },
     ...(authMgr.isLoggedIn ? userNavItems : guestNavItems)
   ];

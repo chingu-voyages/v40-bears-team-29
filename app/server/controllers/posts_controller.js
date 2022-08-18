@@ -3,27 +3,27 @@ const { filterParams, currentUserId, handleError, authenticateUser } = require('
 
 const createPost = async (req, res) => {
   if (!authenticateUser(req, res)) {
-    return
+    return;
   }
 
-  const post = Post.build({ ...postParams(req), UserId: currentUserId(req) })
+  const post = Post.build({ ...postParams(req), UserId: currentUserId(req) });
   await post.save()
     .then((data) => {
-      res.status(200).send(data.getData())
+      res.status(200).send(data.getData());
     })
     .catch((error) => {
-      handleError(error, res)
-    })
-}
+      handleError(error, res);
+    });
+};
 
 const getPost = async (req, res) => {
-  const post = await setPost(req.params)
+  const post = await setPost(req.params);
   if (post === null) {
-    res.status(404).send({ error: 'cant find this post' })
-    return
+    res.status(404).send({ error: "cant find this post" });
+    return;
   }
-  res.status(200).send(post.getData())
-}
+  res.status(200).send(post.getData());
+};
 
 const getPosts = async (req, res) => {
   const cursor = req.query.cursor || 0
@@ -34,43 +34,43 @@ const getPosts = async (req, res) => {
 }
 
 const updatePost = async (req, res) => {
-  const post = await setPost(req.params)
+  const post = await setPost(req.params);
   if (post === null) {
-    res.status(404).send({ error: 'cant find this post' })
-    return
+    res.status(404).send({ error: "cant find this post" });
+    return;
   }
 
   if (!authenticateUser(req, res)) {
-    return
+    return;
   }
 
   if (post.UserId !== currentUserId(req)) {
-    res.status(401).send({ error: 'you dont have permission to edit this post' })
+    res.status(401).send({ error: "you dont have permission to edit this post" });
   } else {
-    post.set(postParams(req))
+    post.set(postParams(req));
     await post.save()
       .then((data) => {
-        res.status(200).send(data.getData())
+        res.status(200).send(data.getData());
       })
       .catch((error) => {
-        handleError(error, res)
-      })
+        handleError(error, res);
+      });
   }
-}
+};
 
 const deletePost = async (req, res) => {
-  const post = await setPost(req.params)
+  const post = await setPost(req.params);
   if (post === null) {
-    res.status(404).send({ error: 'cant find this post' })
-    return
+    res.status(404).send({ error: "cant find this post" });
+    return;
   }
 
   if (!authenticateUser(req, res)) {
-    return
+    return;
   }
 
   if (post.UserId !== currentUserId(req)) {
-    res.status(401).send({ error: 'you dont have permission to delete this post' })
+    res.status(401).send({ error: "you dont have permission to delete this post" });
   } else {
     if (post.Upvotes.length > 0) {
       const upvotesIds = post.Upvotes.map((up) => up.id)
@@ -82,14 +82,14 @@ const deletePost = async (req, res) => {
     }
     await Post.destroy({ where: { id: post.id } })
       .then(() => {
-        res.status(200).send({ message: 'post deleted' })
+        res.status(200).send({ message: "post deleted" });
       })
       .catch((error) => {
-        console.error(error)
-        res.status(500).send({ error: 'unexpected error' })
-      })
+        console.error(error);
+        res.status(500).send({ error: "unexpected error" });
+      });
   }
-}
+};
 
 const upvotePost = async (req, res) => {
   if (!authenticateUser(req, res)) {
@@ -126,10 +126,10 @@ const setPost = async (params) => {
 // strong parameters
 const postParams = (req) => {
   const permittedParams = [
-    'title',
-    'content'
-  ]
-  return filterParams(permittedParams, req)
-}
+    "title",
+    "content"
+  ];
+  return filterParams(permittedParams, req);
+};
 
 module.exports = { createPost, getPost, updatePost, deletePost, getPosts, upvotePost }

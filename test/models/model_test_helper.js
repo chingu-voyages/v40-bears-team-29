@@ -1,14 +1,14 @@
-const { User } = require('../../app/server/models/index')
+const { User } = require("../../app/server/models/index");
 
 const validate = async (obj) => {
-  let hasError = false
+  let hasError = false;
 
   await obj.validate()
     .catch((err) => {
-      hasError = User.formatError(err)
-    })
+      hasError = User.formatError(err);
+    });
 
-  return hasError
-}
+  return hasError;
+};
 
-module.exports = { validate }
+module.exports = { validate };
