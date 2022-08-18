@@ -5,12 +5,12 @@ const ApplicationModel = require("./application_model");
 module.exports = (sequelize, DataTypes) => {
   class Post extends ApplicationModel {
     static fullScope (userModel, upvoteModel) {
-      return { include: [{ model: userModel }, { model: upvoteModel, include: [upvoteModel.User] }] }
+      return { include: [{ model: userModel }, { model: upvoteModel, include: [upvoteModel.User] }] };
     }
 
     static associate (models) {
-      models.Post.User = models.Post.belongsTo(models.User, { foreignKey: 'UserId' })
-      models.Post.Upvote = models.Post.hasMany(models.Upvote)
+      models.Post.User = models.Post.belongsTo(models.User, { foreignKey: "UserId" });
+      models.Post.Upvote = models.Post.hasMany(models.Upvote);
     }
   }
   Post.init({

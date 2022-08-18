@@ -1,5 +1,5 @@
-const { User, Post, Upvote } = require('../models/index')
-const { filterParams, currentUser, loginUser, handleError, authenticateUser } = require('./application_controller')
+const { User, Post, Upvote } = require("../models/index");
+const { filterParams, currentUser, loginUser, handleError, authenticateUser } = require("./application_controller");
 
 const signUp = async (req, res) => {
   const user = await setUser(userParams(req));
@@ -84,21 +84,21 @@ const getUser = async (req, res) => {
     return;
   }
 
-  const user = await User.findByPk(req.params.id)
+  const user = await User.findByPk(req.params.id);
 
   if (user === null) {
     res.status(404).send({ error: "this user doest exist" });
   } else {
-    const cursor = req.query.cursor || 0
-    const limit = req.query.limit || 10
+    const cursor = req.query.cursor || 0;
+    const limit = req.query.limit || 10;
 
-    const data = user.getData()
+    const data = user.getData();
 
-    const posts = await Post.findAll({ offset: cursor, limit, order: [['createdAt', 'ASC']], where: { UserId: user.id }, ...Post.fullScope(User, Upvote) })
+    const posts = await Post.findAll({ offset: cursor, limit, order: [["createdAt", "ASC"]], where: { UserId: user.id }, ...Post.fullScope(User, Upvote) });
 
-    data.Posts = posts.map((p) => p.getData())
+    data.Posts = posts.map((p) => p.getData());
 
-    res.status(200).send(data)
+    res.status(200).send(data);
   }
 };
 

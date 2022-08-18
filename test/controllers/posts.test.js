@@ -4,9 +4,9 @@ const app = require("../../app/server/app");
 const request = require("supertest");
 jest.setTimeout(1000);
 
-const { User, Post, Upvote } = require('../../app/server/models/index')
-const postMock = require('../mocks/post')
-const userMock = require('../mocks/user')
+const { User, Post, Upvote } = require("../../app/server/models/index");
+const postMock = require("../mocks/post");
+const userMock = require("../mocks/user");
 
 const { logUser, loginUser } = require("./controllers_test_helpers");
 
@@ -160,29 +160,29 @@ describe("posts controller", () => {
       });
   });
 
-  jest.retryTimes(10)
-  test('delete /api/posts/:id should delete post if it have a upvote', async () => {
-    await this.post.save()
-    await Upvote.create({ UserId: this.postUser.id, PostId: this.post.id })
+  jest.retryTimes(10);
+  test("delete /api/posts/:id should delete post if it have a upvote", async () => {
+    await this.post.save();
+    await Upvote.create({ UserId: this.postUser.id, PostId: this.post.id });
 
-    const authenticatedSession = await loginUser(this.postUser, app)
+    const authenticatedSession = await loginUser(this.postUser, app);
 
     await authenticatedSession
       .delete(`/api/posts/${this.post.id}`)
       .expect(200)
-      .expect('Content-type', /json/)
+      .expect("Content-type", /json/)
       .then(async (serverRes) => {
-        expect(serverRes.body).toEqual(expect.any(Object))
+        expect(serverRes.body).toEqual(expect.any(Object));
 
-        const postAfter = await Post.findByPk(this.post.id)
-        expect(postAfter).toEqual(null)
-      })
-  })
+        const postAfter = await Post.findByPk(this.post.id);
+        expect(postAfter).toEqual(null);
+      });
+  });
 
-  jest.retryTimes(10)
-  test('delete /api/posts/:id should not delete post if not ownned by the logged user', async () => {
-    await this.post.save()
-    const authenticatedSession = await loginUser(this.user, app)
+  jest.retryTimes(10);
+  test("delete /api/posts/:id should not delete post if not ownned by the logged user", async () => {
+    await this.post.save();
+    const authenticatedSession = await loginUser(this.user, app);
 
     await authenticatedSession
       .delete(`/api/posts/${this.post.id}`)
@@ -196,9 +196,9 @@ describe("posts controller", () => {
       });
   });
 
-  jest.retryTimes(10)
-  test('delete /api/posts/:id should not delete post if not logged', async () => {
-    await this.post.save()
+  jest.retryTimes(10);
+  test("delete /api/posts/:id should not delete post if not logged", async () => {
+    await this.post.save();
 
     await request(app)
       .delete(`/api/posts/${this.post.id}`)
@@ -279,59 +279,59 @@ describe("posts controller", () => {
       .expect(200)
       .expect("Content-type", /json/)
       .then(async (serverRes) => {
-        expect(serverRes.body).toEqual(expect.any(Array))
-        expect(serverRes.body[0].id === post1.id).toEqual(true)
-        expect(serverRes.body[1].id === post2.id).toEqual(true)
-      })
-  })
+        expect(serverRes.body).toEqual(expect.any(Array));
+        expect(serverRes.body[0].id === post1.id).toEqual(true);
+        expect(serverRes.body[1].id === post2.id).toEqual(true);
+      });
+  });
 
-  jest.retryTimes(10)
-  test('post /api/posts/:id/upvote should upvote a post', async () => {
-    this.post.save()
-    const authenticatedSession = await logUser(this.user, app)
+  jest.retryTimes(10);
+  test("post /api/posts/:id/upvote should upvote a post", async () => {
+    this.post.save();
+    const authenticatedSession = await logUser(this.user, app);
 
     await authenticatedSession
       .post(`/api/posts/${this.post.id}/upvote`)
       .expect(200)
-      .expect('Content-type', /json/)
+      .expect("Content-type", /json/)
       .then(async (serverRes) => {
-        expect(serverRes.body).toEqual(expect.any(Object))
+        expect(serverRes.body).toEqual(expect.any(Object));
 
-        const upvoteCount = await Upvote.count({ where: { PostId: this.post.id } })
-        expect(upvoteCount).toEqual(1)
-        const postLater = await Post.findByPk(this.post.id)
-        expect(postLater.upvotesCount).toEqual(1)
-      })
-  })
+        const upvoteCount = await Upvote.count({ where: { PostId: this.post.id } });
+        expect(upvoteCount).toEqual(1);
+        const postLater = await Post.findByPk(this.post.id);
+        expect(postLater.upvotesCount).toEqual(1);
+      });
+  });
 
-  jest.retryTimes(10)
-  test('post /api/posts/:id/upvote should not upvote if not logged', async () => {
-    this.post.save()
+  jest.retryTimes(10);
+  test("post /api/posts/:id/upvote should not upvote if not logged", async () => {
+    this.post.save();
 
     await request(app)
       .post(`/api/posts/${this.post.id}/upvote`)
       .expect(401)
-      .expect('Content-type', /json/)
+      .expect("Content-type", /json/)
       .then(async (serverRes) => {
-        expect(serverRes.body).toEqual(expect.any(Object))
+        expect(serverRes.body).toEqual(expect.any(Object));
 
-        const upvoteCount = await Upvote.count({ where: { PostId: this.post.id } })
-        expect(upvoteCount).toEqual(0)
-        const postLater = await Post.findByPk(this.post.id)
-        expect(postLater.upvotesCount).toEqual(0)
-      })
-  })
+        const upvoteCount = await Upvote.count({ where: { PostId: this.post.id } });
+        expect(upvoteCount).toEqual(0);
+        const postLater = await Post.findByPk(this.post.id);
+        expect(postLater.upvotesCount).toEqual(0);
+      });
+  });
 
-  jest.retryTimes(10)
-  test('post /api/posts/:id/upvote should return 404 if post doenst exist', async () => {
-    const authenticatedSession = await logUser(this.user, app)
+  jest.retryTimes(10);
+  test("post /api/posts/:id/upvote should return 404 if post doenst exist", async () => {
+    const authenticatedSession = await logUser(this.user, app);
 
     await authenticatedSession
-      .post('/api/posts/999999/upvote')
+      .post("/api/posts/999999/upvote")
       .expect(404)
-      .expect('Content-type', /json/)
+      .expect("Content-type", /json/)
       .then(async (serverRes) => {
-        expect(serverRes.body).toEqual(expect.any(Object))
-      })
-  })
-})
+        expect(serverRes.body).toEqual(expect.any(Object));
+      });
+  });
+});

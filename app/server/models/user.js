@@ -6,7 +6,7 @@ const ApplicationModel = require("./application_model");
 
 module.exports = (sequelize, DataTypes) => {
   class User extends ApplicationModel {
-    attributesFilter = ['password', 'passwordHash']
+    attributesFilter = ["password", "passwordHash"];
 
     static async hashPassword (password) {
       let hash = null;
@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     hasHashedPassword () {
-      return this.passwordHash !== null
+      return this.passwordHash !== null;
     }
 
     async checkPassword (password) {
@@ -31,8 +31,8 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     static associate (models) {
-      models.User.Post = models.User.hasMany(models.Post)
-      models.User.Upvote = models.User.hasMany(models.Upvote)
+      models.User.Post = models.User.hasMany(models.Post);
+      models.User.Upvote = models.User.hasMany(models.Upvote);
     }
   }
   User.init({
