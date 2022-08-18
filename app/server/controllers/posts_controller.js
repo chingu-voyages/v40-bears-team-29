@@ -26,11 +26,10 @@ const getPost = async (req, res) => {
 }
 
 const getPosts = async (req, res) => {
-<<<<<<< HEAD
-  const posts = await Post.findAll({order: [['createdAt', 'ASC']], include: [Post.User] })
-=======
-  const posts = await Post.findAll({ limit: 10, order: [['createdAt', 'ASC']], ...Post.fullScope(User, Upvote) })
->>>>>>> a34287a (setup upvotes)
+  const cursor = req.query.cursor || 0
+  const limit = req.query.limit || 10
+
+  const posts = await Post.findAll({ offset: cursor, limit, order: [['createdAt', 'ASC']], ...Post.fullScope(User, Upvote) })
   res.status(200).send(posts.map((p) => p.getData()))
 }
 
