@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-slate-100 dark:bg-gray-900 text-gray-700 dark:text-white;
+}
+#root {
+  @apply min-h-screen;
+}

@@ -1,0 +1,16 @@
+
+POST http://localhost:3002/api/login HTTP/1.1
+
+{
+  "username": "test",
+  "password": "test"
+}
+
+###
+
+POST http://localhost:3002/api/sign_up HTTP/1.1
+
+{
+  "username": "test",
+  "password": "test"
+}
