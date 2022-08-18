@@ -1,3 +1,2 @@
-/app/server/**
-/db/**
-/test/**
+app/client/build/**
+db/**
