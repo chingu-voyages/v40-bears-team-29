@@ -14,7 +14,7 @@ const User = () => {
 
   const fetchUser = async () => {
     await axios
-      .get(`/api/users/${urlId}`)
+      .get(`/api/users/${urlId}`, {withCredentials: true})
       .then((serverRes) => {
         console.log(serverRes.data);
         setUserProfile(serverRes.data);
