@@ -1,23 +1,12 @@
 'use strict'
 
 const ApplicationModel = require('./application_model')
+const models = require('./index')
 
 module.exports = (sequelize, DataTypes) => {
   class Post extends ApplicationModel {
-    getData () {
-      const data = this.toJSON()
-      if (this.User?.constructor?.name === 'User') {
-        data.User = this.User.getData()
-      }
-      if (this.Upvotes && this.Upvotes.length > 0 && this.Upvotes[0].User) {
-        console.log(data.Upvotes)
-        data.Upvotes = this.Upvotes.map((up) => up.getData())
-      }
-      return data
-    }
-
-    static fullScope (userModel, upvoteModel) {
-      return { include: [{ model: userModel }, { model: upvoteModel, include: [upvoteModel.User] }] }
+    static fullScope () {
+      return { include: [{ model: models.User }, { model: models.Upvote, include: [models.Upvote.User] }] }
     }
 
     static associate (models) {

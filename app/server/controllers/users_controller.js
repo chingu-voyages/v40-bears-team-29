@@ -84,7 +84,7 @@ const getUser = async (req, res) => {
     return
   }
 
-  const user = await User.findByPk(req.params.id, { include: { model: Post, ...Post.fullScope(User, Upvote) } })
+  const user = await User.findByPk(req.params.id, { include: { model: Post, ...Post.fullScope() } })
 
   if (user === null) {
     res.status(404).send({ error: 'this user doest exist' })

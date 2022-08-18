@@ -26,11 +26,7 @@ const getPost = async (req, res) => {
 }
 
 const getPosts = async (req, res) => {
-<<<<<<< HEAD
-  const posts = await Post.findAll({order: [['createdAt', 'ASC']], include: [Post.User] })
-=======
-  const posts = await Post.findAll({ limit: 10, order: [['createdAt', 'ASC']], ...Post.fullScope(User, Upvote) })
->>>>>>> a34287a (setup upvotes)
+  const posts = await Post.findAll({ order: [['createdAt', 'ASC']], include: [Post.User] })
   res.status(200).send(posts.map((p) => p.getData()))
 }
 
@@ -120,7 +116,7 @@ const upvotePost = async (req, res) => {
 // helpers ///////////////////////////////////////////
 
 const setPost = async (params) => {
-  const post = await Post.findByPk(params.id, Post.fullScope(User, Upvote))
+  const post = await Post.findByPk(params.id, Post.fullScope())
   return post
 }
 
