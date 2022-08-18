@@ -1,7 +1,6 @@
 import React, { createContext, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { urlTo } from "../helpers/application_helper";
 
 export const AuthCtx = createContext({
   isLoggedIn: false,

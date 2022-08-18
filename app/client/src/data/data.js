@@ -5,6 +5,7 @@ const data = [
     postTitle: "Heya",
     post: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Neque gravida in fermentum et sollicitudin ac orci. At erat pellentesque adipiscing commodo elit at imperdiet. Dui nunc mattis enim ut tellus elementum sagittis vitae et. In ante metus dictum at tempor commodo ullamcorper a lacus. Neque sodales ut etiam sit amet. Praesent semper feugiat nibh sed pulvinar proin. Eget felis eget nunc lobortis mattis aliquam. Nec nam aliquam sem et tortor consequat id porta. Sed enim ut sem viverra aliquet eget. Tempor orci eu lobortis elementum nibh tellus. Id diam maecenas ultricies mi eget. Vulputate eu scelerisque felis imperdiet proin fermentum leo vel. Proin nibh nisl condimentum id venenatis a condimentum vitae sapien. Amet cursus sit amet dictum sit amet justo donec enim. Fermentum iaculis eu non diam.",
     votes: 4,
+    id: 0,
   },
   {
     username: "medic1111",
@@ -12,6 +13,7 @@ const data = [
     postTitle: "How to create dope things",
     post: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Neque gravida in fermentum et sollicitudin ac orci. At erat pellentesque adipiscing commodo elit at imperdiet. Dui nunc mattis enim ut tellus elementum sagittis vitae et. In ante metus dictum at tempor commodo ullamcorper a lacus. Neque sodales ut etiam sit amet. Praesent semper feugiat nibh sed pulvinar proin. Eget felis eget nunc lobortis mattis aliquam. Nec nam aliquam sem et tortor consequat id porta. Sed enim ut sem viverra aliquet eget. Tempor orci eu lobortis elementum nibh tellus. Id diam maecenas ultricies mi eget. Vulputate eu scelerisque felis imperdiet proin fermentum leo vel. Proin nibh nisl condimentum id venenatis a condimentum vitae sapien. Amet cursus sit amet dictum sit amet justo donec enim. Fermentum iaculis eu non diam.",
     votes: 4,
+    id: 1,
   },
   {
     username: "Bret",
@@ -19,6 +21,7 @@ const data = [
     postTitle: "How to create dope things",
     post: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Neque gravida in fermentum et sollicitudin ac orci. At erat pellentesque adipiscing commodo elit at imperdiet. Dui nunc mattis enim ut tellus elementum sagittis vitae et. In ante metus dictum at tempor commodo ullamcorper a lacus. Neque sodales ut etiam sit amet. Praesent semper feugiat nibh sed pulvinar proin. Eget felis eget nunc lobortis mattis aliquam. Nec nam aliquam sem et tortor consequat id porta. Sed enim ut sem viverra aliquet eget. Tempor orci eu lobortis elementum nibh tellus. Id diam maecenas ultricies mi eget. Vulputate eu scelerisque felis imperdiet proin fermentum leo vel. Proin nibh nisl condimentum id venenatis a condimentum vitae sapien. Amet cursus sit amet dictum sit amet justo donec enim. Fermentum iaculis eu non diam.",
     votes: 4,
+    id: 2,
   },
   {
     username: "Supersam",

@@ -7,9 +7,7 @@ import Auth from "./pages/Auth";
 import User from "./pages/User";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import Modal from "./components/Modal/Modal";
-import { AuthCtx } from "./features/auth-ctx";
 import { ModalCtx } from "./features/modal-ctx";
-import { urlTo } from "./helpers/application_helper";
 import axios from "axios";
 
 // LOGOUT: Clear cookies
@@ -25,7 +23,6 @@ const App = () => {
     fetchValidation();
   }, []);
 
-  const authMgr = useContext(AuthCtx);
   const modalMgr = useContext(ModalCtx);
   return (
     <>
