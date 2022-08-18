@@ -52,7 +52,7 @@ const AuthProvider = (props) => {
 
   const onLogIn = async () => {
     await axios
-      .post(urlTo("/api/login"), loginInputInfo)
+      .post("/api/login", loginInputInfo, { withCredentials: true })
       .then((serverRes) => {
         setCurrentUser(serverRes.data);
         setIsLoggedIn(true);
@@ -86,7 +86,7 @@ const AuthProvider = (props) => {
 
   const onRegister = async () => {
     await axios
-      .post(urlTo("/api/sign_up"), registerInputInfo)
+      .post("/api/sign_up", registerInputInfo, { withCredentials: true })
       .then((serverRes) => {
         setCurrentUser(serverRes.data);
         setIsLoggedIn(true);

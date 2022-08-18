@@ -10,23 +10,19 @@ import Modal from "./components/Modal/Modal";
 import { AuthCtx } from "./features/auth-ctx";
 import { ModalCtx } from "./features/modal-ctx";
 import { urlTo } from "./helpers/application_helper";
+import axios from "axios";
 
 // LOGOUT: Clear cookies
-// 422: Extra feedback invalid credentials
-
-function App() {
-  // useEffect(() => {
-  //   console.log(urlTo("/api/logged_user"));
-  //   fetch(urlTo("/api/logged_user"))
-  //     .then((response) => response.json())
-  //     .then((json) => console.log(json));
-  // }, []);
+const App = () => {
+  const fetchValidation = async () => {
+    await axios
+      .get("/api/logged_user", { withCredentials: true })
+      .then((serverRes) => console.log(serverRes))
+      .catch((err) => console.log(err));
+  };
 
   useEffect(() => {
-    console.log(urlTo("/api/logged_user"));
-    fetch(urlTo("/api/logged_user"))
-      .then((response) => response.json())
-      .then((json) => console.log(json));
+    fetchValidation();
   }, []);
 
   const authMgr = useContext(AuthCtx);
@@ -34,7 +30,6 @@ function App() {
   return (
     <>
       {modalMgr.showModal && <Modal />}
-
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/posts/new" element={<PostsNew />} />
@@ -48,11 +43,10 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>
   );
-}
+};
 
 export default App;
