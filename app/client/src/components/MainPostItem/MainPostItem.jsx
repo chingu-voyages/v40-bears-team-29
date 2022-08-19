@@ -3,11 +3,13 @@ import React, { useContext } from "react";
 import { AuthCtx } from "../../features/auth-ctx";
 import { ModalCtx } from "../../features/modal-ctx";
 import { ArrowUpIcon, PencilAltIcon, TrashIcon } from "../Icon/Icon";
+import { postCtx } from "../../features/posts-ctx";
 
-const MainPostItem = ({ obj, setDummyData, dummyData }) => {
+const MainPostItem = ({ obj }) => {
   const navigate = useNavigate();
   const authMgr = useContext(AuthCtx);
   const modalMgr = useContext(ModalCtx);
+  const postMgr = useContext(postCtx);
 
   const deletePostHandler = () => {
     // SEND API PATCH REQUEST
@@ -15,7 +17,7 @@ const MainPostItem = ({ obj, setDummyData, dummyData }) => {
     // AND TRIGGER POST SETTING EFFECT
     // DEPENDENCY
 
-    return setDummyData((prev) =>
+    return postMgr.setPosts((prev) =>
       prev.filter((objRet) => {
         return objRet.id !== obj.id;
       })
@@ -23,12 +25,12 @@ const MainPostItem = ({ obj, setDummyData, dummyData }) => {
   };
 
   const upVoteHandler = () => {
-    const impostor = dummyData.find((objRet) => {
+    const impostor = postMgr.posts.find((objRet) => {
       return objRet.id === obj.id;
     });
 
     impostor.upvotesCount++;
-    setDummyData((prev) => {
+    postMgr.setPosts((prev) => {
       return [...prev];
     });
   };
