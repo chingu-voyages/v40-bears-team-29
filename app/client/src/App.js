@@ -8,19 +8,24 @@ import User from "./pages/User";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import Modal from "./components/Modal/Modal";
 import { ModalCtx } from "./features/modal-ctx";
+import { AuthCtx } from "./features/auth-ctx";
 import axios from "axios";
 
 // LOGOUT: Clear cookies
 const App = () => {
-  const fetchValidation = async () => {
+  const authMgr = useContext(AuthCtx);
+
+  const fetchLoggedUser = async () => {
     await axios
       .get("/api/logged_user", { withCredentials: true })
-      .then((serverRes) => console.log(serverRes))
+      .then((serverRes) => {
+        authMgr.loginUser(serverRes.data);
+      })
       .catch((err) => console.log(err));
   };
 
   useEffect(() => {
-    fetchValidation();
+    fetchLoggedUser();
   }, []);
 
   const modalMgr = useContext(ModalCtx);
