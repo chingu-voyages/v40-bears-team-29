@@ -3,11 +3,13 @@ import React, { useContext } from "react";
 import { AuthCtx } from "../../features/auth-ctx";
 import { ModalCtx } from "../../features/modal-ctx";
 import { ArrowUpIcon, PencilAltIcon, TrashIcon } from "../Icon/Icon";
+import axios from "axios";
 
 const MainPostItem = ({ obj, setPosts, posts }) => {
   const navigate = useNavigate();
   const authMgr = useContext(AuthCtx);
   const modalMgr = useContext(ModalCtx);
+
   const deletePostHandler = () => {
     // SEND API PATCH REQUEST
     // UPON 2xx RUN THIS FILTER
@@ -21,14 +23,34 @@ const MainPostItem = ({ obj, setPosts, posts }) => {
     );
   };
 
-  const upVoteHandler = () => {
-    console.log(posts);
-    // const impostor = dummyData.find((objRet) => {
-    //   return objRet === obj;
-    // });
-    //
-    // impostor.votes++;
-    // setDummyData((prev) => [...prev, impostor]);
+  const upVoteHandler = async () => {
+    if (!authMgr.isLoggedIn) {
+      return;
+    }
+
+    await axios
+      .post(`/api/posts/${obj.id}/upvote`, {}, { withCredentials: true })
+      // .then((serverRes) => {
+      //   console.log(serverRes.data);
+      // })
+      .catch((err) => console.log(err));
+
+    await axios
+      .get(`/api/posts/${obj.id}`)
+      .then((serverRes) => {
+        const postId = serverRes.data.id;
+        const impostor = posts.find((o) => {
+          return o.id == postId;
+        });
+
+        const impostorIndex = posts.indexOf(impostor);
+
+        setPosts((prev) => {
+          prev[impostorIndex] = serverRes.data;
+          return [...prev];
+        });
+      })
+      .catch((err) => console.log(err));
   };
 
   const navigateToSpecHandler = () => {
@@ -41,6 +63,14 @@ const MainPostItem = ({ obj, setPosts, posts }) => {
 
   const takeToUserProfHandler = () => {
     navigate(`/users/${obj.User.id}`);
+  };
+
+  const isUpvoted = () => {
+    const upvote = obj.Upvotes.find((o) => {
+      return o.UserId == authMgr.currentUser.id;
+    });
+
+    return upvote;
   };
 
   if (Object.entries(obj).length === 0) {
@@ -64,14 +94,14 @@ const MainPostItem = ({ obj, setPosts, posts }) => {
           className="text-xl lg:text-2xl font-bold hover:underline cursor-pointer"
           onClick={navigateToSpecHandler}
         >
-          {obj.title}
+          {obj.title} {obj.id}
         </h2>
         <button
           title="Upvote"
-          className="absolute -top-2 -right-2 p-1 rounded transition-all hover:bg-slate-100 dark:hover:bg-slate-700 flex flex-row items-center leading-none cursor-pointer z-10"
+          className={`absolute -top-2 -right-2 p-1 rounded transition-all hover:bg-slate-100 dark:hover:bg-slate-700 flex flex-row items-center leading-none cursor-pointer z-10 ${isUpvoted() ? "bg-white/10" : ""}`}
           onClick={upVoteHandler}
         >
-          <span className="block -mt-1">{obj.upvotesCount}</span>
+          <span className="block -mt-1">{obj.Upvotes.length}</span>
           <ArrowUpIcon className="block w-3 ml-1" />
         </button>
       </header>

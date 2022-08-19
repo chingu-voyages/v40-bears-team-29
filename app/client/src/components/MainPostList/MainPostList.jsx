@@ -25,7 +25,7 @@ const MainPostList = () => {
           <MainPostItem
             obj={obj}
             key={`POST_${index}`}
-            setPost={setPosts}
+            setPosts={setPosts}
             posts={posts}
           />
         );
