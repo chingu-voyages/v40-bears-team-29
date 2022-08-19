@@ -18,7 +18,7 @@ const MainPostItem = ({ obj, setPosts, posts }) => {
 
     return setPosts((prev) =>
       prev.filter((objRet) => {
-        return objRet.User.username !== authMgr.currentUser.username;
+        return objRet.id !== obj.id;
       })
     );
   };
@@ -94,7 +94,7 @@ const MainPostItem = ({ obj, setPosts, posts }) => {
           className="text-xl lg:text-2xl font-bold hover:underline cursor-pointer"
           onClick={navigateToSpecHandler}
         >
-          {obj.title} {obj.id}
+          {obj.title}
         </h2>
         <button
           title="Upvote"
