@@ -4,18 +4,13 @@ const ApplicationModel = require("./application_model");
 
 module.exports = (sequelize, DataTypes) => {
   class Post extends ApplicationModel {
-    static associate (models) {
-      models.Post.User = models.Post.belongsTo(models.User, { foreignKey: "UserId" });
+    static fullScope (userModel, upvoteModel) {
+      return { include: [{ model: userModel }, { model: upvoteModel, include: [upvoteModel.User] }] };
     }
 
-    getData () {
-      if (this.User?.constructor?.name === "User") {
-        const data = this.toJSON();
-        data.User = this.User.getData();
-        return data;
-      } else {
-        return this.toJSON();
-      }
+    static associate (models) {
+      models.Post.User = models.Post.belongsTo(models.User, { foreignKey: "UserId" });
+      models.Post.Upvote = models.Post.hasMany(models.Upvote);
     }
   }
   Post.init({
