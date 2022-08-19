@@ -8,6 +8,7 @@ const MainPostItem = ({ obj, setDummyData, dummyData }) => {
   const navigate = useNavigate();
   const authMgr = useContext(AuthCtx);
   const modalMgr = useContext(ModalCtx);
+
   const deletePostHandler = () => {
     // SEND API PATCH REQUEST
     // UPON 2xx RUN THIS FILTER
@@ -16,22 +17,24 @@ const MainPostItem = ({ obj, setDummyData, dummyData }) => {
 
     return setDummyData((prev) =>
       prev.filter((objRet) => {
-        return objRet.username !== authMgr.currentUser.username;
+        return objRet.id !== obj.id;
       })
     );
   };
 
   const upVoteHandler = () => {
     const impostor = dummyData.find((objRet) => {
-      return objRet === obj;
+      return objRet.id === obj.id;
     });
 
-    impostor.votes++;
-    setDummyData((prev) => [...prev, impostor]);
+    impostor.upvotesCount++;
+    setDummyData((prev) => {
+      return [...prev];
+    });
   };
 
   const navigateToSpecHandler = () => {
-    navigate(`/posts/${obj.username}`);
+    navigate(`/posts/${obj.id}`);
   };
 
   const navigateToEditHandler = () => {
@@ -39,7 +42,7 @@ const MainPostItem = ({ obj, setDummyData, dummyData }) => {
   };
 
   const takeToUserProfHandler = () => {
-    navigate(`/users/${obj.id}`);
+    navigate(`/users/${obj.User.id}`);
   };
 
   return (
@@ -49,32 +52,32 @@ const MainPostItem = ({ obj, setDummyData, dummyData }) => {
           className="text-xl lg:text-2xl font-bold hover:underline cursor-pointer"
           onClick={navigateToSpecHandler}
         >
-          {obj.postTitle}
+          {obj.title}
         </h2>
         <button
           title="Upvote"
           className="absolute -top-2 -right-2 p-1 rounded transition-all hover:bg-slate-100 dark:hover:bg-slate-700 flex flex-row items-center leading-none cursor-pointer z-10"
           onClick={upVoteHandler}
         >
-          <span className="block -mt-1">{obj.votes}</span>
+          <span className="block -mt-1">{obj.upvotesCount}</span>
           <ArrowUpIcon className="block w-3 ml-1" />
         </button>
       </header>
-      <p>{obj.post.substring(0, 300)}</p>
+      <p>{obj.content.substring(0, 300)}</p>
       <footer className="flex flex-wrap justify-between items-center mt-6">
         <div onClick={takeToUserProfHandler} className="flex cursor-pointer">
           <img
-            alt={`${obj.username} profile avatar`}
+            alt={`${obj.User.username} profile avatar`}
             className="w-6 h-6 mr-3 rounded-full"
-            src={obj.src}
+            src={obj.User.avatar}
           />
           <p>
-            {obj.username}
-            {obj.username === authMgr.currentUser.username && " (you)"}
+            {obj.User.username}
+            {obj.User.username === authMgr.currentUser.username && " (you)"}
           </p>
         </div>
         <div className="flex space-x-3">
-          {obj.username === authMgr.currentUser.username && (
+          {obj.User.username === authMgr.currentUser.username && (
             <>
               <button title="Edit post" onClick={navigateToEditHandler}>
                 <PencilAltIcon className="w-5" />
