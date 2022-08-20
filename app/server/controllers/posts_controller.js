@@ -29,7 +29,7 @@ const getPosts = async (req, res) => {
   const cursor = req.query.cursor || 0;
   const limit = req.query.limit || 10;
 
-  const posts = await Post.findAll({ offset: cursor, limit, order: [["id", "ASC"]], ...Post.fullScope(User, Upvote) });
+  const posts = await Post.findAll({ offset: cursor, limit, ...Post.ranked(User, Upvote) });
   res.status(200).send(posts.map((p) => p.getData()));
 };
 

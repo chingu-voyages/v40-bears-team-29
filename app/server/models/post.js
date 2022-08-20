@@ -1,11 +1,31 @@
 "use strict";
 
 const ApplicationModel = require("./application_model");
+const Sequelize = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   class Post extends ApplicationModel {
     static fullScope (userModel, upvoteModel) {
       return { include: [{ model: userModel }, { model: upvoteModel, include: [upvoteModel.User] }] };
+    }
+
+    static ranked (userModel, upvoteModel) {
+      const gravity = 1.8;
+      return {
+        attributes: [
+          "id",
+          "UserId",
+          "title",
+          "content",
+          "upvotesCount",
+          "createdAt",
+          "updatedAt",
+          // sequelize wont let me use this field with as "Post"."rank
+          [Sequelize.literal(`"Post"."upvotesCount" - 1 / (extract(hour from "Post"."createdAt") + 2) ^ ${gravity}`), "rank"]
+        ],
+        ...Post.fullScope(userModel, upvoteModel),
+        order: [[Sequelize.literal("rank"), "DESC"]]
+      };
     }
 
     static associate (models) {
