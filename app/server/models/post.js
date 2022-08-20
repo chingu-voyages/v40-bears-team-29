@@ -8,6 +8,17 @@ module.exports = (sequelize, DataTypes) => {
       return { include: [{ model: userModel }, { model: upvoteModel, include: [upvoteModel.User] }] };
     }
 
+    static async syncUpvotes() {
+      // i know this load the entire thing in the ram and i should do it using streams instead
+      // but for now it wont be a problem since the dabase will not get too big
+      const posts = await Post.findAll({include: [this.Upvote]});
+      posts.forEach(async (o) => {
+        const upvotesRealValue = o.Upvotes.length;
+        o.upvotesCount = upvotesRealValue;
+        o.save();
+      });
+    }
+
     static associate (models) {
       models.Post.User = models.Post.belongsTo(models.User, { foreignKey: "UserId" });
       models.Post.Upvote = models.Post.hasMany(models.Upvote);

@@ -103,16 +103,36 @@ const upvotePost = async (req, res) => {
   }
 
   const upvote = await Upvote.findOne({ where: { UserId: currentUserId(req), PostId: post.id } });
+
+  let upvoteChange = 0;
   if (upvote) {
-    await Upvote.destroy({ where: { id: upvote.id } });
-    post.set({ upvotesCount: post.upvotesCount - 1 });
-    await post.save();
-    res.status(200).send({ message: "upvoted removed" });
+    const deletedUpvote = await Upvote.destroy({ where: { id: upvote.id } })
+      .catch((e) => {
+        console.error(e);
+      });
+
+    if (deletedUpvote) {
+      upvoteChange = -1;
+    }
+
   } else {
-    Upvote.create({ UserId: currentUserId(req), PostId: post.id });
-    post.set({ upvotesCount: post.upvotesCount + 1 });
+    const createdUpvote = Upvote.create({ UserId: currentUserId(req), PostId: post.id })
+      .catch((e) => {
+        console.error(e);
+      });
+
+    if (createdUpvote) {
+      upvoteChange = 1;
+    }
+  }
+
+  if (upvoteChange === 0) {
+    res.status(500).send({error: "unexpected error"});
+    return;
+  } else {
+    post.set({ upvotesCount: post.upvotesCount + upvoteChange });
     await post.save();
-    res.status(200).send({ message: "upvoted added" });
+    res.status(200).send({ message: upvoteChange === -1 ? "upvote removed" : "upvote added" });
   }
 };
 

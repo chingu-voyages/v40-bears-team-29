@@ -101,7 +101,7 @@ const MainPostItem = ({ obj, setPosts, posts }) => {
           className={`absolute -top-2 -right-2 p-1 rounded transition-all hover:bg-slate-100 dark:hover:bg-slate-700 flex flex-row items-center leading-none cursor-pointer z-10 ${isUpvoted() ? "bg-white/10" : ""}`}
           onClick={upVoteHandler}
         >
-          <span className="block -mt-1">{obj.Upvotes.length}</span>
+          <span className="block -mt-1">{obj.upvotesCount}</span>
           <ArrowUpIcon className="block w-3 ml-1" />
         </button>
       </header>
