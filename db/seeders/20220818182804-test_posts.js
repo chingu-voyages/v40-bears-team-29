@@ -19,6 +19,7 @@ module.exports = {
 
     const posts = []
 
+    let index = 0
     users.forEach((userId) => {
       Array.apply(null, Array(10)).forEach(() => {
         const place = countries[Math.floor(Math.random() * countries.length)]
@@ -26,9 +27,11 @@ module.exports = {
           title: `amazing travel to ${place}`,
           content: `really cool travel to ${place} 10/10 i really recommend`,
           UserId: userId,
+          slug: `amazing-travel-to-${place.replace(" ", "-")}-${index}`,
           ...defaultValues()
         }
         posts.push(post)
+        index += 1
       })
     })
 
