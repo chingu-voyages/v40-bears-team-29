@@ -7,6 +7,8 @@ const createPost = async (req, res) => {
   }
 
   const post = Post.build({ ...postParams(req), UserId: currentUserId(req) });
+  await post.slugfy();
+
   await post.save()
     .then((data) => {
       res.status(200).send(data.getData());
@@ -29,7 +31,7 @@ const getPosts = async (req, res) => {
   const cursor = req.query.cursor || 0;
   const limit = req.query.limit || 10;
 
-  const posts = await Post.findAll({ offset: cursor, limit, order: [["id", "ASC"]], ...Post.fullScope(User, Upvote) });
+  const posts = await Post.findAll({ offset: cursor, limit, ...Post.ranked(User, Upvote) });
   res.status(200).send(posts.map((p) => p.getData()));
 };
 
@@ -139,7 +141,13 @@ const upvotePost = async (req, res) => {
 // helpers ///////////////////////////////////////////
 
 const setPost = async (params) => {
-  const post = await Post.findByPk(params.id, Post.fullScope(User, Upvote));
+
+  let post = await Post.findByPk(params.id, Post.fullScope(User, Upvote))
+    .catch(() => {});
+  if (!post) {
+    post = await Post.findOne({where: {slug: params.id}});
+  }
+
   return post;
 };
 

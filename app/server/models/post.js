@@ -1,6 +1,8 @@
 "use strict";
 
 const ApplicationModel = require("./application_model");
+const Sequelize = require("sequelize");
+const crypto = require("crypto");
 
 module.exports = (sequelize, DataTypes) => {
   class Post extends ApplicationModel {
@@ -19,12 +21,51 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
 
+    static ranked (userModel, upvoteModel) {
+      const gravity = 1.8;
+      return {
+        attributes: [
+          "id",
+          "UserId",
+          "title",
+          "content",
+          "upvotesCount",
+          "createdAt",
+          "updatedAt",
+          // sequelize wont let me use this field with as "Post"."rank
+          [Sequelize.literal(`"Post"."upvotesCount" - 1 / (extract(hour from "Post"."createdAt") + 2) ^ ${gravity}`), "rank"]
+        ],
+        ...Post.fullScope(userModel, upvoteModel),
+        order: [[Sequelize.literal("rank"), "DESC"]]
+      };
+    }
+    
+    async slugfy() {
+      this.slug = this.title.trim().replace(/[^0-9a-z]-/gi, "").split(" ").join("-");
+
+      const postWithSameSlug = await Post.findOne({where: {slug: this.slug}});
+
+      if (postWithSameSlug) {
+        const buf = new Uint32Array(1);
+        const randomValue = crypto.getRandomValues(buf);
+        const randomString = crypto.createHash("sha256").update(randomValue).digest("hex");
+
+        this.slug = `${this.slug}-${randomString}`;
+      }
+
+      return this.slug;
+    }
+
     static associate (models) {
       models.Post.User = models.Post.belongsTo(models.User, { foreignKey: "UserId" });
       models.Post.Upvote = models.Post.hasMany(models.Upvote);
     }
   }
   Post.init({
+    slug: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     title: {
       type: DataTypes.STRING,
       allowNull: false,
