@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 export const AuthCtx = createContext({
   isLoggedIn: false,
   setIsLoggedIn: () => {},
+  loginUser: () => {},
   onLogIn: () => {},
   currentUser: {},
   setCurrentUser: () => {},
@@ -49,12 +50,16 @@ const AuthProvider = (props) => {
     setErrorMsg(message);
   };
 
+  const loginUser = (user) => {
+    setCurrentUser(user);
+    setIsLoggedIn(true);
+  };
+
   const onLogIn = async () => {
     await axios
       .post("/api/login", loginInputInfo, { withCredentials: true })
       .then((serverRes) => {
-        setCurrentUser(serverRes.data);
-        setIsLoggedIn(true);
+        loginUser(serverRes.data);
         nav("/");
       })
       .catch((err) => {
@@ -87,8 +92,7 @@ const AuthProvider = (props) => {
     await axios
       .post("/api/sign_up", registerInputInfo, { withCredentials: true })
       .then((serverRes) => {
-        setCurrentUser(serverRes.data);
-        setIsLoggedIn(true);
+        loginUser(serverRes.data);
         nav("/");
       })
       .catch((err) => {
@@ -136,6 +140,7 @@ const AuthProvider = (props) => {
         setIsLoggedIn,
         currentUser,
         setCurrentUser,
+        loginUser,
         onLogIn,
         onLogOut,
         showLogin,
