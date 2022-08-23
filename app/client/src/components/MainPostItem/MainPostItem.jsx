@@ -8,8 +8,6 @@ import axios from "axios";
 import { postCtx } from "../../features/posts-ctx";
 
 const MainPostItem = ({ obj }) => {
-  console.log(obj);
-
   const navigate = useNavigate();
   const authMgr = useContext(AuthCtx);
   const modalMgr = useContext(ModalCtx);
