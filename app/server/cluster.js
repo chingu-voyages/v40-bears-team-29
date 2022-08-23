@@ -1,6 +1,12 @@
 const cluster = require("cluster");
 const app = require("./app");
 
+const models = require("./models/index");
+
+// this should't be here but since i didnt figured out why this dont work inside a seed
+// i will leave it here for now
+models.Post.syncUpvotes();
+
 if (cluster.isMaster) {
   const cpuCount = process.env.WORKERS || require("os").cpus().length;
 
