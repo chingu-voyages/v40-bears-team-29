@@ -7,6 +7,8 @@ const createPost = async (req, res) => {
   }
 
   const post = Post.build({ ...postParams(req), UserId: currentUserId(req) });
+  await post.slugfy();
+
   await post.save()
     .then((data) => {
       res.status(200).send(data.getData());
@@ -29,7 +31,7 @@ const getPosts = async (req, res) => {
   const cursor = req.query.cursor || 0;
   const limit = req.query.limit || 10;
 
-  const posts = await Post.findAll({ offset: cursor, limit, order: [["id", "ASC"]], ...Post.fullScope(User, Upvote) });
+  const posts = await Post.findAll({ offset: cursor, limit, ...Post.ranked(User, Upvote) });
   res.status(200).send(posts.map((p) => p.getData()));
 };
 
@@ -103,23 +105,49 @@ const upvotePost = async (req, res) => {
   }
 
   const upvote = await Upvote.findOne({ where: { UserId: currentUserId(req), PostId: post.id } });
+
+  let upvoteChange = 0;
   if (upvote) {
-    await Upvote.destroy({ where: { id: upvote.id } });
-    post.set({ upvotesCount: post.upvotesCount - 1 });
-    await post.save();
-    res.status(200).send({ message: "upvoted removed" });
+    const deletedUpvote = await Upvote.destroy({ where: { id: upvote.id } })
+      .catch((e) => {
+        console.error(e);
+      });
+
+    if (deletedUpvote) {
+      upvoteChange = -1;
+    }
+
   } else {
-    Upvote.create({ UserId: currentUserId(req), PostId: post.id });
-    post.set({ upvotesCount: post.upvotesCount + 1 });
+    const createdUpvote = Upvote.create({ UserId: currentUserId(req), PostId: post.id })
+      .catch((e) => {
+        console.error(e);
+      });
+
+    if (createdUpvote) {
+      upvoteChange = 1;
+    }
+  }
+
+  if (upvoteChange === 0) {
+    res.status(500).send({error: "unexpected error"});
+    return;
+  } else {
+    post.set({ upvotesCount: post.upvotesCount + upvoteChange });
     await post.save();
-    res.status(200).send({ message: "upvoted added" });
+    res.status(200).send({ message: upvoteChange === -1 ? "upvote removed" : "upvote added" });
   }
 };
 
 // helpers ///////////////////////////////////////////
 
 const setPost = async (params) => {
-  const post = await Post.findByPk(params.id, Post.fullScope(User, Upvote));
+
+  let post = await Post.findByPk(params.id, Post.fullScope(User, Upvote))
+    .catch(() => {});
+  if (!post) {
+    post = await Post.findOne({where: {slug: params.id}});
+  }
+
   return post;
 };
 

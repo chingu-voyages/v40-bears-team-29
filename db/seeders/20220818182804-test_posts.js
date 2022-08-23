@@ -9,6 +9,11 @@ const defaultValues = () => {
   }
 }
 
+Date.prototype.addHours = function(h) {
+  this.setTime(this.getTime() + (h*60*60*1000));
+  return this;
+}
+
 module.exports = {
   async up (queryInterface, Sequelize) {
     let users = await models.User.findAll()
@@ -19,16 +24,24 @@ module.exports = {
 
     const posts = []
 
+    let index = 0
     users.forEach((userId) => {
       Array.apply(null, Array(10)).forEach(() => {
+        const randomHoursAdded = Math.floor(Math.random() * 20) * -1
+        let createdDate = new Date()
+        createdDate = createdDate.addHours(randomHoursAdded)
+
         const place = countries[Math.floor(Math.random() * countries.length)]
         const post = {
           title: `amazing travel to ${place}`,
           content: `really cool travel to ${place} 10/10 i really recommend`,
           UserId: userId,
-          ...defaultValues()
+          createdAt: createdDate,
+          updatedAt: createdDate
+          slug: `amazing-travel-to-${place.replace(" ", "-")}-${index}`,
         }
         posts.push(post)
+        index += 1
       })
     })
 

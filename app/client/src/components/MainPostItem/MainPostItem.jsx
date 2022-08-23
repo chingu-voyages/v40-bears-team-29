@@ -59,7 +59,7 @@ const MainPostItem = ({ obj }) => {
   };
 
   const navigateToSpecHandler = () => {
-    navigate(`/posts/${obj.id}`);
+    navigate(`/posts/${obj.slug}`);
   };
 
   const navigateToEditHandler = () => {
@@ -67,7 +67,7 @@ const MainPostItem = ({ obj }) => {
   };
 
   const takeToUserProfHandler = () => {
-    navigate(`/users/${obj.User.id}`);
+    navigate(`/users/${obj.User.username}`);
   };
 
   const isUpvoted = () => {
@@ -108,7 +108,7 @@ const MainPostItem = ({ obj }) => {
           }`}
           onClick={upVoteHandler}
         >
-          <span className="block -mt-1">{obj.Upvotes.length}</span>
+          <span className="block -mt-1">{obj.upvotesCount}</span>
           <ArrowUpIcon className="block w-3 ml-1" />
         </button>
       </header>
