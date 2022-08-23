@@ -37,8 +37,8 @@ module.exports = {
           content: `really cool travel to ${place} 10/10 i really recommend`,
           UserId: userId,
           createdAt: createdDate,
-          updatedAt: createdDate
-          slug: `amazing-travel-to-${place.replace(" ", "-")}-${index}`,
+          updatedAt: createdDate,
+          slug: `amazing-travel-to-${place.replace(" ", "-")}-${index}`
         }
         posts.push(post)
         index += 1
