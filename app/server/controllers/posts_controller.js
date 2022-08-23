@@ -7,6 +7,8 @@ const createPost = async (req, res) => {
   }
 
   const post = Post.build({ ...postParams(req), UserId: currentUserId(req) });
+  await post.slugfy();
+
   await post.save()
     .then((data) => {
       res.status(200).send(data.getData());
@@ -119,7 +121,13 @@ const upvotePost = async (req, res) => {
 // helpers ///////////////////////////////////////////
 
 const setPost = async (params) => {
-  const post = await Post.findByPk(params.id, Post.fullScope(User, Upvote));
+
+  let post = await Post.findByPk(params.id, Post.fullScope(User, Upvote))
+    .catch(() => {});
+  if (!post) {
+    post = await Post.findOne({where: {slug: params.id}});
+  }
+
   return post;
 };
 

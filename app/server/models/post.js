@@ -2,6 +2,7 @@
 
 const ApplicationModel = require("./application_model");
 const Sequelize = require("sequelize");
+const crypto = require("crypto");
 
 module.exports = (sequelize, DataTypes) => {
   class Post extends ApplicationModel {
@@ -26,6 +27,22 @@ module.exports = (sequelize, DataTypes) => {
         ...Post.fullScope(userModel, upvoteModel),
         order: [[Sequelize.literal("rank"), "DESC"]]
       };
+    };
+    
+    async slugfy() {
+      this.slug = this.title.trim().replace(/[^0-9a-z]-/gi, "").split(" ").join("-");
+
+      const postWithSameSlug = await Post.findOne({where: {slug: this.slug}});
+
+      if (postWithSameSlug) {
+        const buf = new Uint32Array(1);
+        const randomValue = crypto.getRandomValues(buf);
+        const randomString = crypto.createHash("sha256").update(randomValue).digest("hex");
+
+        this.slug = `${this.slug}-${randomString}`;
+      }
+
+      return this.slug;
     }
 
     static associate (models) {
@@ -34,6 +51,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Post.init({
+    slug: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     title: {
       type: DataTypes.STRING,
       allowNull: false,

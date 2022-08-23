@@ -54,7 +54,7 @@ const MainPostItem = ({ obj, setPosts, posts }) => {
   };
 
   const navigateToSpecHandler = () => {
-    navigate(`/posts/${obj.id}`);
+    navigate(`/posts/${obj.slug}`);
   };
 
   const navigateToEditHandler = () => {
@@ -62,7 +62,7 @@ const MainPostItem = ({ obj, setPosts, posts }) => {
   };
 
   const takeToUserProfHandler = () => {
-    navigate(`/users/${obj.User.id}`);
+    navigate(`/users/${obj.User.username}`);
   };
 
   const isUpvoted = () => {

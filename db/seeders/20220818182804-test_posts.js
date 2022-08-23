@@ -24,6 +24,7 @@ module.exports = {
 
     const posts = []
 
+    let index = 0
     users.forEach((userId) => {
       Array.apply(null, Array(10)).forEach(() => {
         const randomHoursAdded = Math.floor(Math.random() * 20) * -1
@@ -37,8 +38,10 @@ module.exports = {
           UserId: userId,
           createdAt: createdDate,
           updatedAt: createdDate
+          slug: `amazing-travel-to-${place.replace(" ", "-")}-${index}`,
         }
         posts.push(post)
+        index += 1
       })
     })
 

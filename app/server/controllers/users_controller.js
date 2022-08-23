@@ -84,7 +84,7 @@ const getUser = async (req, res) => {
     return;
   }
 
-  const user = await User.findByPk(req.params.id);
+  const user = await User.findOne({where: {username: req.params.username}});
 
   if (user === null) {
     res.status(404).send({ error: "this user doest exist" });
