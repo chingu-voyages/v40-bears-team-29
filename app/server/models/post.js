@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         ...Post.fullScope(userModel, upvoteModel),
         order: [[Sequelize.literal("rank"), "DESC"]]
       };
-    };
+    }
     
     async slugfy() {
       this.slug = this.title.trim().replace(/[^0-9a-z]-/gi, "").split(" ").join("-");
