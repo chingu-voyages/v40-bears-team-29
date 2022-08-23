@@ -1,11 +1,28 @@
 "use strict";
 
 const ApplicationModel = require("./application_model");
+const crypto = require("crypto");
 
 module.exports = (sequelize, DataTypes) => {
   class Post extends ApplicationModel {
     static fullScope (userModel, upvoteModel) {
       return { include: [{ model: userModel }, { model: upvoteModel, include: [upvoteModel.User] }] };
+    }
+
+    async slugfy() {
+      this.slug = this.title.trim().replace(/[^0-9a-z]-/gi, "").split(" ").join("-");
+
+      const postWithSameSlug = await Post.findOne({where: {slug: this.slug}});
+
+      if (postWithSameSlug) {
+        const buf = new Uint32Array(1);
+        const randomValue = crypto.getRandomValues(buf);
+        const randomString = crypto.createHash("sha256").update(randomValue).digest("hex");
+
+        this.slug = `${this.slug}-${randomString}`;
+      }
+
+      return this.slug;
     }
 
     static associate (models) {
@@ -14,6 +31,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Post.init({
+    slug: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     title: {
       type: DataTypes.STRING,
       allowNull: false,

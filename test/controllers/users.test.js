@@ -159,11 +159,11 @@ describe("users controller", () => {
       });
   });
 
-  test("get /api/users/:id should return the specific user", async () => {
+  test("get /api/users/:username should return the specific user", async () => {
     const authenticatedSession = await logUser(this.user, app);
 
     await authenticatedSession
-      .get(`/api/users/${this.user.id}`)
+      .get(`/api/users/${this.user.username}`)
       .expect(200)
       .expect("Content-type", /json/)
       .then(async (serverRes) => {
@@ -171,7 +171,7 @@ describe("users controller", () => {
       });
   });
 
-  test("get /api/users/:id should return 404 the specific user doest exist", async () => {
+  test("get /api/users/:username should return 404 the specific user doest exist", async () => {
     const authenticatedSession = await logUser(this.user, app);
 
     await authenticatedSession
@@ -183,7 +183,7 @@ describe("users controller", () => {
       });
   });
 
-  test("get /api/users/:id should return 401 if not logged", async () => {
+  test("get /api/users/:username should return 401 if not logged", async () => {
     await this.user.save();
 
     await request(app)

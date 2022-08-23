@@ -239,6 +239,20 @@ describe("posts controller", () => {
       });
   });
 
+
+  jest.retryTimes(10);
+  test("get /api/posts/:slug should return post", async () => {
+    await this.post.save();
+
+    await request(app)
+      .get(`/api/posts/${this.post.slug}`)
+      .expect(200)
+      .expect("Content-type", /json/)
+      .then(async (serverRes) => {
+        expect(serverRes.body).toEqual(expect.any(Object));
+      });
+  });
+
   jest.retryTimes(10);
   test("get /api/posts/:id should return post if logged", async () => {
     await this.post.save();
@@ -271,8 +285,12 @@ describe("posts controller", () => {
 
   jest.retryTimes(10);
   test("get /api/posts should list posts ordered by creation date", async () => {
-    const post1 = await Post.create({ ...postMock, UserId: this.postUser.id });
-    const post2 = await Post.create({ ...postMock, UserId: this.postUser.id });
+    const post1 = await Post.build({ ...postMock, UserId: this.postUser.id });
+    await post1.slugfy();
+    await post1.save();
+    const post2 = await Post.build({ ...postMock, UserId: this.postUser.id });
+    await post2.slugfy();
+    await post2.save();
 
     await request(app)
       .get("/api/posts")

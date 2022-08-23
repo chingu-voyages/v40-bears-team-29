@@ -7,6 +7,6 @@ router.get("/api/logged_user", loggedUser);
 router.post("/api/sign_up", signUp);
 router.patch("/api/logged_user", updateUser);
 
-router.get("/api/users/:id", getUser);
+router.get("/api/users/:username", getUser);
 
 module.exports = router;
