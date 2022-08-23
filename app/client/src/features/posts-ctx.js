@@ -7,6 +7,7 @@ export const postCtx = createContext({
         username: "",
         avatar: "",
       },
+      Upvotes: [],
       title: "",
       content: "",
       upvotesCount: 0,

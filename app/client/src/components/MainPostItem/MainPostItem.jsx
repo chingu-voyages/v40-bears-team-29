@@ -8,6 +8,8 @@ import axios from "axios";
 import { postCtx } from "../../features/posts-ctx";
 
 const MainPostItem = ({ obj }) => {
+  console.log(obj);
+
   const navigate = useNavigate();
   const authMgr = useContext(AuthCtx);
   const modalMgr = useContext(ModalCtx);
@@ -46,7 +48,7 @@ const MainPostItem = ({ obj }) => {
           return o.id == postId;
         });
 
-        const impostorIndex = posts.indexOf(impostor);
+        const impostorIndex = postMgr.posts.indexOf(impostor);
 
         postMgr.setPosts((prev) => {
           prev[impostorIndex] = serverRes.data;
