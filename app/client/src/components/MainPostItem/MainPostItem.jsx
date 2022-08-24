@@ -5,10 +5,13 @@ import { ModalCtx } from "../../features/modal-ctx";
 import { ArrowUpIcon, PencilAltIcon, TrashIcon } from "../Icon/Icon";
 import axios from "axios";
 
-const MainPostItem = ({ obj, setPosts, posts }) => {
+import { postCtx } from "../../features/posts-ctx";
+
+const MainPostItem = ({ obj }) => {
   const navigate = useNavigate();
   const authMgr = useContext(AuthCtx);
   const modalMgr = useContext(ModalCtx);
+  const postMgr = useContext(postCtx);
 
   const deletePostHandler = () => {
     // SEND API PATCH REQUEST
@@ -16,7 +19,7 @@ const MainPostItem = ({ obj, setPosts, posts }) => {
     // AND TRIGGER POST SETTING EFFECT
     // DEPENDENCY
 
-    return setPosts((prev) =>
+    return postMgr.setPosts((prev) =>
       prev.filter((objRet) => {
         return objRet.id !== obj.id;
       })
@@ -39,13 +42,13 @@ const MainPostItem = ({ obj, setPosts, posts }) => {
       .get(`/api/posts/${obj.id}`)
       .then((serverRes) => {
         const postId = serverRes.data.id;
-        const impostor = posts.find((o) => {
+        const impostor = postMgr.posts.find((o) => {
           return o.id == postId;
         });
 
-        const impostorIndex = posts.indexOf(impostor);
+        const impostorIndex = postMgr.posts.indexOf(impostor);
 
-        setPosts((prev) => {
+        postMgr.setPosts((prev) => {
           prev[impostorIndex] = serverRes.data;
           return [...prev];
         });
@@ -74,7 +77,7 @@ const MainPostItem = ({ obj, setPosts, posts }) => {
   };
 
   if (Object.entries(obj).length === 0) {
-    return(
+    return (
       <article className="bg-white dark:bg-slate-800 border-gray-200 border dark:border-none shadow p-5 rounded-lg">
         <div className="animate-pulse flex space-x-4">
           <div className="flex-1 space-y-6 py-1">
@@ -98,7 +101,9 @@ const MainPostItem = ({ obj, setPosts, posts }) => {
         </h2>
         <button
           title="Upvote"
-          className={`absolute -top-2 -right-2 p-1 rounded transition-all hover:bg-slate-100 dark:hover:bg-slate-700 flex flex-row items-center leading-none cursor-pointer z-10 ${isUpvoted() ? "bg-white/10" : ""}`}
+          className={`absolute -top-2 -right-2 p-1 rounded transition-all hover:bg-slate-100 dark:hover:bg-slate-700 flex flex-row items-center leading-none cursor-pointer z-10 ${
+            isUpvoted() ? "bg-white/10" : ""
+          }`}
           onClick={upVoteHandler}
         >
           <span className="block -mt-1">{obj.upvotesCount}</span>

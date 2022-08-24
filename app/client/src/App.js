@@ -1,7 +1,6 @@
 import { Route, Routes, Navigate } from "react-router-dom";
 import React, { useContext, useEffect } from "react";
 import Home from "./pages/Home";
-import PostsNew from "./pages/PostsNew";
 import PostsSpec from "./pages/PostsSpec";
 import Auth from "./pages/Auth";
 import User from "./pages/User";
@@ -34,7 +33,6 @@ const App = () => {
       {modalMgr.showModal && <Modal />}
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/posts/new" element={<PostsNew />} />
         <Route path="/posts/:id" element={<PostsSpec />} />
         <Route path="/users/auth" element={<Auth />} />
         <Route
