@@ -20,7 +20,14 @@ const App = () => {
       .then((serverRes) => {
         authMgr.loginUser(serverRes.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        if (err.response.status == 401) {
+          authMgr.setIsLoggedIn(false);
+          console.log("not logged");
+        } else {
+          console.error(err);
+        }
+      });
   };
 
   useEffect(() => {
