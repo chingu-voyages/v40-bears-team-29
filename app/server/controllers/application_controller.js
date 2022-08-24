@@ -10,6 +10,10 @@ const filterParams = (permittedParams, req) => {
 const currentUser = async (req) => {
   const userId = currentUserId(req);
 
+  if (!userId) {
+    return null;
+  }
+
   let user = null;
   if (userId) {
     user = await User.findByPk(userId);
@@ -18,7 +22,7 @@ const currentUser = async (req) => {
 };
 
 const currentUserId = (req) => {
-  return req.session.user_id;
+  return req.session?.user_id;
 };
 
 const loginUser = async (req, user, password) => {

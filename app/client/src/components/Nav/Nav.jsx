@@ -2,14 +2,19 @@ import { Link } from "react-router-dom";
 import React, { useContext } from "react";
 import { AuthCtx } from "../../features/auth-ctx";
 import { ModalCtx } from "../../features/modal-ctx";
+import axios from "axios";
 
 const Nav = () => {
   const authMgr = useContext(AuthCtx);
   const modalMgr = useContext(ModalCtx);
 
-  const logoutHandler = () => {
-    // CLEAR ALL CURRENT STATES
-    authMgr.onLogOut();
+  const logoutHandler = async () => {
+    await axios
+      .post("/api/logout", {}, {withCredentials: true})
+      .then(() => {
+        authMgr.onLogOut();
+      })
+      .catch((err) => console.log(err));
   };
 
   const showLoginHandler = () => {
