@@ -1,19 +1,7 @@
 import React, { createContext, useState } from "react";
 
 export const postCtx = createContext({
-  posts: [
-    // {
-    //   User: {
-    //     username: "",
-    //     avatar: "",
-    //   },
-    //   Upvotes: [],
-    //   title: "",
-    //   content: "",
-    //   upvotesCount: 0,
-    //   id: 0,
-    // },
-  ],
+  posts: [],
   setPosts: () => {},
 });
 
