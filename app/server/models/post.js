@@ -28,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
           "id",
           "UserId",
           "title",
+          "slug",
           "content",
           "upvotesCount",
           "createdAt",
