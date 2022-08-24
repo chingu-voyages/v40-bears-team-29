@@ -1,15 +1,18 @@
 import MainPostItem from "../MainPostItem/MainPostItem";
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
+import { postCtx } from "../../features/posts-ctx";
+import { useContext } from "react";
 
 const MainPostList = () => {
-  const [posts, setPosts] = useState([{}, {}, {}, {}, {}, {}, {}]);
+  const postMgr = useContext(postCtx);
 
   const fetchPosts = async () => {
     await axios
       .get("/api/posts")
       .then((serverRes) => {
-        setPosts(serverRes.data);
+        postMgr.setPosts(serverRes.data);
+        console.log(serverRes.data);
       })
       .catch((err) => console.log(err));
   };
@@ -20,15 +23,8 @@ const MainPostList = () => {
 
   return (
     <main className="flex flex-col space-y-4 mx-auto px-2 max-w-screen-lg">
-      {posts.map((obj, index) => {
-        return (
-          <MainPostItem
-            obj={obj}
-            key={`POST_${index}`}
-            setPosts={setPosts}
-            posts={posts}
-          />
-        );
+      {postMgr.posts.map((obj, index) => {
+        return <MainPostItem obj={obj} key={`POST_${index}`} />;
       })}
     </main>
   );
