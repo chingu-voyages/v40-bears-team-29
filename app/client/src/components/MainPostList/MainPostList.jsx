@@ -10,26 +10,28 @@ const MainPostList = () => {
   const [hasMore, setHasMore] = useState(true);
 
   const fetchPosts = async () => {
-    await axios
-      .get("/api/posts/count")
-      .then((serverRes) => {
-        const postsCount = serverRes.data.count;
-        if (postMgr.posts.length < postsCount) {
-          setHasMore(true);
-        } else {
-          setHasMore(false);
-        }
-      });
+    await axios.get("/api/posts/count").then((serverRes) => {
+      const postsCount = serverRes.data.count;
+      if (postMgr.posts.length < postsCount) {
+        setHasMore(true);
+      } else {
+        setHasMore(false);
+      }
+    });
 
     await axios
-      .get("/api/posts", { params: { limit: postMgr.limit, cursor: postMgr.offset } })
+      .get("/api/posts", {
+        params: { limit: postMgr.limit, cursor: postMgr.offset },
+      })
       .then((serverRes) => {
         if (postMgr.offset == 0) {
           postMgr.setPosts(serverRes.data);
           postMgr.setOffset(postMgr.offset + postMgr.limit);
         } else {
           postMgr.setOffset(postMgr.offset + postMgr.limit);
-          postMgr.setPosts((prev) => {return [...prev, ...serverRes.data];});
+          postMgr.setPosts((prev) => {
+            return [...prev, ...serverRes.data];
+          });
         }
       })
       .catch((err) => console.log(err));
@@ -45,7 +47,11 @@ const MainPostList = () => {
         pageStart={0}
         loadMore={fetchPosts}
         hasMore={hasMore}
-        loader={<div className="loader" key={0}>Loading ...</div>}
+        loader={
+          <div className="loader" key={0}>
+            Loading ...
+          </div>
+        }
       >
         {postMgr.posts.map((obj, index) => {
           return <MainPostItem obj={obj} key={`POST_${index}`} />;
