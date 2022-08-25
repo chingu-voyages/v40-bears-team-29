@@ -141,7 +141,7 @@ const upvotePost = async (req, res) => {
 const getPostsCount = async (req, res) => {
   const count = await Post.count();
   res.status(200).send({count});
-}
+};
 
 // helpers ///////////////////////////////////////////
 
