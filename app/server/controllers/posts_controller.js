@@ -145,7 +145,7 @@ const setPost = async (params) => {
   let post = await Post.findByPk(params.id, Post.fullScope(User, Upvote))
     .catch(() => {});
   if (!post) {
-    post = await Post.findOne({where: {slug: params.id}});
+    post = await Post.findOne({where: {slug: params.id}, ...Post.fullScope(User, Upvote)});
   }
 
   return post;
