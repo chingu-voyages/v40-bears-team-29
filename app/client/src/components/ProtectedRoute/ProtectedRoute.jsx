@@ -5,11 +5,13 @@ import { Navigate } from "react-router-dom";
 const ProtectedRoute = ({ children }) => {
   const authMgr = useContext(AuthCtx);
 
-  if (!authMgr.isLoggedIn) {
-    return <Navigate to='/users/auth' replace />;
-  }
-
-  return children;
+  return (
+    <>
+      {authMgr.isLoggedIn === 0 && (<></>)}
+      {authMgr.isLoggedIn === false && (<Navigate to='/users/auth' replace />)}
+      {authMgr.isLoggedIn === true && (children)}
+    </>
+  );
 };
 
 export default ProtectedRoute;

@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export const AuthCtx = createContext({
-  isLoggedIn: false,
+  isLoggedIn: null,
   setIsLoggedIn: () => {},
   loginUser: () => {},
   onLogIn: () => {},
@@ -33,7 +33,7 @@ const AuthProvider = (props) => {
   const nav = useNavigate();
   const [errorMsg, setErrorMsg] = useState("");
   const [showFeedback, setShowFeedback] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(null | false);
   const [currentUser, setCurrentUser] = useState({});
   const [showLogin, setShowLogin] = useState(false);
   const [loginInputInfo, setLoginInputInfo] = useState({
