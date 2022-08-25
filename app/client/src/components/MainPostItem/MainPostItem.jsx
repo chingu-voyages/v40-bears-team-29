@@ -50,7 +50,7 @@ const MainPostItem = ({ obj }) => {
   }
 
   return (
-    <article className="bg-white dark:bg-slate-800 border-gray-200 border dark:border-none shadow p-5 rounded-lg">
+    <article className="bg-white dark:bg-slate-800 border-gray-200 border dark:border-none shadow p-5 rounded-lg mb-5">
       <header className="relative mb-6">
         <PostUpvoteButton className="float-right" obj={obj}/>
         <h2
