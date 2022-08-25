@@ -34,7 +34,7 @@ module.exports = {
         const place = countries[Math.floor(Math.random() * countries.length)]
         const post = {
           title: `amazing travel to ${place}`,
-          content: `really cool travel to ${place} 10/10 i really recommend`,
+          content: `really cool travel to ${place} 10/10 i really recommend \n`.repeat(20),
           UserId: userId,
           createdAt: createdDate,
           updatedAt: createdDate,

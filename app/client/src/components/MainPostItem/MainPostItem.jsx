@@ -2,8 +2,9 @@ import { useNavigate } from "react-router-dom";
 import React, { useContext } from "react";
 import { AuthCtx } from "../../features/auth-ctx";
 import { ModalCtx } from "../../features/modal-ctx";
-import { ArrowUpIcon, PencilAltIcon, TrashIcon } from "../Icon/Icon";
-import axios from "axios";
+import { PencilAltIcon, TrashIcon } from "../Icon/Icon";
+import UserInlineProfile from "../UserInlineProfile/UserInlineProfile";
+import PostUpvoteButton from "../PostUpvoteButton/PostUpvoteButton";
 
 import { postCtx } from "../../features/posts-ctx";
 
@@ -26,54 +27,12 @@ const MainPostItem = ({ obj }) => {
     );
   };
 
-  const upVoteHandler = async () => {
-    if (!authMgr.isLoggedIn) {
-      return;
-    }
-
-    await axios
-      .post(`/api/posts/${obj.id}/upvote`, {}, { withCredentials: true })
-      // .then((serverRes) => {
-      //   console.log(serverRes.data);
-      // })
-      .catch((err) => console.log(err));
-
-    await axios
-      .get(`/api/posts/${obj.id}`)
-      .then((serverRes) => {
-        const postId = serverRes.data.id;
-        const impostor = postMgr.posts.find((o) => {
-          return o.id == postId;
-        });
-
-        const impostorIndex = postMgr.posts.indexOf(impostor);
-
-        postMgr.setPosts((prev) => {
-          prev[impostorIndex] = serverRes.data;
-          return [...prev];
-        });
-      })
-      .catch((err) => console.log(err));
-  };
-
   const navigateToSpecHandler = () => {
     navigate(`/posts/${obj.slug}`);
   };
 
   const navigateToEditHandler = () => {
     modalMgr.onSetShowModal("editPost");
-  };
-
-  const takeToUserProfHandler = () => {
-    navigate(`/users/${obj.User.username}`);
-  };
-
-  const isUpvoted = () => {
-    const upvote = obj.Upvotes.find((o) => {
-      return o.UserId == authMgr.currentUser.id;
-    });
-
-    return upvote;
   };
 
   if (Object.entries(obj).length === 0) {
@@ -93,36 +52,17 @@ const MainPostItem = ({ obj }) => {
   return (
     <article className="bg-white dark:bg-slate-800 border-gray-200 border dark:border-none shadow p-5 rounded-lg">
       <header className="relative mb-6">
+        <PostUpvoteButton className="float-right" obj={obj}/>
         <h2
           className="text-xl lg:text-2xl font-bold hover:underline cursor-pointer"
           onClick={navigateToSpecHandler}
         >
           {obj.title}
         </h2>
-        <button
-          title="Upvote"
-          className={`absolute -top-2 -right-2 p-1 rounded transition-all hover:bg-slate-100 dark:hover:bg-slate-700 flex flex-row items-center leading-none cursor-pointer z-10 ${
-            isUpvoted() ? "bg-white/10" : ""
-          }`}
-          onClick={upVoteHandler}
-        >
-          <span className="block -mt-1">{obj.upvotesCount}</span>
-          <ArrowUpIcon className="block w-3 ml-1" />
-        </button>
       </header>
       <p>{obj.content.substring(0, 300)}</p>
       <footer className="flex flex-wrap justify-between items-center mt-6">
-        <div onClick={takeToUserProfHandler} className="flex cursor-pointer">
-          <img
-            alt={`${obj.User.username} profile avatar`}
-            className="w-6 h-6 mr-3 rounded-full"
-            src={obj.User.avatar || "https://i.imgur.com/pA5kCae.png"}
-          />
-          <p>
-            {obj.User.username}
-            {obj.User.username === authMgr.currentUser.username && " (you)"}
-          </p>
-        </div>
+        <UserInlineProfile obj={obj.User}/>
         <div className="flex space-x-3">
           {obj.User.username === authMgr.currentUser.username && (
             <>
