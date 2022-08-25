@@ -138,6 +138,11 @@ const upvotePost = async (req, res) => {
   }
 };
 
+const getPostsCount = async (req, res) => {
+  const count = await Post.count();
+  res.status(200).send({count});
+}
+
 // helpers ///////////////////////////////////////////
 
 const setPost = async (params) => {
@@ -160,4 +165,4 @@ const postParams = (req) => {
   return filterParams(permittedParams, req);
 };
 
-module.exports = { createPost, getPost, updatePost, deletePost, getPosts, upvotePost };
+module.exports = { createPost, getPost, getPostsCount, updatePost, deletePost, getPosts, upvotePost };

@@ -6,6 +6,8 @@ export const postCtx = createContext({
 });
 
 const PostProvider = (props) => {
+  const [limit, setLimit] = useState(10);
+  const [offset, setOffset] = useState(0);
   const [posts, setPosts] = useState([
     {
       User: {
@@ -24,6 +26,10 @@ const PostProvider = (props) => {
     <React.Fragment>
       <postCtx.Provider
         value={{
+          limit,
+          setLimit,
+          offset,
+          setOffset,
           posts,
           setPosts,
         }}
