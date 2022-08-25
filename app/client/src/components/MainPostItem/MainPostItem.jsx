@@ -15,16 +15,7 @@ const MainPostItem = ({ obj }) => {
   const postMgr = useContext(postCtx);
 
   const deletePostHandler = () => {
-    // SEND API PATCH REQUEST
-    // UPON 2xx RUN THIS FILTER
-    // AND TRIGGER POST SETTING EFFECT
-    // DEPENDENCY
-
-    return postMgr.setPosts((prev) =>
-      prev.filter((objRet) => {
-        return objRet.id !== obj.id;
-      })
-    );
+    postMgr.deletePost(obj);
   };
 
   const navigateToSpecHandler = () => {
@@ -52,7 +43,7 @@ const MainPostItem = ({ obj }) => {
   return (
     <article className="bg-white dark:bg-slate-800 border-gray-200 border dark:border-none shadow p-5 rounded-lg mb-5">
       <header className="relative mb-6">
-        <PostUpvoteButton className="float-right" obj={obj}/>
+        <PostUpvoteButton className="float-right" obj={obj} />
         <h2
           className="text-xl lg:text-2xl font-bold hover:underline cursor-pointer"
           onClick={navigateToSpecHandler}
@@ -62,7 +53,7 @@ const MainPostItem = ({ obj }) => {
       </header>
       <p>{obj.content.substring(0, 300)}</p>
       <footer className="flex flex-wrap justify-between items-center mt-6">
-        <UserInlineProfile obj={obj.User}/>
+        <UserInlineProfile obj={obj.User} />
         <div className="flex space-x-3">
           {obj.User.username === authMgr.currentUser.username && (
             <>
