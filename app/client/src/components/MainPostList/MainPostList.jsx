@@ -12,7 +12,6 @@ const MainPostList = () => {
       .get("/api/posts")
       .then((serverRes) => {
         postMgr.setPosts(serverRes.data);
-        console.log(serverRes.data);
       })
       .catch((err) => console.log(err));
   };
