@@ -8,7 +8,6 @@ const Nav = () => {
   const modalMgr = useContext(ModalCtx);
 
   const logoutHandler = () => {
-    // CLEAR ALL CURRENT STATES
     authMgr.onLogOut();
   };
 

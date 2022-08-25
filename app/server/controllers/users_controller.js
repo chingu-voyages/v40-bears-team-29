@@ -6,6 +6,7 @@ const signUp = async (req, res) => {
 
   user.save()
     .then(async (data) => {
+      await loginUser(req, data, user.password);
       res.status(200).send(data.getData());
     })
     .catch((error) => {
@@ -102,6 +103,18 @@ const getUser = async (req, res) => {
   }
 };
 
+const logout = async (req, res) => {
+  req.session = null;
+
+  const user = await currentUser(req);
+
+  if (!user) {
+    res.status(200).send({message: "logged out"});
+  } else {
+    res.status(500).send({error: "something when wrong"});
+  }
+};
+
 // helpers ///////////////////////////////////////////
 
 const setUser = async (params) => {
@@ -124,4 +137,4 @@ const userParams = (req) => {
   return filterParams(permittedParams, req);
 };
 
-module.exports = { login, loggedUser, signUp, updateUser, getUser };
+module.exports = { login, logout, loggedUser, signUp, updateUser, getUser };

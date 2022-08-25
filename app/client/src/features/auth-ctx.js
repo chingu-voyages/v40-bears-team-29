@@ -77,11 +77,15 @@ const AuthProvider = (props) => {
       });
   };
 
-  const onLogOut = () => {
-    setCurrentUser({});
-    setIsLoggedIn(false);
-    nav("/");
-    // CLEAR COOKIES
+  const onLogOut = async () => {
+    await axios
+      .post("/api/logout", {}, {withCredentials: true})
+      .then(() => {
+        setCurrentUser({});
+        setIsLoggedIn(false);
+        nav("/");
+      })
+      .catch((err) => console.log(err));
   };
 
   const onShowLogin = () => {
