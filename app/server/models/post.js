@@ -48,7 +48,7 @@ module.exports = (sequelize, DataTypes) => {
 
       if (postWithSameSlug) {
         const buf = new Uint32Array(1);
-        const randomValue = crypto.getRandomValues(buf);
+        const randomValue = crypto.webcrypto.getRandomValues(buf);
         const randomString = crypto.createHash("sha256").update(randomValue).digest("hex");
 
         this.slug = `${this.slug}-${randomString}`;
