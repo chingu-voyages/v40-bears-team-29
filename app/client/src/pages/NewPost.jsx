@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import Feedback from "../components/Feedback/Feedback";
 import { FormCtx } from "../features/form-ctx";
 import { postCtx } from "../features/posts-ctx";
+import { ModalCtx } from "../features/modal-ctx";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -9,6 +10,7 @@ const NewPost = () => {
   const nav = useNavigate();
   const formMgr = useContext(FormCtx);
   const postMgr = useContext(postCtx);
+  const modalMgr = useContext(ModalCtx);
 
   formMgr.initFields(["title", "content"]);
 
@@ -24,7 +26,8 @@ const NewPost = () => {
         // to figure out where to put the new created post in the list ranking
         // so i will clear all posts context and fetch the ranked posts from the server
         postMgr.setPosts([{}]); // <- TODO: move this to post context in a resetPosts function
-        nav("/"); // BUG this doest close the modal which make the UX poor
+        modalMgr.onCloseModal();
+        nav("/");
         console.log(serverRes.data);
       })
       .catch((err) => {
