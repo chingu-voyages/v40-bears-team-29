@@ -16,10 +16,32 @@ const FormProvider = (props) => {
   const [showFeedback, setShowFeedback] = useState(false);
   const [fields, setFields] = useState({});
 
-  const initFields = (listOfFieldsNames) => {
-    listOfFieldsNames.forEach(fieldName => {
-      const oldValue = fields[fieldName];
-      fields[fieldName] = oldValue || "";
+  const initFields = (newFields) => {
+    if (newFields.constructor.name != "Array") {
+      newFields = Object.entries(newFields);
+    }
+
+    newFields.forEach((field) => {
+      let fieldName;
+      let fieldValue;
+      let oldValue;
+
+      if (field.length == 2) {
+        fieldName = field[0];
+        fieldValue = field[1];
+      } else {
+        fieldName = field;
+        fieldValue = "";
+      }
+
+      oldValue = fields[fieldName];
+
+      if (oldValue == undefined) {
+        const newValue = {};
+        newValue[fieldName] = oldValue || fieldValue;
+
+        setFields((prev) => {return {...prev, ...newValue};});
+      }
     });
   };
 
