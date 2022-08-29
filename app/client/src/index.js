@@ -7,6 +7,7 @@ import { BrowserRouter } from "react-router-dom";
 import AuthProvider from "./features/auth-ctx";
 import ModalProvider from "./features/modal-ctx";
 import PostProvider from "./features/posts-ctx";
+import FormProvider from "./features/form-ctx";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -15,7 +16,9 @@ root.render(
       <AuthProvider>
         <PostProvider>
           <ModalProvider>
-            <App />
+            <FormProvider>
+              <App />
+            </FormProvider>
           </ModalProvider>
         </PostProvider>
       </AuthProvider>
