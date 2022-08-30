@@ -29,7 +29,7 @@ const Account = () => {
     e.preventDefault();
 
     await axios
-      .patch("/api/logged_user", formMgr.fields, { withCredentials: true })
+      .patch("/api/logged_user", formMgr.getFormFields(), { withCredentials: true })
       .then((serverRes) => {
         console.log(serverRes.data);
         formMgr.setShowFeedback(false);
@@ -61,16 +61,16 @@ const Account = () => {
           type="text"
           placeholder="Avatar url"
           onChange={(e) => formMgr.onFieldChange(e)}
-          value={formMgr.fields.avatar}
+          value={formMgr.getFieldByName("avatar")}
           name="avatar"
         />
-        <img src={formMgr.fields.avatar} />
+        <img src={formMgr.getFieldByName("avatar")} />
         <p>Biography:</p>
         <input
           placeholder="Edit biography"
           type="text"
           onChange={(e) => formMgr.onFieldChange(e)}
-          value={formMgr.fields.biography}
+          value={formMgr.getFieldByName("biography")}
           name="biography"
         />
         <p>New Password (optional):</p>
@@ -78,7 +78,7 @@ const Account = () => {
           type="password"
           placeholder="New password (optional)"
           onChange={(e) => formMgr.onFieldChange(e)}
-          value={formMgr.fields.newPassword}
+          value={formMgr.getFieldByName("newPassword")}
           name="newPassword"
         />
         {/* <p>Confirm new Password:</p> */}
@@ -91,7 +91,7 @@ const Account = () => {
           type="password"
           placeholder="Current password (required)"
           onChange={(e) => formMgr.onFieldChange(e)}
-          value={formMgr.fields.currentPassword}
+          value={formMgr.getFieldByName("currentPassword")}
           name="currentPassword"
         />
 

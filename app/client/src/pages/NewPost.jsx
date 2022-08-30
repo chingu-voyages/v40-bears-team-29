@@ -16,10 +16,9 @@ const NewPost = () => {
 
   const formHandler = async (e) => {
     e.preventDefault();
-    console.log(formMgr.fields);
 
     await axios
-      .post("/api/posts", formMgr.fields, { withCredentials: true })
+      .post("/api/posts", formMgr.getFormFields(), { withCredentials: true })
       .then((serverRes) => {
         formMgr.setShowFeedback(false);
         // this is necessary for now because it would be too hard for the client
@@ -54,7 +53,7 @@ const NewPost = () => {
           type="text"
           placeholder="Title"
           onChange={(e) => formMgr.onFieldChange(e)}
-          value={formMgr.fields.title}
+          value={formMgr.getFieldByName("title")}
           name="title"
         />
         <textarea
@@ -62,7 +61,7 @@ const NewPost = () => {
           rows="2"
           placeholder="Content"
           onChange={(e) => formMgr.onFieldChange(e)}
-          value={formMgr.fields.content}
+          value={formMgr.getFieldByName("content")}
           name="content"
         />
         <input onClick={formHandler} type="submit" value="Create" />
