@@ -22,7 +22,17 @@ const MainPostItem = ({ obj }) => {
     navigate(`/posts/${obj.slug}`);
   };
 
-  const navigateToEditHandler = () => {
+  const navigateToEditHandler = (e) => {
+    let formPostId = e.target.parentElement.dataset.postId;
+    // TODO: refactor
+    if(!formPostId) {
+      formPostId = e.target.parentElement.parentElement.dataset.postId;
+    }
+    const post = postMgr.posts.find((p) => {
+      return p.id == formPostId;
+    });
+
+    modalMgr.setSelectedPost(post);
     modalMgr.onSetShowModal("editPost");
   };
 
@@ -57,7 +67,7 @@ const MainPostItem = ({ obj }) => {
         <div className="flex space-x-3">
           {obj.User.username === authMgr.currentUser.username && (
             <>
-              <button title="Edit post" onClick={navigateToEditHandler}>
+              <button title="Edit post" onClick={navigateToEditHandler} data-post-id={obj.id}>
                 <PencilAltIcon className="w-5" />
               </button>
               <button title="Delete post" onClick={deletePostHandler}>

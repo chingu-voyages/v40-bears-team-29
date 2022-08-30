@@ -1,13 +1,14 @@
-import React from "react";
-import { useParams } from "react-router-dom";
+import React, { useContext } from "react";
+import { ModalCtx } from "../features/modal-ctx";
+import PostForm from "../components/PostForm/PostForm.jsx";
 
 const PostSpecEdit = () => {
-  const urlId = useParams().id;
+  const modalMgr = useContext(ModalCtx);
+  const formPost = modalMgr.selectedPost;
 
   return (
     <>
-      <h1>Edit Post Here</h1>
-      <p>{urlId}</p>
+      <PostForm formPost={formPost}/>
     </>
   );
 };

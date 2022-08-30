@@ -20,16 +20,21 @@ const FormProvider = (props) => {
   const [formName, setFormName] = useState("global");
 
   const getFieldByName = (name) => {
+    console.log(formName);
     return fields[formName][name];
   };
 
-  const initForm = (name = formName) => {
+  const initForm = (name = null) => {
+    if (!name) {
+      name = formName;
+    }
+
     const formFields = {};
     formFields[name] = {};
 
     setFields((prev) => {
       prev[name] = {};
-      return prev;
+      return {...prev};
     });
   };
 
@@ -67,7 +72,12 @@ const FormProvider = (props) => {
     }
   };
 
-  const initFields = (newFields) => {
+  const initFields = (newFields, thisFormName = formName) => {
+    setFormName(thisFormName);
+    if (!fields[thisFormName]) {
+      initForm(thisFormName);
+    }
+
     if (newFields.constructor.name != "Array") {
       newFields = Object.entries(newFields);
     }
