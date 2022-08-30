@@ -38,9 +38,10 @@ const FormProvider = (props) => {
 
       if (oldValue == undefined) {
         const newValue = {};
-        newValue[fieldName] = oldValue || fieldValue;
+        console.log(newValue);
+        newValue[fieldName] = fieldValue ? fieldValue : "";
 
-        setFields((prev) => {return {...prev, ...newValue};});
+        setFields((prev) => {return {...newValue, ...prev};});
       }
     });
   };
