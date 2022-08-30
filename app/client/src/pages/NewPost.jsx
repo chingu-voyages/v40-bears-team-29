@@ -25,9 +25,7 @@ const NewPost = () => {
         // this is necessary for now because it would be too hard for the client
         // to figure out where to put the new created post in the list ranking
         // so i will clear all posts context and fetch the ranked posts from the server
-        postMgr.setPosts([]); // <- TODO: move this to post context in a resetPosts function
-        postMgr.setOffset(0);
-        postMgr.setLimit(10);
+        postMgr.resetPostList();
         modalMgr.onCloseModal();
         nav("/");
         console.log(serverRes.data);

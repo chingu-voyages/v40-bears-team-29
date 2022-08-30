@@ -1,5 +1,5 @@
 import MainPostItem from "../MainPostItem/MainPostItem";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 import { postCtx } from "../../features/posts-ctx";
 import { useContext } from "react";
@@ -7,15 +7,14 @@ import InfiniteScroll from "react-infinite-scroller";
 
 const MainPostList = () => {
   const postMgr = useContext(postCtx);
-  const [hasMore, setHasMore] = useState(true);
 
   const fetchPosts = async () => {
     await axios.get("/api/posts/count").then((serverRes) => {
       const postsCount = serverRes.data.count;
       if (postMgr.posts.length < postsCount) {
-        setHasMore(true);
+        postMgr.setLoadMore(true);
       } else {
-        setHasMore(false);
+        postMgr.setLoadMore(false);
       }
     });
 
@@ -46,7 +45,7 @@ const MainPostList = () => {
       <InfiniteScroll
         pageStart={0}
         loadMore={fetchPosts}
-        hasMore={hasMore}
+        hasMore={postMgr.loadMore}
         loader={
           <div className="loader" key={0}>
             Loading ...

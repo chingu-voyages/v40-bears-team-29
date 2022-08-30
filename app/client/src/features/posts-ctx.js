@@ -8,9 +8,19 @@ export const postCtx = createContext({
   limit: 10,
   setLimit: () => {},
   deletePost: () => {},
+  loadMore: true,
+  setLoadMore: () => {},
+  resetPostList: () => {}
 });
 
 const PostProvider = (props) => {
+  const resetPostList = () => {
+    setPosts([]);
+    setOffset(0);
+    setLimit(10);
+    setLoadMore(true);
+  };
+
   const deletePost = (obj) => {
     // SEND API PATCH REQUEST
     // UPON 2xx RUN THIS FILTER
@@ -26,6 +36,7 @@ const PostProvider = (props) => {
 
   const [limit, setLimit] = useState(10);
   const [offset, setOffset] = useState(0);
+  const [loadMore, setLoadMore] = useState(true);
   const [posts, setPosts] = useState([
     {
       User: {
@@ -51,6 +62,9 @@ const PostProvider = (props) => {
           posts,
           setPosts,
           deletePost,
+          loadMore,
+          setLoadMore,
+          resetPostList
         }}
       >
         {props.children}
