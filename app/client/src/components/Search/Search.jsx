@@ -12,12 +12,12 @@ const Search = () => {
   return (
     <div className='mx-auto my-4 px-2 max-w-screen-lg'>
       <form onSubmit={searchHandler} className='block text-gray-700'>
-        <div className="relative">
-          <SearchIcon className='w-4 absolute left-2 top-1/2 -translate-y-1/2' />
+        <div className="flex w-full rounded-lg border-gray-200 dark:border-none shadow bg-white">
+          <SearchIcon className="w-4 mx-3"/>
           <input
             placeholder='Search'
             type='search'
-            className='w-full rounded-lg border-gray-200 dark:border-none pl-8 shadow'
+            className='w-full rounded-r-lg border-gray-200 dark:border-none'
             value={input}
             onChange={(e) => setInput(e.target.value)}
           />

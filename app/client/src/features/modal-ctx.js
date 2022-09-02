@@ -45,6 +45,8 @@ const ModalProvider = (props) => {
   };
 
   const onCloseModal = () => {
+    const body = document.body;
+    body.style.overflow = "auto";
     setShowModal(false);
     setShowNewPost(false);
     setShowAccount(false);

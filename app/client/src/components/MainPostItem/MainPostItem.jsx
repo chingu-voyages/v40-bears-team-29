@@ -52,15 +52,15 @@ const MainPostItem = ({ obj }) => {
 
   return (
     <article className="bg-white dark:bg-slate-800 border-gray-200 border dark:border-none shadow p-5 rounded-lg mb-5">
-      <header className="relative mb-6">
-        <PostUpvoteButton className="float-right" obj={obj} />
-        <h2
+      <div className="flex justify-between mb-6">
+        <header
           className="text-xl lg:text-2xl font-bold hover:underline cursor-pointer"
           onClick={navigateToSpecHandler}
         >
           {obj.title}
-        </h2>
-      </header>
+        </header>
+        <PostUpvoteButton obj={obj} />
+      </div>
       <p>{obj.content.substring(0, 300)}</p>
       <footer className="flex flex-wrap justify-between items-center mt-6">
         <UserInlineProfile obj={obj.User} />

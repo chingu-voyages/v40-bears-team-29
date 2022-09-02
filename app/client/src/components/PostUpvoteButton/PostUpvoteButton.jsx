@@ -46,7 +46,7 @@ const PostUpvoteButton = ({ obj, className }) => {
   return (
     <button
       title="Upvote"
-      className={`${className} p-1 rounded transition-all hover:bg-slate-100 dark:hover:bg-slate-700 flex flex-row items-center leading-none z-10 ${isUpvoted() ? "bg-white/10" : ""}`}
+      className={`${className} p-1 rounded transition-all hover:bg-slate-100 dark:hover:bg-slate-700 flex flex-row items-center leading-none ${isUpvoted() ? "bg-white/10" : ""}`}
       onClick={upVoteHandler}
     >
       <span className="block -mt-1">{obj.upvotesCount}</span>
