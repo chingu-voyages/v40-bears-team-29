@@ -11,13 +11,17 @@ export const ModalCtx = createContext({
   setShowNewPost: () => {},
   showEditPost: false,
   setShowEditPost: () => {},
+  selectedPost: {},
+  setSelectedPost: () => {}
 });
 
 const ModalProvider = (props) => {
+  // TODO: this need a refactor
   const [showModal, setShowModal] = useState(false);
   const [showAccount, setShowAccount] = useState(false);
   const [showNewPost, setShowNewPost] = useState(false);
   const [showEditPost, setShowEditPost] = useState(false);
+  const [selectedPost, setSelectedPost] = useState({});
 
   const onSetShowModal = (which) => {
     setShowModal(true);
@@ -34,7 +38,6 @@ const ModalProvider = (props) => {
     }
 
     if (which === "editPost") {
-      console.log("This is to show edit");
       setShowNewPost(false);
       setShowAccount(false);
       setShowEditPost(true);
@@ -61,6 +64,8 @@ const ModalProvider = (props) => {
         showEditPost,
         setShowEditPost,
         onCloseModal,
+        selectedPost,
+        setSelectedPost
       }}
     >
       {props.children}

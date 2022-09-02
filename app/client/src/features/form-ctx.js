@@ -8,18 +8,81 @@ export const FormCtx = createContext({
   fields: {},
   setFields: () => {},
   onFieldChange: () => {},
-  initFields: () => {}
+  initFields: () => {},
+  formName: () => {},
+  setFormName: () => {}
 });
 
 const FormProvider = (props) => {
   const [errorMsg, setErrorMsg] = useState("");
   const [showFeedback, setShowFeedback] = useState(false);
   const [fields, setFields] = useState({});
+  const [formName, setFormName] = useState("global");
 
-  const initFields = (newFields) => {
+  const getFieldByName = (name) => {
+    console.log(formName);
+    return fields[formName][name];
+  };
+
+  const initForm = (name = null) => {
+    if (!name) {
+      name = formName;
+    }
+
+    const formFields = {};
+    formFields[name] = {};
+
+    setFields((prev) => {
+      prev[name] = {};
+      return {...prev};
+    });
+  };
+
+  const getFormFields = () => {
+    if (!fields[formName]) {
+      initForm();
+    }
+
+    return {...fields[formName]};
+  };
+
+  const doesTheFormFieldsNeedUpdate = (newFields) => {
+    let result = false;
+    Object.entries(newFields).forEach(([key]) => {
+      if (fields[formName][key] !== newFields[key]) {
+        result = true;
+      }
+    });
+
+    return result;
+  };
+
+  const setFormFields = (newFields) => {
+    if (!fields[formName]) {
+      initForm();
+    }
+
+    const newForm = {};
+    newForm[formName] = {...getFormFields(), ...newFields};
+
+    if (doesTheFormFieldsNeedUpdate(newFields)) {
+      setFields((prev) => {
+        return {...prev, ...newForm};
+      });
+    }
+  };
+
+  const initFields = (newFields, thisFormName = formName) => {
+    setFormName(thisFormName);
+    if (!fields[thisFormName]) {
+      initForm(thisFormName);
+    }
+
     if (newFields.constructor.name != "Array") {
       newFields = Object.entries(newFields);
     }
+
+    const formFields = getFormFields();
 
     newFields.forEach((field) => {
       let fieldName;
@@ -34,22 +97,21 @@ const FormProvider = (props) => {
         fieldValue = "";
       }
 
-      oldValue = fields[fieldName];
+      oldValue = formFields[fieldName];
 
       if (oldValue == undefined) {
-        const newValue = {};
-        console.log(newValue);
-        newValue[fieldName] = fieldValue ? fieldValue : "";
-
-        setFields((prev) => {return {...newValue, ...prev};});
+        formFields[fieldName] = oldValue || fieldValue ? fieldValue : "";
       }
     });
+
+    setFormFields(formFields);
   };
 
   const onFieldChange = (e) => {
     const { name, value } = e.target;
     return setFields((prev) => {
-      return { ...prev, [name]: value };
+      prev[formName][name] = value;
+      return {...prev};
     });
   };
 
@@ -73,7 +135,12 @@ const FormProvider = (props) => {
         errorMsg,
         setErrorMsg,
         initFields,
-        onFieldChange
+        onFieldChange,
+        formName,
+        setFormName,
+        initForm,
+        getFieldByName,
+        getFormFields
       }}
     >
       {props.children}
