@@ -80,27 +80,48 @@ const PostForm = ({ formPost }) => {
 
   return (
     <>
+      <h2 className="text-center text-2xl">{formPost ? `Edit post ${formPost.title}` : "New Post"}</h2>
+
       <Feedback bool={formMgr.showFeedback} message={formMgr.errorMsg} type={formMgr.msgType ?? "danger"} />
 
-      <h2>{formPost ? `Edit post ${formPost.title}` : "New Post"}</h2>
+      <form className="flex flex-col">
 
-      <form className="flex flex-col text-black">
-        <input
-          type="text"
-          placeholder="Title"
-          onChange={(e) => formMgr.onFieldChange(e)}
-          value={formMgr.getFieldByName("title")}
-          name="title"
+        <div className="flex flex-col">
+          <label htmlFor="title">
+              Title
+          </label>
+
+          <input
+            type="text"
+            placeholder="Title"
+            className='rounded border-gray-300 dark:border-none dark:text-gray-800'
+            onChange={(e) => formMgr.onFieldChange(e)}
+            value={formMgr.getFieldByName("title")}
+            name="title"
+          />
+        </div>
+
+        <div className="flex flex-col">
+          <label htmlFor="content">
+              Content
+          </label>
+
+          <textarea
+            cols="30"
+            rows="2"
+            placeholder="Content"
+            className='rounded border-gray-300 dark:border-none dark:text-gray-800'
+            onChange={(e) => formMgr.onFieldChange(e)}
+            value={formMgr.getFieldByName("content")}
+            name="content"
+          />
+        </div>
+        <input 
+          className="block ml-auto mt-3 w-fit bg-blue-500 hover:bg-blue-700 text-white transition-all py-1 px-2 rounded hover:cursor-pointer"
+          onClick={formHandler}
+          type="submit"
+          value={formPost ? "Update" : "Create"}
         />
-        <textarea
-          cols="30"
-          rows="2"
-          placeholder="Content"
-          onChange={(e) => formMgr.onFieldChange(e)}
-          value={formMgr.getFieldByName("content")}
-          name="content"
-        />
-        <input onClick={formHandler} type="submit" value={formPost ? "Update" : "Create"} />
       </form>
     </>
   );
