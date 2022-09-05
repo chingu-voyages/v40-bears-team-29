@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import Header from "../components/Header/Header";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import MainPostList from "../components/MainPostList/MainPostList";
 
 const User = () => {
   const urlId = useParams().id;
@@ -16,16 +17,58 @@ const User = () => {
     await axios
       .get(`/api/users/${urlId}`, {withCredentials: true})
       .then((serverRes) => {
-        console.log(serverRes.data);
         setUserProfile(serverRes.data);
       })
       .catch((err) => console.log(err));
-    // send error feedback
   };
 
   useEffect(() => {
     fetchUser();
   }, []);
+
+
+  //start
+  const [posts, setPosts] = useState([]);
+  const [loadMore, setLoadMore] = useState(true);
+  const fetchHasMore = async () => {
+    await axios.get(`/api/posts/count?user=${userProfile.username}`).then((serverRes) => {
+      const postsCount = serverRes.data.count;
+      if (posts.length < postsCount) {
+        setLoadMore(true);
+      } else {
+        setLoadMore(false);
+      }
+    });
+  };
+
+  const limit = 10;
+  const [offset, setOffset] = useState(0);
+  const fetchPosts = async () => {
+    await axios
+      .get(`/api/users/${userProfile.username}`, {
+        params: { limit: limit, cursor: offset },
+        withCredentials: true
+      })
+      .then((serverRes) => {
+        const res_posts = serverRes.data.Posts;
+        if (offset == 0) {
+          setPosts(res_posts);
+          setOffset(offset + limit);
+        } else {
+          setOffset(offset + limit);
+          setPosts((prev) => {
+            return [...prev, ...res_posts];
+          });
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
+  //end
+  
+  const postList = (
+    <MainPostList fetchHasMore={fetchHasMore} hasMore={loadMore} fetchPosts={fetchPosts} posts={posts}/>
+  );
 
   return (
     <>
@@ -45,6 +88,8 @@ const User = () => {
           );
         })}
       </ul>
+
+      { userProfile.username != "" && (postList) }
     </>
   );
 };
