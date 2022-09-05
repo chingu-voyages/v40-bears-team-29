@@ -139,6 +139,21 @@ const upvotePost = async (req, res) => {
 };
 
 const getPostsCount = async (req, res) => {
+  const username_query = req.query.user;
+
+  if (username_query) {
+    const user = await User.findOne({where: {username: username_query}});
+
+    if (!user) {
+      res.status(404).send({error: "user not found"});
+      return;
+    }
+
+    const count = await Post.count({where: {UserId: user.id}});
+    res.status(200).send({count});
+    return;
+  }
+
   const count = await Post.count();
   res.status(200).send({count});
 };

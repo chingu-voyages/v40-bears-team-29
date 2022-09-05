@@ -5,6 +5,7 @@ import { postCtx } from "../../features/posts-ctx";
 import { useContext } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 
+// todo: stop setting posts state using an arvitrary set and get function and make the component get the set and get function in the params
 const MainPostList = () => {
   const postMgr = useContext(postCtx);
 
