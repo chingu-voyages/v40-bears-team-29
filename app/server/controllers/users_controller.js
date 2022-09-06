@@ -95,7 +95,7 @@ const getUser = async (req, res) => {
 
     const data = user.getData();
 
-    const posts = await Post.findAll({ offset: cursor, limit, order: [["createdAt", "ASC"]], where: { UserId: user.id }, ...Post.fullScope(User, Upvote) });
+    const posts = await Post.findAll({ offset: cursor, limit, order: [["createdAt", "DESC"]], where: { UserId: user.id }, ...Post.fullScope(User, Upvote) });
 
     data.Posts = posts.map((p) => p.getData());
 
