@@ -5,6 +5,8 @@ import { postCtx } from "../../features/posts-ctx";
 import { ModalCtx } from "../../features/modal-ctx";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import SimpleMDE from "react-simplemde-editor";
+import "easymde/dist/easymde.min.css";
 
 const PostForm = ({ formPost }) => {
   const nav = useNavigate();
@@ -78,6 +80,8 @@ const PostForm = ({ formPost }) => {
     }
   };
 
+
+
   return (
     <>
       <h2 className="text-center text-2xl">{formPost ? `Edit post ${formPost.title}` : "New Post"}</h2>
@@ -106,16 +110,13 @@ const PostForm = ({ formPost }) => {
               Content
           </label>
 
-          <textarea
-            cols="30"
-            rows="2"
-            placeholder="Content"
-            className='rounded border-gray-300 dark:border-none dark:text-gray-800'
-            onChange={(e) => formMgr.onFieldChange(e)}
+          <SimpleMDE
+            onChange={(e) => formMgr.onFieldChange({"name": "content", "value": e})}
             value={formMgr.getFieldByName("content")}
-            name="content"
           />
         </div>
+
+
         <input 
           className="block ml-auto mt-3 w-fit bg-blue-500 hover:bg-blue-700 text-white transition-all py-1 px-2 rounded hover:cursor-pointer"
           onClick={formHandler}

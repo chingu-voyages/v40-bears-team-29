@@ -108,7 +108,16 @@ const FormProvider = (props) => {
   };
 
   const onFieldChange = (e) => {
-    const { name, value } = e.target;
+    let name;
+    let value;
+    if (e.target) {
+      name = e.target.name;
+      value = e.target.value;
+    } else {
+      name = e.name;
+      value = e.value;
+    }
+
     return setFields((prev) => {
       prev[formName][name] = value;
       return {...prev};

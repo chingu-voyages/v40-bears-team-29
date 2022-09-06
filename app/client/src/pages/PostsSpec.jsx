@@ -5,8 +5,10 @@ import axios from "axios";
 import { postCtx } from "../features/posts-ctx";
 import PostUpvoteButton from "../components/PostUpvoteButton/PostUpvoteButton";
 import UserInlineProfile from "../components/UserInlineProfile/UserInlineProfile";
+import { Remarkable } from "remarkable";
 
 const PostSpec = () => {
+  const md = new Remarkable();
   const urlId = useParams().id;
   const postMgr = useContext(postCtx);
 
@@ -62,9 +64,8 @@ const PostSpec = () => {
             </h1>
             {post?.Upvotes && (<PostUpvoteButton className="!p-2" obj={post}/>)}
           </div>
-          <pre>
-            {post ? post.content : "loading"}
-          </pre>
+          <div id="post-content" className="prose dark:text-white dark:prose-dark" dangerouslySetInnerHTML={{__html: post ? md.render(post.content) : "loading"}}>
+          </div>
           {post && (
             <div className="flex justify-between mt-6">
               <span className="flex">
