@@ -12,4 +12,8 @@ body {
 .editor-toolbar {
   @apply bg-white;
   color: rgb(55, 65, 81);
-};
+}
+
+.editor-preview {
+  @apply prose;
+}

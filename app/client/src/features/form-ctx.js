@@ -108,8 +108,6 @@ const FormProvider = (props) => {
   };
 
   const onFieldChange = (e) => {
-    console.log("AAAAA");
-    console.log(e);
     let name;
     let value;
     if (e.target) {
