@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { createContext, useState } from "react";
 
 export const postCtx = createContext({
@@ -10,7 +11,7 @@ export const postCtx = createContext({
   deletePost: () => {},
   loadMore: true,
   setLoadMore: () => {},
-  resetPostList: () => {}
+  resetPostList: () => {},
 });
 
 const PostProvider = (props) => {
@@ -21,17 +22,20 @@ const PostProvider = (props) => {
     setLoadMore(true);
   };
 
-  const deletePost = (obj) => {
-    // SEND API PATCH REQUEST
-    // UPON 2xx RUN THIS FILTER
-    // AND TRIGGER POST SETTING EFFECT
-    // DEPENDENCY
-
-    return setPosts((prev) =>
-      prev.filter((objRet) => {
-        return objRet.id !== obj.id;
+  const deletePost = async (obj) => {
+    await axios
+      .delete(`/api/posts/${obj.id}`, { withCredentials: true })
+      .then((serverRes) => {
+        console.log(serverRes);
+        return setPosts((prev) =>
+          prev.filter((objRet) => {
+            return objRet.id !== obj.id;
+          })
+        );
       })
-    );
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const [limit, setLimit] = useState(10);
@@ -64,7 +68,7 @@ const PostProvider = (props) => {
           deletePost,
           loadMore,
           setLoadMore,
-          resetPostList
+          resetPostList,
         }}
       >
         {props.children}
