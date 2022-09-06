@@ -5,10 +5,12 @@ import { ModalCtx } from "../../features/modal-ctx";
 import { PencilAltIcon, TrashIcon } from "../Icon/Icon";
 import UserInlineProfile from "../UserInlineProfile/UserInlineProfile";
 import PostUpvoteButton from "../PostUpvoteButton/PostUpvoteButton";
+import { Remarkable } from "remarkable";
 
 import { postCtx } from "../../features/posts-ctx";
 
 const MainPostItem = ({ obj }) => {
+  const md = new Remarkable();
   const navigate = useNavigate();
   const authMgr = useContext(AuthCtx);
   const modalMgr = useContext(ModalCtx);
@@ -36,6 +38,17 @@ const MainPostItem = ({ obj }) => {
     modalMgr.onSetShowModal("editPost");
   };
 
+  const getMarkdownExcerpt = (content) => {
+    const contentHtml = md.render(content);
+    const tags = contentHtml.split("\n");
+    for (var i in tags) {
+      if(tags[i].substring(0,3) == "<p>") {
+        return tags[i].substring(3, tags[i].length - 4);
+      }
+    }
+    return "";
+  };
+
   if (Object.entries(obj).length === 0) {
     return (
       <article className="bg-white dark:bg-slate-800 border-gray-200 border dark:border-none shadow p-5 rounded-lg">
@@ -61,7 +74,7 @@ const MainPostItem = ({ obj }) => {
         </header>
         <PostUpvoteButton obj={obj} />
       </div>
-      <p>{obj.content.substring(0, 300)}</p>
+      <p>{getMarkdownExcerpt(obj.content).substring(0, 300)}</p>
       <footer className="flex flex-wrap justify-between items-center mt-6">
         <UserInlineProfile obj={obj.User} />
         <div className="flex space-x-3">
