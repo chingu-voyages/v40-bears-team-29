@@ -20,7 +20,6 @@ const FormProvider = (props) => {
   const [formName, setFormName] = useState("global");
 
   const getFieldByName = (name) => {
-    console.log(formName);
     return fields[formName][name];
   };
 
