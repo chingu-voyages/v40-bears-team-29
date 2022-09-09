@@ -74,20 +74,16 @@ const User = () => {
     <>
       <Header />
 
-      <img src={userProfile.avatar} />
-      <h1>PROFILE FOR: {userProfile.username}</h1>
-      <p>Total Posts: {userProfile.Posts.length}</p>
-      <p>Bio: {userProfile.biography}</p>
-      <h3>POSTS</h3>
-      <ul>
-        {userProfile.Posts.map((obj) => {
-          return (
-            <li key={obj.id}>
-              {obj.title}, {obj.content}
-            </li>
-          );
-        })}
-      </ul>
+      <div className="flex justify-center mt-6">
+        <img className="rounded-full mr-2" src={userProfile.avatar} />
+        <div>
+          <h1>{userProfile.username}</h1>
+          <p>Total Posts: {userProfile.Posts.length}</p>
+        </div>
+      </div>
+      <div className="w-fit mx-auto mt-3">Bio: {userProfile.biography}</div>
+
+      <h2 className="mt-6 mb-4 text-center text-2xl">user posts</h2>
 
       { userProfile.username != "" && (postList) }
     </>
