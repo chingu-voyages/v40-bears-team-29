@@ -52,51 +52,81 @@ const Account = () => {
 
   return (
     <>
+      <h2 className="mb-6 text-center text-2xl">Update account</h2>
+
       <Feedback bool={formMgr.showFeedback} message={formMgr.errorMsg} type={formMgr.msgType ?? "danger"} />
 
-      <h2>Registration update for {authMgr.currentUser.username}</h2>
-      <form className="text-black">
-        <p>User avatar url:</p>
-        <input
-          type="text"
-          placeholder="Avatar url"
-          onChange={(e) => formMgr.onFieldChange(e)}
-          value={formMgr.getFieldByName("avatar")}
-          name="avatar"
-        />
-        <img src={formMgr.getFieldByName("avatar")} />
-        <p>Biography:</p>
-        <input
-          placeholder="Edit biography"
-          type="text"
-          onChange={(e) => formMgr.onFieldChange(e)}
-          value={formMgr.getFieldByName("biography")}
-          name="biography"
-        />
-        <p>New Password (optional):</p>
-        <input
-          type="password"
-          placeholder="New password (optional)"
-          onChange={(e) => formMgr.onFieldChange(e)}
-          value={formMgr.getFieldByName("newPassword")}
-          name="newPassword"
-        />
-        {/* <p>Confirm new Password:</p> */}
-        {/* <input */}
-        {/*   type="password" */}
-        {/*   placeholder="Confim new password" */}
-        {/* /> */}
-        <p>Current Password (required):</p>
-        <input
-          type="password"
-          placeholder="Current password (required)"
-          onChange={(e) => formMgr.onFieldChange(e)}
-          value={formMgr.getFieldByName("currentPassword")}
-          name="currentPassword"
-        />
+      <form className="">
+        <div className="flex w-full items-center">
+          <div className="flex flex-col w-full">
+            <label htmlFor="avatat">
+              User avatar url:
+            </label>
+            <input
+              type="text"
+              placeholder="Avatar url"
+              onChange={(e) => formMgr.onFieldChange(e)}
+              value={formMgr.getFieldByName("avatar")}
+              className='rounded border-gray-300 dark:border-none dark:text-gray-800'
+              name="avatar"
+            />
+          </div>
 
+          <div className="flex flex-col w-full">
+            <label htmlFor="avatat">
+              Preview:
+            </label>
+            <img className="m-auto  w-20" src={formMgr.getFieldByName("avatar")} />
+          </div>
+        </div>
+
+        <div className="flex flex-col">
+          <label htmlFor="biography">
+              Biography:
+          </label>
+
+          <input
+            placeholder="Edit biography"
+            type="text"
+            className='rounded border-gray-300 dark:border-none dark:text-gray-800'
+            onChange={(e) => formMgr.onFieldChange(e)}
+            value={formMgr.getFieldByName("biography")}
+            name="biography"
+          />
+        </div>
+        <div className="flex flex-col">
+          <label htmlFor="password">
+              New Password (optional):
+          </label>
+          <input
+            type="password"
+            className='rounded border-gray-300 dark:border-none dark:text-gray-800'
+            placeholder="New password (optional)"
+            onChange={(e) => formMgr.onFieldChange(e)}
+            value={formMgr.getFieldByName("newPassword")}
+            name="newPassword"
+          />
+        </div>
+        <div className="flex flex-col">
+          <label htmlFor="password">
+              Current Password (required):
+          </label>
+          <input
+            type="password"
+            className='rounded border-gray-300 dark:border-none dark:text-gray-800'
+            placeholder="Current password (required)"
+            onChange={(e) => formMgr.onFieldChange(e)}
+            value={formMgr.getFieldByName("currentPassword")}
+            name="currentPassword"
+          />
+        </div>
         <br/>
-        <input onClick={formHandler} value="Save changes" type="submit" />
+        <input 
+          className="block ml-auto mt-3 w-fit bg-blue-500 hover:bg-blue-700 text-white transition-all py-1 px-2 rounded hover:cursor-pointer"
+          onClick={formHandler}
+          type="submit"
+          value="Save changes"
+        />
       </form>
     </>
   );
