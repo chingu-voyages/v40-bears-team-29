@@ -17,7 +17,7 @@ const PostForm = ({ formPost }) => {
   if (formPost) {
     formMgr.initFields({"title": formPost.title, "content": formPost.content}, `post-${formPost.id}-edit`);
   } else {
-    formMgr.initFields(["title", "content"]);
+    formMgr.initFields(["title", "content"], "new-post");
   }
 
   const formHandlerToCreate = async (e) => {
@@ -25,7 +25,7 @@ const PostForm = ({ formPost }) => {
 
     await axios
       .post("/api/posts", formMgr.getFormFields(), { withCredentials: true })
-      .then((serverRes) => {
+      .then(() => {
         formMgr.setShowFeedback(false);
         // this is necessary for now because it would be too hard for the client
         // to figure out where to put the new created post in the list ranking
@@ -33,7 +33,7 @@ const PostForm = ({ formPost }) => {
         postMgr.resetPostList();
         modalMgr.onCloseModal();
         nav("/");
-        console.log(serverRes.data);
+        formMgr.resetFields();
       })
       .catch((err) => {
         const responseData = err.response.data;
