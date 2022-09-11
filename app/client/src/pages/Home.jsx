@@ -41,7 +41,7 @@ const Home = () => {
   return (
     <div>
       <Header />
-      <Search />
+      {/* <Search /> */}
       <MainPostList fetchHasMore={fetchHasMore} hasMore={postMgr.loadMore} fetchPosts={fetchPosts} posts={postMgr.posts}/>
     </div>
   );
