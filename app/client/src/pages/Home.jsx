@@ -2,7 +2,6 @@ import React, {useContext} from "react";
 import Header from "../components/Header/Header";
 import MainPostList from "../components/MainPostList/MainPostList";
 import { postCtx } from "../features/posts-ctx";
-import Search from "../components/Search/Search";
 import axios from "axios";
 
 const Home = () => {
