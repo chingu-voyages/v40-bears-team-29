@@ -1,0 +1,4 @@
+app/client/build/**
+db/**
+app/server/repl.js
+app/client/tailwind.config.js
