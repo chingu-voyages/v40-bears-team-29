@@ -24,7 +24,7 @@ const cookieSessionConfig = {
 };
 if (app.get("env") === "production") {
   app.set("trust proxy", 1); // trust first proxy
-  // cookieSessionConfig.sameSite = true
+  cookieSessionConfig.sameSite = true;
   cookieSessionConfig.secure = true;
   // cookieSessionConfig.httpOnly = false
 }
